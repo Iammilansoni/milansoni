@@ -56,7 +56,8 @@ function ResearchIndex() {
           {ARTICLES.map((a, i) => (
             <Reveal key={a.slug} delay={i * 0.1}>
               <Link 
-                to={`/research/${a.slug}`}
+                to="/research/$slug"
+                params={{ slug: a.slug }}
                 className="group block glass rounded-4xl p-8 hover:bg-secondary/30 transition duration-500 relative overflow-hidden"
               >
                 <div className="absolute inset-0 bg-linear-to-r from-aurora-1/10 to-transparent opacity-0 group-hover:opacity-100 transition duration-500" />
