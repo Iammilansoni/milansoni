@@ -1,0 +1,277 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Instrument Serif", ui-serif, Georgia, serif;
+  --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-aurora-1: var(--aurora-1);
+  --color-aurora-2: var(--aurora-2);
+  --color-aurora-3: var(--aurora-3);
+  --color-glass: var(--glass);
+  --color-hairline: var(--hairline);
+
+  --shadow-glow: 0 0 80px -10px color-mix(in oklab, var(--primary) 40%, transparent);
+  --shadow-elevated: 0 30px 80px -20px oklch(0 0 0 / 0.6);
+}
+
+:root {
+  --radius: 0.875rem;
+
+  /* Deep near-black background with subtle blue undertone */
+  --background: oklch(0.10 0.010 264);
+  --foreground: oklch(0.98 0.005 240);
+
+  --card: oklch(0.14 0.014 264);
+  --card-foreground: oklch(0.98 0.005 240);
+  --popover: oklch(0.13 0.014 264);
+  --popover-foreground: oklch(0.98 0.005 240);
+
+  /* Electric indigo accent */
+  --primary: oklch(0.75 0.22 285);
+  --primary-foreground: oklch(0.12 0.012 264);
+
+  --secondary: oklch(0.22 0.018 264);
+  --secondary-foreground: oklch(0.97 0.005 240);
+
+  --muted: oklch(0.20 0.014 264);
+  --muted-foreground: oklch(0.68 0.018 250);
+
+  --accent: oklch(0.72 0.18 200);
+  --accent-foreground: oklch(0.12 0.012 264);
+
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+
+  --border: oklch(1 0 0 / 0.08);
+  --input: oklch(1 0 0 / 0.10);
+  --ring: oklch(0.72 0.20 285 / 0.6);
+
+  /* Aurora gradient stops (Intensified) */
+  --aurora-1: oklch(0.70 0.28 295);
+  --aurora-2: oklch(0.75 0.24 220);
+  --aurora-3: oklch(0.78 0.22 170);
+
+  /* Glass + hairline */
+  --glass: oklch(1 0 0 / 0.02);
+  --hairline: oklch(1 0 0 / 0.10);
+
+  --sidebar: oklch(0.14 0.012 264);
+  --sidebar-foreground: oklch(0.97 0.005 240);
+  --sidebar-primary: oklch(0.72 0.20 285);
+  --sidebar-primary-foreground: oklch(0.12 0.012 264);
+  --sidebar-accent: oklch(0.20 0.014 264);
+  --sidebar-accent-foreground: oklch(0.97 0.005 240);
+  --sidebar-border: oklch(1 0 0 / 0.08);
+  --sidebar-ring: oklch(0.72 0.20 285 / 0.6);
+}
+
+/* Force dark — site is dark-only by design */
+.dark, html {
+  color-scheme: dark;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html, body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--primary) 40%, transparent);
+    color: var(--foreground);
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.02em;
+    font-weight: 400;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: var(--font-display); }
+  .font-sans { font-family: var(--font-sans); }
+  .font-mono { font-family: var(--font-mono); }
+
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid var(--hairline);
+  }
+
+  .text-gradient {
+    background: linear-gradient(120deg, var(--foreground) 0%, color-mix(in oklab, var(--primary) 70%, var(--foreground)) 50%, var(--foreground) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-aurora {
+    background: linear-gradient(110deg, var(--aurora-1), var(--aurora-2) 45%, var(--aurora-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .aurora-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aurora-bg::before,
+  .aurora-bg::after {
+    content: "";
+    position: absolute;
+    width: 70vw; height: 70vw;
+    border-radius: 9999px;
+    filter: blur(120px);
+    opacity: 0.35;
+    animation: aurora-float 18s ease-in-out infinite alternate;
+  }
+  .aurora-bg::before {
+    top: -20%; left: -10%;
+    background: radial-gradient(closest-side, var(--aurora-1), transparent 70%);
+  }
+  .aurora-bg::after {
+    bottom: -30%; right: -15%;
+    background: radial-gradient(closest-side, var(--aurora-2), transparent 70%);
+    animation-delay: -6s;
+  }
+
+  @keyframes aurora-float {
+    0%   { transform: translate3d(0,0,0) scale(1); }
+    50%  { transform: translate3d(4%, -3%, 0) scale(1.08); }
+    100% { transform: translate3d(-3%, 4%, 0) scale(0.96); }
+  }
+
+  .hairline { border-color: var(--hairline); }
+
+  .noise::after {
+    content: "";
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>");
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .scroll-progress {
+    position: fixed; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
+    transform-origin: 0 50%;
+    z-index: 100;
+  }
+
+  /* ─── Wibify-style Ambient Soft Blobs ─────────────────────────── */
+  .ambient-blobs {
+    z-index: 0;
+  }
+
+  .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(160px);
+    opacity: 0.09;
+    will-change: transform;
+  }
+
+  /* Blob 1 — top-left, large, slow drift */
+  .blob-1 {
+    width: 80vw;
+    height: 80vw;
+    top: -25%;
+    left: -20%;
+    animation: blob-drift-1 30s ease-in-out infinite alternate;
+  }
+
+  /* Blob 2 — bottom-right, medium, counter-drift */
+  .blob-2 {
+    width: 60vw;
+    height: 60vw;
+    bottom: -20%;
+    right: -15%;
+    animation: blob-drift-2 25s ease-in-out infinite alternate;
+    animation-delay: -10s;
+  }
+
+  /* Blob 3 — center, small accent */
+  .blob-3 {
+    width: 45vw;
+    height: 45vw;
+    top: 30%;
+    left: 40%;
+    opacity: 0.05;
+    animation: blob-drift-3 35s ease-in-out infinite alternate;
+    animation-delay: -18s;
+  }
+
+  @keyframes blob-drift-1 {
+    0%   { transform: translate3d(0,   0,    0) scale(1.00); }
+    33%  { transform: translate3d(4%,  -6%,  0) scale(1.05); }
+    66%  { transform: translate3d(-3%, 4%,   0) scale(0.97); }
+    100% { transform: translate3d(6%,  2%,   0) scale(1.03); }
+  }
+
+  @keyframes blob-drift-2 {
+    0%   { transform: translate3d(0,   0,    0) scale(1.00); }
+    33%  { transform: translate3d(-5%, 5%,   0) scale(1.07); }
+    66%  { transform: translate3d(4%,  -3%,  0) scale(0.95); }
+    100% { transform: translate3d(-2%, -6%,  0) scale(1.04); }
+  }
+
+  @keyframes blob-drift-3 {
+    0%   { transform: translate3d(0,   0,    0) scale(1.00); }
+    50%  { transform: translate3d(-8%, 6%,   0) scale(1.12); }
+    100% { transform: translate3d(5%,  -4%,  0) scale(0.92); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .aurora-bg::before, .aurora-bg::after { animation: none; }
+    .blob { animation: none !important; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
