@@ -6,13 +6,13 @@ import { ExperienceTimeline } from "@/components/sections/experience-timeline";
 export const Route = createFileRoute("/experience")({
   head: () => ({
     meta: [
-      { title: "Experience — Milan Soni" },
-      { name: "description", content: "Industry experience across AI testing, financial intelligence, and document automation platforms." },
-      { property: "og:title", content: "Experience — Milan Soni" },
-      { property: "og:description", content: "Internships and engineering roles." },
-      { property: "og:url", content: "/experience" },
+      { title: "Experience & Internships | Milan Soni" },
+      { name: "description", content: "Explore Milan Soni's industry experience across AI testing platforms (nTheta), financial intelligence (OBG Outsourcing), and document automation (Om Logistics)." },
+      { property: "og:title", content: "Experience & Internships | Milan Soni" },
+      { property: "og:description", content: "Explore Milan Soni's industry experience across AI testing platforms (nTheta), financial intelligence (OBG Outsourcing), and document automation (Om Logistics)." },
+      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/experience" },
     ],
-    links: [{ rel: "canonical", href: "/experience" }],
+    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/experience" }],
   }),
   component: ExperiencePage,
 });

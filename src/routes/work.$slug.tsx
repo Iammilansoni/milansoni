@@ -16,23 +16,41 @@ export const Route = createFileRoute("/work/$slug")({
     if (!p) return { meta: [{ title: "Case study — Milan Soni" }] };
     return {
       meta: [
-        { title: `${p.name} — Case Study` },
+        { title: `${p.name} | AI & Full Stack Case Study | Milan Soni` },
         { name: "description", content: p.blurb },
-        { property: "og:title", content: `${p.name} — Case Study` },
+        { property: "og:title", content: `${p.name} | AI & Full Stack Case Study | Milan Soni` },
         { property: "og:description", content: p.blurb },
         { property: "og:type", content: "article" },
-        { property: "og:url", content: `/work/${p.slug}` },
+        { property: "og:url", content: `https://milan-soni-portfolio.vercel.app/work/${p.slug}` },
       ],
-      links: [{ rel: "canonical", href: `/work/${p.slug}` }],
+      links: [{ rel: "canonical", href: `https://milan-soni-portfolio.vercel.app/work/${p.slug}` }],
       scripts: [{
         type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Article",
-          headline: p.name,
-          description: p.blurb,
-          author: { "@type": "Person", name: "Milan Soni" },
-        }),
+        children: JSON.stringify([
+          {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: p.name,
+            description: p.blurb,
+            author: { "@type": "Person", name: "Milan Soni" },
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "SoftwareSourceCode",
+            name: p.name,
+            description: p.description,
+            programmingLanguage: p.tech,
+            codeRepository: p.githubUrl || undefined,
+            author: { "@type": "Person", name: "Milan Soni" }
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "CreativeWork",
+            name: p.name,
+            text: p.problem + " " + p.solution + " " + p.results,
+            author: { "@type": "Person", name: "Milan Soni" }
+          }
+        ]),
       }],
     };
   },
@@ -77,7 +95,7 @@ function CaseStudy() {
 
           {p.heroImage && (
             <div className="mt-16 w-full rounded-3xl border border-hairline bg-black/40 p-2 shadow-2xl backdrop-blur-sm overflow-hidden">
-              <img src={p.heroImage} alt={`${p.name} UI`} className="w-full rounded-2xl object-cover border border-hairline/50" />
+              <img src={p.heroImage} alt={`${p.name} UI`} loading="eager" fetchPriority="high" className="w-full rounded-2xl object-cover border border-hairline/50" />
             </div>
           )}
         </Reveal>

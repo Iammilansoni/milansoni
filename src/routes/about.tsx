@@ -6,13 +6,33 @@ import { SITE, EXPERIENCE } from "@/lib/site";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: `About — ${SITE.name}` },
-      { name: "description", content: "The story behind Milan Soni — Computer Science graduate, SIH 2023 National Winner, and AI engineer building production systems." },
-      { property: "og:title", content: `About — ${SITE.name}` },
-      { property: "og:description", content: "Story behind Milan Soni — SIH winner and AI engineer." },
-      { property: "og:url", content: "/about" },
+      { title: "About Milan Soni | Software Engineer & Researcher" },
+      { name: "description", content: "Learn about Milan Soni's background, education at Engineering College Bikaner, and journey as a GenAI engineer and full-stack developer." },
+      { property: "og:title", content: "About Milan Soni | Software Engineer & Researcher" },
+      { property: "og:description", content: "Learn about Milan Soni's background, education at Engineering College Bikaner, and journey as a GenAI engineer and full-stack developer." },
+      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/about" },
     ],
-    links: [{ rel: "canonical", href: "/about" }],
+    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/about" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ProfilePage",
+          dateCreated: "2024-01-01T00:00:00Z",
+          dateModified: new Date().toISOString(),
+          mainEntity: {
+            "@type": "Person",
+            name: SITE.name,
+            jobTitle: "Software Engineer & GenAI Engineer",
+            alumniOf: {
+              "@type": "CollegeOrUniversity",
+              name: "Engineering College Bikaner"
+            }
+          }
+        }),
+      }
+    ]
   }),
   component: About,
 });

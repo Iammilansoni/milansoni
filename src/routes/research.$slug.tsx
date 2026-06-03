@@ -8,6 +8,12 @@ import { ArrowLeft, Loader2 } from "lucide-react";
 import { Reveal } from "@/components/reveal";
 
 export const Route = createFileRoute("/research/$slug")({
+  head: () => ({
+    meta: [
+      { title: "Research Article | Milan Soni" },
+      { name: "description", content: "In-depth research and technical insights by Milan Soni on AI and software engineering." },
+    ],
+  }),
   component: BlogPost,
 });
 

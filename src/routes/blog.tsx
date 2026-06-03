@@ -9,13 +9,13 @@ import { SITE } from "@/lib/site";
 export const Route = createRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Writing — Milan Soni" },
-      { name: "description", content: "Essays and notes from Milan Soni on AI engineering, full-stack development, and building production systems." },
-      { property: "og:title", content: "Writing — Milan Soni" },
-      { property: "og:description", content: "Essays on AI and engineering." },
-      { property: "og:url", content: "/blog" },
+      { title: "Writing | AI & Software Engineering Blog | Milan Soni" },
+      { name: "description", content: "Read essays and notes from Milan Soni on AI engineering, RAG, full-stack development, and building production-ready systems." },
+      { property: "og:title", content: "Writing | AI & Software Engineering Blog | Milan Soni" },
+      { property: "og:description", content: "Read essays and notes from Milan Soni on AI engineering, RAG, full-stack development, and building production-ready systems." },
+      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/blog" },
     ],
-    links: [{ rel: "canonical", href: "/blog" }],
+    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/blog" }],
   }),
   component: BlogPage,
 });

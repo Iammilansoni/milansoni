@@ -116,16 +116,35 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     scripts: [
       {
         type: "application/ld+json",
-        children: JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          name: SITE.name,
-          jobTitle: "Software Engineer & GenAI Engineer",
-          email: SITE.email,
-          address: { "@type": "PostalAddress", addressLocality: "Churu", addressRegion: "Rajasthan", addressCountry: "IN" },
-          sameAs: [SITE.socials.github, SITE.socials.linkedin, SITE.socials.medium],
-          knowsAbout: ["Full Stack Development", "Generative AI", "RAG", "Agentic AI", "LangChain", "FastAPI", "Next.js"],
-        }),
+        children: JSON.stringify([
+          {
+            "@context": "https://schema.org",
+            "@type": "Person",
+            name: SITE.name,
+            jobTitle: "Software Engineer & GenAI Engineer",
+            email: SITE.email,
+            url: "https://milan-soni-portfolio.vercel.app/",
+            alumniOf: {
+              "@type": "CollegeOrUniversity",
+              name: "Engineering College Bikaner"
+            },
+            award: "Smart India Hackathon 2023 National Winner",
+            address: { "@type": "PostalAddress", addressLocality: "Churu", addressRegion: "Rajasthan", addressCountry: "IN" },
+            sameAs: [SITE.socials.github, SITE.socials.linkedin, SITE.socials.medium, SITE.socials.instagram],
+            knowsAbout: ["Full Stack Development", "Generative AI", "RAG", "Agentic AI", "LangChain", "FastAPI", "React", "TypeScript", "Python"],
+          },
+          {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: SITE.title,
+            url: "https://milan-soni-portfolio.vercel.app/",
+            description: SITE.description,
+            author: {
+              "@type": "Person",
+              name: SITE.name
+            }
+          }
+        ]),
       },
     ],
   }),

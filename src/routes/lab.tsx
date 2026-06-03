@@ -5,13 +5,13 @@ import { Reveal } from "@/components/reveal";
 export const Route = createFileRoute("/lab")({
   head: () => ({
     meta: [
-      { title: "AI Lab — Milan Soni" },
-      { name: "description", content: "AI Experiments & Labs — RAG, Agentic AI, LLM apps, prompt engineering, automation." },
-      { property: "og:title", content: "AI Lab — Milan Soni" },
-      { property: "og:description", content: "Applied AI experiments and patterns." },
-      { property: "og:url", content: "/lab" },
+      { title: "AI Lab | RAG & Agentic AI Experiments | Milan Soni" },
+      { name: "description", content: "Discover Milan Soni's AI Lab: an evolving collection of applied Generative AI patterns, RAG systems, and AI agent experiments." },
+      { property: "og:title", content: "AI Lab | RAG & Agentic AI Experiments | Milan Soni" },
+      { property: "og:description", content: "Discover Milan Soni's AI Lab: an evolving collection of applied Generative AI patterns, RAG systems, and AI agent experiments." },
+      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/lab" },
     ],
-    links: [{ rel: "canonical", href: "/lab" }],
+    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/lab" }],
   }),
   component: LabPage,
 });

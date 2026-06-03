@@ -17,4 +17,16 @@ export default defineConfig({
     tsConfigPaths(),
     viteReact(),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-router': ['@tanstack/react-router', '@tanstack/react-start'],
+          'vendor-motion': ['framer-motion'],
+          'vendor-three': ['three', '@react-three/fiber', '@react-three/drei'],
+        },
+      },
+    },
+  },
 });

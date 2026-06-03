@@ -6,13 +6,13 @@ import { PROJECTS } from "@/lib/site";
 export const Route = createFileRoute("/work/")({
   head: () => ({
     meta: [
-      { title: "Work — Milan Soni" },
-      { name: "description", content: "Selected case studies — MiningNiti, NLPForge Tester, FinSageAI360 and more." },
-      { property: "og:title", content: "Work — Milan Soni" },
-      { property: "og:description", content: "Case studies of production-grade AI and full-stack systems." },
-      { property: "og:url", content: "/work" },
+      { title: "AI & Full Stack Projects | Milan Soni" },
+      { name: "description", content: "Explore enterprise-grade AI platforms, including MiningNiti (SIH 2023 Winner), NLPForge, and SmartLearnX built by Milan Soni." },
+      { property: "og:title", content: "AI & Full Stack Projects | Milan Soni" },
+      { property: "og:description", content: "Explore enterprise-grade AI platforms, including MiningNiti (SIH 2023 Winner), NLPForge, and SmartLearnX built by Milan Soni." },
+      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/work" },
     ],
-    links: [{ rel: "canonical", href: "/work" }],
+    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/work" }],
   }),
   component: WorkIndex,
 });

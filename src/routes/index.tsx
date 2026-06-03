@@ -15,11 +15,11 @@ const CTASection = lazy(() => import("@/components/sections/cta").then(m => ({ d
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: SITE.title },
-      { name: "description", content: SITE.description },
-      { property: "og:title", content: SITE.title },
-      { property: "og:description", content: SITE.description },
-      { property: "og:url", content: "/" },
+      { title: "Milan Soni | AI Engineer & Full Stack Developer | SIH 2023 Winner" },
+      { name: "description", content: "Portfolio of Milan Soni, a Full Stack + AI Developer specializing in production RAG pipelines, agentic AI workflows, and scalable enterprise applications." },
+      { property: "og:title", content: "Milan Soni | AI Engineer & Full Stack Developer | SIH 2023 Winner" },
+      { property: "og:description", content: "Portfolio of Milan Soni, a Full Stack + AI Developer specializing in production RAG pipelines, agentic AI workflows, and scalable enterprise applications." },
+      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),
