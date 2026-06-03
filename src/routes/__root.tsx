@@ -21,6 +21,12 @@ import { AmbientBlobs } from "@/components/ambient-blobs";
 import { SITE } from "@/lib/site";
 
 function NotFoundComponent() {
+  useEffect(() => {
+    // 404 analytics — replace with your analytics provider (e.g. Plausible, GA4)
+    console.warn("[404]", window.location.pathname);
+    // Example: window.plausible?.("404", { props: { path: window.location.pathname } });
+  }, []);
+
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4">
       <div className="aurora-bg" />
@@ -76,18 +82,29 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:title", content: SITE.title },
       { property: "og:description", content: SITE.description },
+      { property: "og:image", content: "https://milan-soni-portfolio.vercel.app/og-image.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: SITE.title },
       { name: "twitter:description", content: SITE.description },
+      { name: "twitter:image", content: "https://milan-soni-portfolio.vercel.app/og-image.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
+      { rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
       },
+      { rel: "icon", href: "/favicon.ico", sizes: "any" },
+      { rel: "icon", href: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+      { rel: "icon", href: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.png", sizes: "180x180" },
+      { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [
       {
@@ -118,6 +135,13 @@ function RootShell({ children }: { children: ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        {/* Skip to main content — keyboard/screen reader accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[99999] focus:rounded-full focus:bg-foreground focus:text-background focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:outline-none focus:ring-2 focus:ring-aurora-1"
+        >
+          Skip to main content
+        </a>
         {children}
         <Scripts />
       </body>
@@ -158,7 +182,7 @@ function RootComponent() {
           <ScrollProgress />
           <Nav onOpenCommand={() => setCmdOpen(true)} />
           <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
-          <main className="pt-24">
+          <main id="main-content" className="pt-24">
             <AnimatePresence mode="wait">
               <motion.div
                 key={router.state.location.pathname}

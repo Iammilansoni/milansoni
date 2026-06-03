@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Block crawling of API or private paths
+Disallow: /api/
+
+Sitemap: https://milan-soni-portfolio.vercel.app/sitemap.xml

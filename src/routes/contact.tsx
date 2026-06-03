@@ -89,11 +89,15 @@ function ContactPage() {
                 />
               </div>
               <button
+                type="submit"
                 disabled={pending}
                 className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background hover:opacity-90 transition disabled:opacity-50"
               >
-                {pending ? "Sending…" : "Send message →"}
+                {pending ? "Opening email client…" : "Send message →"}
               </button>
+              <p className="text-[11px] text-muted-foreground font-mono">
+                Opens your email client · I typically reply within 24 hours
+              </p>
             </form>
           </Reveal>
 

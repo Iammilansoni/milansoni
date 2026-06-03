@@ -1,0 +1,2 @@
+Replace public/resume.pdf with Milan Soni's actual resume PDF.
+The Hero and CTA sections link to /resume.pdf.

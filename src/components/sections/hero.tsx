@@ -125,58 +125,56 @@ export function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 1, duration: 1 }}
-        className="absolute bottom-8 md:bottom-24 z-30 flex flex-wrap items-center justify-center gap-6"
+        className="relative z-30 mt-10 flex flex-wrap items-center justify-center gap-4"
       >
-        <Magnetic strength={20}>
-          <Link
-            to="/work"
-            className="group inline-flex items-center gap-3 rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition hover:bg-aurora-1 hover:text-white"
-          >
-            <TextRoll text="Explore my work" />
-            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </Magnetic>
-        <Magnetic strength={20}>
-          <a
-            href="/resume.pdf"
-            className="inline-flex items-center gap-3 rounded-full glass px-8 py-4 text-sm font-medium hover:bg-secondary transition border border-hairline"
-          >
-            <Download className="h-4 w-4" /> <TextRoll text="Résumé" />
-          </a>
-        </Magnetic>
+          <Magnetic strength={20}>
+            <Link
+              to="/work"
+              className="group inline-flex items-center gap-3 rounded-full bg-foreground px-6 py-3 md:px-8 md:py-4 text-sm font-medium text-background transition hover:bg-aurora-1 hover:text-white"
+            >
+              <TextRoll text="Explore my work" />
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </Magnetic>
+          <Magnetic strength={20}>
+            <a
+              href="/resume.pdf"
+              className="inline-flex items-center gap-3 rounded-full glass px-6 py-3 md:px-8 md:py-4 text-sm font-medium hover:bg-secondary transition border border-hairline"
+            >
+              <Download className="h-4 w-4" /> <TextRoll text="Résumé" />
+            </a>
+          </Magnetic>
       </motion.div>
 
-      {/* Stats Bar */}
+      {/* Stats Bar — visible on ALL screen sizes */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.2, duration: 1 }}
-        className="absolute bottom-6 left-0 right-0 z-30 hidden md:flex items-center justify-between px-12 pointer-events-none"
+        className="relative z-30 mt-6 mb-6 flex flex-wrap items-center justify-center gap-6 md:gap-12 px-6 pointer-events-none"
       >
-        <div className="flex gap-12 pointer-events-auto">
-          <a href="https://www.sih.gov.in/sih2023-grand-finale-result" target="_blank" rel="noreferrer" className="flex flex-col group hover:opacity-80 transition-opacity">
-            <span className="font-display text-2xl text-aurora-1 group-hover:text-aurora-2 transition-colors flex items-center gap-2">
-              Top 1% <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">SIH 2023 National Winner</span>
-          </a>
-          <div className="w-px h-10 bg-hairline" />
-          <a href="https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing" target="_blank" rel="noreferrer" className="flex flex-col group hover:opacity-80 transition-opacity">
-            <span className="font-display text-2xl text-foreground group-hover:text-aurora-2 transition-colors flex items-center gap-2">
-              PICET-26 <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-            </span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Scopus Indexed Paper</span>
-          </a>
-          <div className="w-px h-10 bg-hairline" />
-          <div className="flex flex-col">
-            <span className="font-display text-2xl text-foreground">8.10</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">CGPA · B.Tech CSE</span>
-          </div>
-          <div className="w-px h-10 bg-hairline" />
-          <div className="flex flex-col">
-            <span className="font-display text-2xl text-foreground">3+</span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-muted-foreground">Enterprise Internships</span>
-          </div>
+        <a href="https://www.sih.gov.in/sih2023-grand-finale-result" target="_blank" rel="noreferrer" className="flex flex-col items-center pointer-events-auto group hover:opacity-80 transition-opacity">
+          <span className="font-display text-xl md:text-2xl text-aurora-1 group-hover:text-aurora-2 transition-colors flex items-center gap-1">
+            Top 1% <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">SIH 2023 National Winner</span>
+        </a>
+        <div className="w-px h-8 md:h-10 bg-hairline" />
+        <a href="https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing" target="_blank" rel="noreferrer" className="flex flex-col items-center pointer-events-auto group hover:opacity-80 transition-opacity">
+          <span className="font-display text-xl md:text-2xl text-foreground group-hover:text-aurora-2 transition-colors flex items-center gap-1">
+            PICET-26 <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">Scopus Indexed Paper</span>
+        </a>
+        <div className="w-px h-8 md:h-10 bg-hairline" />
+        <div className="flex flex-col items-center">
+          <span className="font-display text-xl md:text-2xl text-foreground">8.10</span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">CGPA · B.Tech CSE</span>
+        </div>
+        <div className="w-px h-8 md:h-10 bg-hairline" />
+        <div className="flex flex-col items-center">
+          <span className="font-display text-xl md:text-2xl text-foreground">3+</span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">Enterprise Internships</span>
         </div>
       </motion.div>
     </motion.section>
