@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, memo } from "react";
 import { Reveal } from "@/components/reveal";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Trophy, BookOpen, ArrowUpRight, Cpu, Globe, Database, Brain, Layers } from "lucide-react";
@@ -66,7 +66,7 @@ const PROOF_POINTS = [
 
 // ─── Component ────────────────────────────────────────────────────────────────
 
-export function BentoGrid() {
+export const BentoGrid = memo(function BentoGrid() {
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -225,4 +225,4 @@ export function BentoGrid() {
       </div>
     </section>
   );
-}
+});

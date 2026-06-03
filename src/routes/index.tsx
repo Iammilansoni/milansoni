@@ -1,13 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { lazy, Suspense } from "react";
 import { Hero } from "@/components/sections/hero";
-import { FeaturedProjects } from "@/components/sections/featured-projects";
-import { ExperienceTimeline } from "@/components/sections/experience-timeline";
-import { Education } from "@/components/sections/education";
-import { TechMarquee } from "@/components/sections/tech-marquee";
-import { BentoGrid } from "@/components/sections/bento-grid";
-import { Testimonials } from "@/components/sections/testimonials";
-import { CTASection } from "@/components/sections/cta";
 import { SITE } from "@/lib/site";
+
+// Lazy-load below-fold sections to optimize LCP and TTI
+const BentoGrid = lazy(() => import("@/components/sections/bento-grid").then(m => ({ default: m.BentoGrid })));
+const FeaturedProjects = lazy(() => import("@/components/sections/featured-projects").then(m => ({ default: m.FeaturedProjects })));
+const ExperienceTimeline = lazy(() => import("@/components/sections/experience-timeline").then(m => ({ default: m.ExperienceTimeline })));
+const Education = lazy(() => import("@/components/sections/education").then(m => ({ default: m.Education })));
+const TechMarquee = lazy(() => import("@/components/sections/tech-marquee").then(m => ({ default: m.TechMarquee })));
+const Testimonials = lazy(() => import("@/components/sections/testimonials").then(m => ({ default: m.Testimonials })));
+const CTASection = lazy(() => import("@/components/sections/cta").then(m => ({ default: m.CTASection })));
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -27,13 +30,15 @@ function Index() {
   return (
     <>
       <Hero />
-      <BentoGrid />
-      <FeaturedProjects />
-      <ExperienceTimeline />
-      <Education />
-      <TechMarquee />
-      <Testimonials />
-      <CTASection />
+      <Suspense fallback={<div className="h-96" />}>
+        <BentoGrid />
+        <FeaturedProjects />
+        <ExperienceTimeline />
+        <Education />
+        <TechMarquee />
+        <Testimonials />
+        <CTASection />
+      </Suspense>
     </>
   );
 }

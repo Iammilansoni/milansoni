@@ -1,12 +1,16 @@
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, memo, lazy, Suspense } from "react";
 import { Link } from "@tanstack/react-router";
 import { motion, useScroll, useTransform, useMotionTemplate, useMotionValue, useSpring } from "framer-motion";
-import { ArrowRight, ArrowUpRight, Download, FileText } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Download } from "lucide-react";
 import { Magnetic } from "@/components/ui/magnetic";
 import { TextRoll } from "@/components/ui/text-roll";
-import { WebGLBackground } from "@/components/webgl-background";
 
-export function Hero() {
+// Lazy-load the heavy Three.js background to unblock first paint
+const WebGLBackground = lazy(() => 
+  import("@/components/webgl-background").then(m => ({ default: m.WebGLBackground }))
+);
+
+export const Hero = memo(function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -32,11 +36,28 @@ export function Hero() {
 
   const maskImage = useMotionTemplate`radial-gradient(${smoothSize}px circle at ${smoothX}px ${smoothY}px, black 0%, transparent 100%)`;
 
+  const rafId = useRef<number | null>(null);
+
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (rafId.current !== null) return;
     const { left, top } = e.currentTarget.getBoundingClientRect();
-    mouseX.set(e.clientX - left);
-    mouseY.set(e.clientY - top);
+    const clientX = e.clientX;
+    const clientY = e.clientY;
+    
+    rafId.current = requestAnimationFrame(() => {
+      mouseX.set(clientX - left);
+      mouseY.set(clientY - top);
+      rafId.current = null;
+    });
   };
+
+  useEffect(() => {
+    return () => {
+      if (rafId.current !== null) {
+        cancelAnimationFrame(rafId.current);
+      }
+    };
+  }, []);
 
   return (
     <motion.section
@@ -48,7 +69,9 @@ export function Hero() {
       className="relative min-h-[calc(85dvh-6rem)] md:min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center overflow-hidden bg-background cursor-default"
     >
       <div className="absolute inset-0 noise opacity-20 z-0 pointer-events-none" />
-      <WebGLBackground />
+      <Suspense fallback={null}>
+        <WebGLBackground />
+      </Suspense>
 
       {/* Main Base Text (Dark/Muted) */}
       <motion.div style={{ y }} className="relative z-10 w-full flex flex-col items-center justify-center px-4">
@@ -179,4 +202,4 @@ export function Hero() {
       </motion.div>
     </motion.section>
   );
-}
+});

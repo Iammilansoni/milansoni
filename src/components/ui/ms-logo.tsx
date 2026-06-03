@@ -18,6 +18,8 @@ export function MSLogo({ className, size = 36 }: { className?: string; size?: nu
         alt="MS monogram"
         width={size}
         height={size}
+        fetchPriority="high"
+        loading="eager"
         className="object-contain w-full h-full"
         draggable={false}
       />

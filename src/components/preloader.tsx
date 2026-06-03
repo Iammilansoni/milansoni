@@ -6,11 +6,19 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
-    // Prevent scrolling while loading
+    // Skip entirely for reduced motion users
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    
+    if (prefersReduced) {
+      setIsVisible(false);
+      onComplete();
+      return;
+    }
+
     document.body.style.overflow = "hidden";
 
     let interval: NodeJS.Timeout;
-    // Simulate loading progress
+    // Fast loading simulation (max ~800ms)
     interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
@@ -18,21 +26,22 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           setTimeout(() => {
             setIsVisible(false);
             document.body.style.overflow = "auto";
-            setTimeout(onComplete, 1000); // Wait for exit animation
-          }, 400); // Brief pause at 100%
+            setTimeout(onComplete, 400); // Wait for exit animation
+          }, 300); // Brief pause at 100%
           return 100;
         }
-        // Random increments for a more organic feel
-        const inc = Math.floor(Math.random() * 15) + 5;
+        const inc = Math.floor(Math.random() * 20) + 15;
         return Math.min(prev + inc, 100);
       });
-    }, 150);
+    }, 60);
 
     return () => {
       clearInterval(interval);
       document.body.style.overflow = "auto";
     };
   }, [onComplete]);
+
+  if (!isVisible && progress === 0) return null;
 
   return (
     <AnimatePresence>
