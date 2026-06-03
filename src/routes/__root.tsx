@@ -54,6 +54,10 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
       <div className="relative max-w-md text-center">
         <h1 className="font-display text-3xl">This page didn't load</h1>
         <p className="mt-3 text-sm text-muted-foreground">Something went wrong on our end.</p>
+        <div className="mt-4 text-left p-4 bg-red-950/30 text-red-400 text-xs font-mono rounded-xl overflow-auto">
+          <strong>{error.message}</strong>
+          <pre className="mt-2 whitespace-pre-wrap">{error.stack}</pre>
+        </div>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => { router.invalidate(); reset(); }}
