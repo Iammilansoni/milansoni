@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { ArrowUpRight, Github, Linkedin, Mail, Instagram, BookOpen, MapPin } from "lucide-react";
 import { SITE, NAV } from "@/lib/site";
 import { TextRoll } from "@/components/ui/text-roll";
+import { MSLogo } from "@/components/ui/ms-logo";
 
 const SOCIALS = [
   { label: "GitHub", href: SITE.socials.github, icon: Github },
@@ -70,8 +71,8 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-12 gap-12 md:gap-8 mb-20">
           {/* Brand - takes 4 columns */}
           <div className="col-span-2 md:col-span-12 lg:col-span-5 lg:pr-12">
-            <Link to="/" className="group inline-flex items-center gap-3 mb-6">
-              <span className="inline-block h-8 w-8 rounded-xl bg-linear-to-br from-aurora-1 via-aurora-2 to-aurora-3 group-hover:scale-110 transition-transform shadow-[0_0_15px_--theme(--color-aurora-1/40)]" />
+            <Link to="/" className="group inline-flex items-center gap-3 mb-6" aria-label="Milan Soni — Home">
+              <MSLogo size={40} className="group-hover:scale-110 transition-transform" />
               <span className="font-display text-2xl tracking-tight">{SITE.name}</span>
             </Link>
             <p className="text-muted-foreground text-sm leading-relaxed mb-8 max-w-md">

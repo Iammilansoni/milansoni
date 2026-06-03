@@ -7,6 +7,7 @@ import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { Volume2, VolumeX, Menu } from "lucide-react";
 import { useSoundSystem } from "@/lib/sound";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
+import { MSLogo } from "@/components/ui/ms-logo";
 
 export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
   const [scrolled, setScrolled] = useState(false);
@@ -44,9 +45,9 @@ export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
           }`}
         >
           <Magnetic strength={40}>
-            <Link to="/" className="flex items-center gap-2 pl-2 pr-3">
-              <span className="inline-block h-6 w-6 rounded-md bg-gradient-to-br from-aurora-1 via-aurora-2 to-aurora-3" />
-              <span className="font-display text-lg leading-none">{SITE.name}</span>
+            <Link to="/" className="flex items-center gap-2.5 pl-1 pr-3" aria-label="Milan Soni — Home">
+              <MSLogo size={34} />
+              <span className="font-display text-lg leading-none hidden sm:block">{SITE.name}</span>
             </Link>
           </Magnetic>
 
