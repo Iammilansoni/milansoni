@@ -29,27 +29,46 @@ export const Route = createFileRoute("/contact")({
 function ContactPage() {
   const [pending, setPending] = useState(false);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     const parsed = Schema.safeParse({
       name: fd.get("name"),
       email: fd.get("email"),
       message: fd.get("message"),
     });
+
     if (!parsed.success) {
       toast.error(parsed.error.issues[0]?.message ?? "Invalid input");
       return;
     }
+
     setPending(true);
-    // Open user's mail client as a no-backend fallback.
-    const body = encodeURIComponent(`From: ${parsed.data.name} <${parsed.data.email}>\n\n${parsed.data.message}`);
-    const subject = encodeURIComponent(`Hello from ${parsed.data.name}`);
-    window.location.href = `mailto:${SITE.email}?subject=${subject}&body=${body}`;
-    setTimeout(() => {
+
+    try {
+      // Add Web3Forms required access key
+      fd.append("access_key", "afc8b487-79a3-4a1b-9c9d-45a13d613f63");
+      fd.append("subject", `New Portfolio Contact from ${parsed.data.name}`);
+      
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: fd
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        toast.success("Message sent successfully! I'll get back to you soon.");
+        form.reset(); // Clear the form fields
+      } else {
+        toast.error("Something went wrong. Please try again or reach out on LinkedIn.");
+      }
+    } catch (error) {
+      toast.error("Network error. Please try again or reach out on LinkedIn.");
+    } finally {
       setPending(false);
-      toast.success("Opening your email client — looking forward to it!");
-    }, 400);
+    }
   };
 
   const channels = [
@@ -93,10 +112,10 @@ function ContactPage() {
                 disabled={pending}
                 className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background hover:opacity-90 transition disabled:opacity-50"
               >
-                {pending ? "Opening email client…" : "Send message →"}
+                {pending ? "Sending message..." : "Send message →"}
               </button>
               <p className="text-[11px] text-muted-foreground font-mono">
-                Opens your email client · I typically reply within 24 hours
+                Securely delivered to my inbox · I typically reply within 24 hours
               </p>
             </form>
           </Reveal>
