@@ -45,7 +45,7 @@ export function Hero() {
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="relative min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center overflow-hidden bg-background cursor-default"
+      className="relative min-h-[calc(85dvh-6rem)] md:min-h-[calc(100vh-6rem)] flex flex-col items-center justify-center overflow-hidden bg-background cursor-default"
     >
       <div className="absolute inset-0 noise opacity-20 z-0 pointer-events-none" />
       <WebGLBackground />
