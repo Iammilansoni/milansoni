@@ -20,7 +20,7 @@ export const Route = createFileRoute("/about")({
           "@context": "https://schema.org",
           "@type": "ProfilePage",
           dateCreated: "2024-01-01T00:00:00Z",
-          dateModified: new Date().toISOString(),
+          dateModified: "2024-05-01T00:00:00Z",
           mainEntity: {
             "@type": "Person",
             name: SITE.name,
