@@ -7,10 +7,7 @@ import tsConfigPaths from "vite-tsconfig-paths";
 export default defineConfig({
   plugins: [
     tanstackStart({
-      server: { 
-        entry: "server",
-        preset: "vercel"
-      }
+      server: { entry: "server" }
     }),
     tailwindcss(),
     tsConfigPaths(),
