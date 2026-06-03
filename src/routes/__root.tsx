@@ -126,7 +126,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             url: "https://milan-soni-portfolio.vercel.app/",
             alumniOf: {
               "@type": "CollegeOrUniversity",
-              name: "Engineering College Bikaner"
+              name: "Global Institute of Technology"
             },
             award: "Smart India Hackathon 2023 National Winner",
             address: { "@type": "PostalAddress", addressLocality: "Churu", addressRegion: "Rajasthan", addressCountry: "IN" },

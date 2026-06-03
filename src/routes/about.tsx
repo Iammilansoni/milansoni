@@ -7,9 +7,9 @@ export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
       { title: "About Milan Soni | Software Engineer & Researcher" },
-      { name: "description", content: "Learn about Milan Soni's background, education at Engineering College Bikaner, and journey as a GenAI engineer and full-stack developer." },
+      { name: "description", content: "Learn about Milan Soni's background, education at Global Institute of Technology, and journey as a GenAI engineer and full-stack developer." },
       { property: "og:title", content: "About Milan Soni | Software Engineer & Researcher" },
-      { property: "og:description", content: "Learn about Milan Soni's background, education at Engineering College Bikaner, and journey as a GenAI engineer and full-stack developer." },
+      { property: "og:description", content: "Learn about Milan Soni's background, education at Global Institute of Technology, and journey as a GenAI engineer and full-stack developer." },
       { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/about" },
     ],
     links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/about" }],
@@ -27,7 +27,7 @@ export const Route = createFileRoute("/about")({
             jobTitle: "Software Engineer & GenAI Engineer",
             alumniOf: {
               "@type": "CollegeOrUniversity",
-              name: "Engineering College Bikaner"
+              name: "Global Institute of Technology"
             }
           }
         }),
