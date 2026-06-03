@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { z } from "zod";
-import { Github, Linkedin, Mail, PenLine } from "lucide-react";
+import { Github, Linkedin, Mail, PenLine, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Reveal } from "@/components/reveal";
 import { SITE } from "@/lib/site";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Schema = z.object({
   name: z.string().trim().min(1, "Required").max(80),
@@ -28,6 +29,7 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const [pending, setPending] = useState(false);
+  const [isSent, setIsSent] = useState(false);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,7 +49,6 @@ function ContactPage() {
     setPending(true);
 
     try {
-      // Add Web3Forms required access key
       fd.append("access_key", "afc8b487-79a3-4a1b-9c9d-45a13d613f63");
       fd.append("subject", `New Portfolio Contact from ${parsed.data.name}`);
       
@@ -59,8 +60,11 @@ function ContactPage() {
       const data = await response.json();
       
       if (data.success) {
-        toast.success("Message sent successfully! I'll get back to you soon.");
+        setIsSent(true);
         form.reset(); // Clear the form fields
+        
+        // Reset the success state after 3 seconds
+        setTimeout(() => setIsSent(false), 3000);
       } else {
         toast.error("Something went wrong. Please try again or reach out on LinkedIn.");
       }
@@ -107,13 +111,49 @@ function ContactPage() {
                   placeholder="Tell me about the role, the company, or the problem…"
                 />
               </div>
+              
               <button
                 type="submit"
-                disabled={pending}
-                className="inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background hover:opacity-90 transition disabled:opacity-50"
+                disabled={pending || isSent}
+                className={`relative overflow-hidden inline-flex items-center justify-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-all duration-300 disabled:opacity-50 min-w-[180px] ${
+                  isSent 
+                    ? "bg-green-500/20 text-green-400 border border-green-500/30" 
+                    : "bg-foreground text-background hover:opacity-90"
+                }`}
               >
-                {pending ? "Sending message..." : "Send message →"}
+                <AnimatePresence mode="wait">
+                  {isSent ? (
+                    <motion.div
+                      key="sent"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="flex items-center gap-2"
+                    >
+                      Message Sent! <Check className="h-4 w-4" />
+                    </motion.div>
+                  ) : pending ? (
+                    <motion.div
+                      key="sending"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                    >
+                      Sending...
+                    </motion.div>
+                  ) : (
+                    <motion.div
+                      key="idle"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                    >
+                      Send message →
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </button>
+
               <p className="text-[11px] text-muted-foreground font-mono">
                 Securely delivered to my inbox · I typically reply within 24 hours
               </p>
