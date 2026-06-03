@@ -4,8 +4,9 @@ import { NAV, SITE } from "@/lib/site";
 import { Magnetic } from "@/components/ui/magnetic";
 import { TextRoll } from "@/components/ui/text-roll";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Menu } from "lucide-react";
 import { useSoundSystem } from "@/lib/sound";
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 
 export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
   const [scrolled, setScrolled] = useState(false);
@@ -90,11 +91,59 @@ export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
             <Magnetic strength={30}>
               <Link
                 to="/contact"
-                className="block text-sm rounded-full bg-foreground text-background px-4 py-1.5 hover:opacity-90 transition"
+                className="hidden md:block text-sm rounded-full bg-foreground text-background px-4 py-1.5 hover:opacity-90 transition"
               >
                 Hire me
               </Link>
             </Magnetic>
+
+            {/* Mobile Nav */}
+            <Sheet>
+              <SheetTrigger asChild>
+                <button
+                  className="md:hidden h-9 w-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground transition-colors ml-1"
+                  aria-label="Toggle Menu"
+                >
+                  <Menu className="h-5 w-5" />
+                </button>
+              </SheetTrigger>
+              <SheetContent side="right" className="glass border-hairline sm:max-w-xs flex flex-col justify-between">
+                <div>
+                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                  <SheetDescription className="sr-only">Access links to different pages</SheetDescription>
+                  <nav className="mt-12 flex flex-col gap-2">
+                    {NAV.map((item) => {
+                      const active = location.pathname === item.to ||
+                        (item.to !== "/" && location.pathname.startsWith(item.to));
+                      return (
+                        <SheetClose asChild key={item.to}>
+                          <Link
+                            to={item.to}
+                            className={`text-xl font-display px-4 py-3 rounded-2xl transition-all ${
+                              active
+                                ? "bg-secondary text-foreground"
+                                : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                            }`}
+                          >
+                            {item.label}
+                          </Link>
+                        </SheetClose>
+                      );
+                    })}
+                  </nav>
+                </div>
+                <div className="pb-8">
+                  <SheetClose asChild>
+                    <Link
+                      to="/contact"
+                      className="block w-full text-center text-sm rounded-full bg-foreground text-background px-6 py-4 hover:opacity-90 transition font-medium"
+                    >
+                      Hire me
+                    </Link>
+                  </SheetClose>
+                </div>
+              </SheetContent>
+            </Sheet>
           </div>
         </div>
       </div>
