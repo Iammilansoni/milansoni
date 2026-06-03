@@ -44,7 +44,7 @@ function About() {
       <div className="relative mx-auto max-w-3xl px-6 py-24">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">About</p>
-          <h1 className="mt-4 font-display text-5xl md:text-7xl leading-[1] tracking-tight">
+          <h1 className="mt-4 font-display text-5xl md:text-7xl leading-none tracking-tight">
             I build software the way <span className="text-aurora">good companies do.</span>
           </h1>
         </Reveal>

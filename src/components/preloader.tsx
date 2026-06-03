@@ -51,7 +51,7 @@ export function Preloader({ onComplete }: { onComplete: () => void }) {
           initial={{ opacity: 1 }}
           exit={{ opacity: 0, y: "-100%" }}
           transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
-          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-background text-foreground"
+          className="fixed inset-0 z-9999 flex flex-col items-center justify-center bg-background text-foreground"
         >
           <div className="absolute inset-0 noise opacity-20 pointer-events-none" />
           
