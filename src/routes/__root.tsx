@@ -91,6 +91,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:title", content: SITE.title },
       { name: "twitter:description", content: SITE.description },
       { name: "twitter:image", content: "https://milan-soni-portfolio.vercel.app/og-image.png" },
+      { name: "google-site-verification", content: "L3TBX1KozzyAAwqXHcrELsfYueIeeoL2SWV13-pXI4Y" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
