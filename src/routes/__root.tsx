@@ -136,35 +136,43 @@ function RootComponent() {
       <SoundProvider>
         {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
         
-        {preloaderDone && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-          >
-            <div className="fixed inset-0 z-50 pointer-events-none noise" aria-hidden="true" />
-            {/* Global ambient drifting blobs — visible on every page */}
-            <AmbientBlobs className="fixed z-1" opacity={0.6} />
-            <CustomCursor />
-            <ScrollProgress />
-            <Nav onOpenCommand={() => setCmdOpen(true)} />
-            <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
-            <main className="pt-24">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={router.state.location.pathname}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <Outlet />
-                </motion.div>
-              </AnimatePresence>
-            </main>
-            <Footer />
-          </motion.div>
-        )}
+        {/* 
+          Always render the main content so that it is included in the SSR HTML payload.
+          This allows AI bots and search engine crawlers to read the content.
+          We visually hide it until the preloader finishes using opacity and pointer-events. 
+        */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: preloaderDone ? 1 : 0 }}
+          transition={{ duration: 1 }}
+          style={{
+            pointerEvents: preloaderDone ? "auto" : "none",
+            height: preloaderDone ? "auto" : "100vh",
+            overflow: preloaderDone ? "visible" : "hidden"
+          }}
+        >
+          <div className="fixed inset-0 z-50 pointer-events-none noise" aria-hidden="true" />
+          {/* Global ambient drifting blobs — visible on every page */}
+          <AmbientBlobs className="fixed z-1" opacity={0.6} />
+          <CustomCursor />
+          <ScrollProgress />
+          <Nav onOpenCommand={() => setCmdOpen(true)} />
+          <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
+          <main className="pt-24">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={router.state.location.pathname}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.3 }}
+              >
+                <Outlet />
+              </motion.div>
+            </AnimatePresence>
+          </main>
+          <Footer />
+        </motion.div>
       </SoundProvider>
     </QueryClientProvider>
   );
