@@ -20,7 +20,7 @@ export const Route = createFileRoute("/")({
       { name: "description", content: "Portfolio of Milan Soni, a Full Stack + AI Developer specializing in production RAG pipelines, agentic AI workflows, and scalable enterprise applications." },
       { property: "og:title", content: "Milan Soni | AI Engineer & Full Stack Developer | SIH 2023 Winner" },
       { property: "og:description", content: "Portfolio of Milan Soni, a Full Stack + AI Developer specializing in production RAG pipelines, agentic AI workflows, and scalable enterprise applications." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/" },
+      { property: "og:url", content: "https://milansoni.vercel.app/" },
     ],
     links: [{ rel: "canonical", href: "/" }],
   }),

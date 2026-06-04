@@ -20,9 +20,9 @@ export const Route = createFileRoute("/contact")({
       { name: "description", content: "Get in touch with Milan Soni. I'm actively open to Software Engineering, Full Stack, and GenAI roles. Let's build production-grade systems." },
       { property: "og:title", content: "Contact Milan Soni | Hire GenAI & Full Stack Engineer" },
       { property: "og:description", content: "Get in touch with Milan Soni. I'm actively open to Software Engineering, Full Stack, and GenAI roles. Let's build production-grade systems." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/contact" },
+      { property: "og:url", content: "https://milansoni.vercel.app/contact" },
     ],
-    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/contact" }],
+    links: [{ rel: "canonical", href: "https://milansoni.vercel.app/contact" }],
   }),
   component: ContactPage,
 });

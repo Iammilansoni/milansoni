@@ -10,9 +10,9 @@ export const Route = createFileRoute("/experience")({
       { name: "description", content: "Explore Milan Soni's industry experience across AI testing platforms (nTheta), financial intelligence (OBG Outsourcing), and document automation (Om Logistics)." },
       { property: "og:title", content: "Experience & Internships | Milan Soni" },
       { property: "og:description", content: "Explore Milan Soni's industry experience across AI testing platforms (nTheta), financial intelligence (OBG Outsourcing), and document automation (Om Logistics)." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/experience" },
+      { property: "og:url", content: "https://milansoni.vercel.app/experience" },
     ],
-    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/experience" }],
+    links: [{ rel: "canonical", href: "https://milansoni.vercel.app/experience" }],
   }),
   component: ExperiencePage,
 });

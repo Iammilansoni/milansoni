@@ -9,9 +9,9 @@ export const Route = createFileRoute("/lab")({
       { name: "description", content: "Discover Milan Soni's AI Lab: an evolving collection of applied Generative AI patterns, RAG systems, and AI agent experiments." },
       { property: "og:title", content: "AI Lab | RAG & Agentic AI Experiments | Milan Soni" },
       { property: "og:description", content: "Discover Milan Soni's AI Lab: an evolving collection of applied Generative AI patterns, RAG systems, and AI agent experiments." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/lab" },
+      { property: "og:url", content: "https://milansoni.vercel.app/lab" },
     ],
-    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/lab" }],
+    links: [{ rel: "canonical", href: "https://milansoni.vercel.app/lab" }],
   }),
   component: LabPage,
 });

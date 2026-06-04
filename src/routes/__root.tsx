@@ -88,19 +88,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { property: "og:title", content: "Milan Soni Portfolio | Software Engineer & GenAI Engineer" },
       { property: "og:description", content: "Explore Milan Soni's projects, achievements, AI applications, and software engineering experience." },
-      { property: "og:image", content: "https://milan-soni-portfolio.vercel.app/og-image.png" },
+      { property: "og:image", content: "https://milansoni.vercel.app/og-image.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/" },
+      { property: "og:url", content: "https://milansoni.vercel.app/" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: SITE.title },
       { name: "twitter:description", content: SITE.description },
-      { name: "twitter:image", content: "https://milan-soni-portfolio.vercel.app/og-image.png" },
+      { name: "twitter:image", content: "https://milansoni.vercel.app/og-image.png" },
       { name: "google-site-verification", content: "L3TBX1KozzyAAwqXHcrELsfYueIeeoL2SWV13-pXI4Y" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/" },
+      { rel: "canonical", href: "https://milansoni.vercel.app/" },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -129,7 +129,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             name: SITE.name,
             jobTitle: "Software Engineer & GenAI Engineer",
             email: SITE.email,
-            url: "https://milan-soni-portfolio.vercel.app/",
+            url: "https://milansoni.vercel.app/",
             alumniOf: {
               "@type": "CollegeOrUniversity",
               name: "Global Institute of Technology"
@@ -143,7 +143,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
             "@context": "https://schema.org",
             "@type": "WebSite",
             name: SITE.title,
-            url: "https://milan-soni-portfolio.vercel.app/",
+            url: "https://milansoni.vercel.app/",
             description: SITE.description,
             author: {
               "@type": "Person",

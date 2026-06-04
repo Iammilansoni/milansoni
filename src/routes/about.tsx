@@ -10,9 +10,9 @@ export const Route = createFileRoute("/about")({
       { name: "description", content: "Learn about Milan Soni's background, education at Global Institute of Technology, and journey as a GenAI engineer and full-stack developer." },
       { property: "og:title", content: "About Milan Soni | Software Engineer & Researcher" },
       { property: "og:description", content: "Learn about Milan Soni's background, education at Global Institute of Technology, and journey as a GenAI engineer and full-stack developer." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/about" },
+      { property: "og:url", content: "https://milansoni.vercel.app/about" },
     ],
-    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/about" }],
+    links: [{ rel: "canonical", href: "https://milansoni.vercel.app/about" }],
     scripts: [
       {
         type: "application/ld+json",

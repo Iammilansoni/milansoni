@@ -10,9 +10,9 @@ export const Route = createFileRoute("/work/")({
       { name: "description", content: "Explore enterprise-grade AI platforms, including MiningNiti (SIH 2023 Winner), NLPForge, and SmartLearnX built by Milan Soni." },
       { property: "og:title", content: "AI & Full Stack Projects | Milan Soni" },
       { property: "og:description", content: "Explore enterprise-grade AI platforms, including MiningNiti (SIH 2023 Winner), NLPForge, and SmartLearnX built by Milan Soni." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/work" },
+      { property: "og:url", content: "https://milansoni.vercel.app/work" },
     ],
-    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/work" }],
+    links: [{ rel: "canonical", href: "https://milansoni.vercel.app/work" }],
   }),
   component: WorkIndex,
 });
