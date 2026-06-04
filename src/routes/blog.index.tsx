@@ -8,6 +8,19 @@ import type { Article } from "@/lib/blog";
 /* ─── Static articles (always available, no server function needed) ─── */
 const STATIC_ARTICLES: Article[] = [
   {
+    slug: "building-multi-agent-ai",
+    title: "How I Built a Production-Grade Multi-Agent AI System That Won a National Hackathon — and What It Taught Me About Real-World GenAI",
+    description:
+      "I built MiningNiti — an AI document intelligence platform for India's coal mining industry — using a multi-agent architecture, RAG-powered chat, and async background processing. Here's every technical and architectural decision that got us there.",
+    publishedAt: "2024-03-12T00:00:00Z",
+    readingTime: "25 min read",
+    categories: ["AI", "GenAI", "Software Engineering"],
+    tags: ["LangChain", "FastAPI", "Next.js", "RAG"],
+    source: "local",
+    coverImage: "/miningniti-dashboard.png",
+    relatedProjectSlug: "miningniti",
+  },
+  {
     slug: "i-built-and-shipped-many-ai-agents-heres-the-uncomfortable-truth-about-agentic-ai",
     title: "I Built & Shipped 10+ AI Agents. Here Is the Uncomfortable Truth About the Hype.",
     description:
