@@ -161,7 +161,7 @@ export const Hero = memo(function Hero() {
           </Magnetic>
           <Magnetic strength={20}>
             <a
-              href="/resume.pdf"
+              href="/MilanSoni_resume.pdf"
               className="inline-flex items-center gap-3 rounded-full glass px-6 py-3 md:px-8 md:py-4 text-sm font-medium hover:bg-secondary transition border border-hairline"
             >
               <Download className="h-4 w-4" /> <TextRoll text="Résumé" />
