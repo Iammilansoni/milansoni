@@ -49,7 +49,7 @@ export function ArticleCard({ article, index }: { article: Article; index: numbe
   return (
     <Reveal delay={Math.min(index * 0.04, 0.3)} className="h-full">
       {isMedium && article.mediumUrl ? (
-        <a href={`/blog/${article.slug}`} className="block h-full">
+        <a href={article.mediumUrl} target="_blank" rel="noreferrer" className="block h-full">
           {content}
         </a>
       ) : (
