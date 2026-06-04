@@ -8,7 +8,8 @@ export type MediumPost = {
   categories: string[];
 };
 
-function stripHtml(s: string) {
+function stripHtml(s: string | undefined | null) {
+  if (!s) return "";
   return s
     .replace(/<figure[\s\S]*?<\/figure>/gi, "")
     .replace(/<[^>]+>/g, "")
@@ -25,7 +26,9 @@ export const fetchMediumPosts = createServerFn({ method: "GET" }).handler(
   async (): Promise<MediumPost[]> => {
     const url = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@milansoni96946";
     try {
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: { "User-Agent": "Mozilla/5.0 (compatible; MilanSoniSite/1.0)" },
+      });
       if (!res.ok) {
         console.error(`Medium RSS fetch failed via rss2json: ${res.status} ${res.statusText}`);
         return [];
