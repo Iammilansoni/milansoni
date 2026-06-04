@@ -23,25 +23,28 @@ function pick(tag: string, xml: string) {
 
 export const fetchMediumPosts = createServerFn({ method: "GET" }).handler(
   async (): Promise<MediumPost[]> => {
-    const url = "https://medium.com/feed/@milansoni96946";
+    const url = "https://api.rss2json.com/v1/api.json?rss_url=https://medium.com/feed/@milansoni96946";
     try {
-      const res = await fetch(url, {
-        headers: { "User-Agent": "Mozilla/5.0 (compatible; MilanSoniSite/1.0)" },
-      });
-      if (!res.ok) return [];
-      const xml = await res.text();
-      const items = xml.split("<item>").slice(1).map((chunk) => {
-        const item = "<item>" + chunk.split("</item>")[0] + "</item>";
-        const title = pick("title", item);
-        const link = pick("link", item);
-        const pubDate = pick("pubDate", item);
-        const descRaw = pick("content:encoded", item) || pick("description", item);
-        const description = stripHtml(descRaw).slice(0, 220);
-        const cats = Array.from(item.matchAll(/<category><!\[CDATA\[([\s\S]*?)\]\]><\/category>/g)).map((m) => m[1]);
-        return { title, link, pubDate, description, categories: cats };
-      });
-      return items.slice(0, 9);
-    } catch {
+      const res = await fetch(url);
+      if (!res.ok) {
+        console.error(`Medium RSS fetch failed via rss2json: ${res.status} ${res.statusText}`);
+        return [];
+      }
+      
+      const json = await res.json();
+      if (json.status !== "ok" || !json.items) {
+        return [];
+      }
+
+      return json.items.slice(0, 9).map((item: any) => ({
+        title: item.title,
+        link: item.link,
+        pubDate: item.pubDate,
+        description: stripHtml(item.description || item.content).slice(0, 220),
+        categories: item.categories || [],
+      }));
+    } catch (e) {
+      console.error("fetchMediumPosts error:", e);
       return [];
     }
   },
