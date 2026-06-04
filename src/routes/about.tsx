@@ -61,7 +61,7 @@ function About() {
             <Reveal delay={0.05}>
               <p>
                 In 2023, my team won <span className="text-foreground">Smart India Hackathon</span> as
-                National Winners — out of more than 44,000 competing teams — by building an AI
+                National Winners — for the Ministry of Coal problem statement — by building an AI
                 document intelligence platform for the Ministry of Coal. That was the moment I knew
                 I wanted to build at the intersection of <span className="text-foreground">full-stack engineering</span>{" "}
                 and <span className="text-foreground">applied AI</span>.

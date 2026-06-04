@@ -42,7 +42,7 @@ const PROOF_POINTS = [
   {
     kicker: "🏆 SIH 2023",
     headline: "National Winner",
-    sub: "Top 1% of 44,000+ teams",
+    sub: "Ministry of Coal problem statement",
     detail: "Built a production-grade AI document intelligence platform for the Ministry of Coal in a 48-hr sprint.",
     accent: "aurora-1",
     links: [

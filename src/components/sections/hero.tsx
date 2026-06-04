@@ -178,9 +178,9 @@ export const Hero = memo(function Hero() {
       >
         <a href="https://www.sih.gov.in/sih2023-grand-finale-result" target="_blank" rel="noreferrer" className="flex flex-col items-center pointer-events-auto group hover:opacity-80 transition-opacity">
           <span className="font-display text-xl md:text-2xl text-aurora-1 group-hover:text-aurora-2 transition-colors flex items-center gap-1">
-            Top 1% <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+            Winner <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
           </span>
-          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">SIH 2023 National Winner</span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">SIH '23 (Ministry of Coal)</span>
         </a>
         <div className="w-px h-8 md:h-10 bg-hairline" />
         <a href="https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing" target="_blank" rel="noreferrer" className="flex flex-col items-center pointer-events-auto group hover:opacity-80 transition-opacity">

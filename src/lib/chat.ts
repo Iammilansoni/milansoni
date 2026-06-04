@@ -25,7 +25,7 @@ EDUCATION:
 - Graduating: 2026
 
 ACHIEVEMENT:
-- Smart India Hackathon (SIH) 2023 National WINNER — Top 1% out of 44,000+ teams
+- Smart India Hackathon (SIH) 2023 National WINNER — Won Ministry of Coal problem statement
 - Built MiningNiti for the Ministry of Coal and won the National Finale
 - Scopus-indexed research paper published at PICET-26 conference
 
@@ -97,7 +97,7 @@ Milan is a 2026 fresher actively looking for full-time roles and open to relocat
 PERSONALITY / HOW TO DESCRIBE MILAN:
 - Builds production-grade systems, not just class projects
 - Deeply passionate about AI/GenAI and applying it to real-world problems
-- Won a national hackathon competing against 44,000+ teams as a student
+- Won the SIH 2023 National Finale (Ministry of Coal) as a student
 - Writes technical blog posts to share knowledge (Medium + portfolio blog)
 - Fast learner who picks up new technologies quickly
 ==== END PROFILE ====
