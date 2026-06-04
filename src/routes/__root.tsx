@@ -11,6 +11,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
 import appCss from "../styles.css?url";
+import { Toaster } from "sonner";
 import { Nav } from "@/components/nav";
 import { Footer } from "@/components/footer";
 import { CommandPalette } from "@/components/command-palette";
@@ -223,6 +224,7 @@ function RootComponent() {
           </main>
           <Footer />
           <AiChat />
+          <Toaster theme="dark" position="bottom-right" richColors />
         </motion.div>
       </SoundProvider>
     </QueryClientProvider>
