@@ -49,26 +49,32 @@ function ContactPage() {
     setPending(true);
 
     try {
-      fd.append("access_key", "afc8b487-79a3-4a1b-9c9d-45a13d613f63");
-      fd.append("subject", `New Portfolio Contact from ${parsed.data.name}`);
-      
+      const payload = new FormData();
+      payload.append("access_key", "afc8b487-79a3-4a1b-9c9d-45a13d613f63");
+      payload.append("name", parsed.data.name);
+      payload.append("email", parsed.data.email);
+      payload.append("message", parsed.data.message);
+      payload.append("subject", `New Portfolio Contact from ${parsed.data.name}`);
+      payload.append("from_name", "Milan Soni Portfolio");
+      payload.append("botcheck", ""); // honeypot — must be empty
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: fd
+        body: payload,
       });
       
       const data = await response.json();
+      console.log("Web3Forms response:", data);
       
       if (data.success) {
         setIsSent(true);
-        form.reset(); // Clear the form fields
-        
-        // Reset the success state after 3 seconds
+        form.reset();
         setTimeout(() => setIsSent(false), 3000);
       } else {
-        toast.error("Something went wrong. Please try again or reach out on LinkedIn.");
+        toast.error(data.message || "Something went wrong. Please try again or reach out on LinkedIn.");
       }
     } catch (error) {
+      console.error("Contact form error:", error);
       toast.error("Network error. Please try again or reach out on LinkedIn.");
     } finally {
       setPending(false);
