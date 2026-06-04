@@ -42,7 +42,7 @@ export function CommandPalette({
         <CommandEmpty>No results found.</CommandEmpty>
         
         <CommandGroup heading="Quick Actions">
-          <CommandItem onSelect={() => window.open("/resume.pdf", "_blank")}>
+          <CommandItem onSelect={() => window.open("/MilanSoni_resume.pdf", "_blank")}>
             <Download className="mr-2 h-4 w-4" />
             <span>Download Resume</span>
           </CommandItem>
