@@ -131,7 +131,11 @@ function BlogIndex() {
               mediumUrl: item.link.split("?")[0], // strip tracking params
             };
           });
-          setPosts(live);
+          // Keep local articles, replace Medium articles with live data
+          const localArticles = STATIC_ARTICLES.filter(a => a.source === "local");
+          const merged = [...localArticles, ...live];
+          merged.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+          setPosts(merged);
         }
         // If fetch fails or returns empty, STATIC_ARTICLES remains
       } catch {
