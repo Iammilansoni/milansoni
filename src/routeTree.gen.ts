@@ -13,12 +13,13 @@ import { Route as ResearchRouteImport } from './routes/research'
 import { Route as LabRouteImport } from './routes/lab'
 import { Route as ExperienceRouteImport } from './routes/experience'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as WorkIndexRouteImport } from './routes/work.index'
+import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const ResearchRoute = ResearchRouteImport.update({
   id: '/research',
@@ -40,11 +41,6 @@ const ContactRoute = ContactRouteImport.update({
   path: '/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRoute = BlogRouteImport.update({
-  id: '/blog',
-  path: '/blog',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -60,6 +56,11 @@ const WorkIndexRoute = WorkIndexRouteImport.update({
   path: '/work/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WorkSlugRoute = WorkSlugRouteImport.update({
   id: '/work/$slug',
   path: '/work/$slug',
@@ -70,42 +71,50 @@ const ResearchSlugRoute = ResearchSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => ResearchRoute,
 } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/blog/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/experience': typeof ExperienceRoute
   '/lab': typeof LabRoute
   '/research': typeof ResearchRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/experience': typeof ExperienceRoute
   '/lab': typeof LabRoute
   '/research': typeof ResearchRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/blog': typeof BlogIndexRoute
   '/work': typeof WorkIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/blog': typeof BlogRoute
   '/contact': typeof ContactRoute
   '/experience': typeof ExperienceRoute
   '/lab': typeof LabRoute
   '/research': typeof ResearchRouteWithChildren
+  '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/work/$slug': typeof WorkSlugRoute
+  '/blog/': typeof BlogIndexRoute
   '/work/': typeof WorkIndexRoute
 }
 export interface FileRouteTypes {
@@ -113,49 +122,53 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/blog'
     | '/contact'
     | '/experience'
     | '/lab'
     | '/research'
+    | '/blog/$slug'
     | '/research/$slug'
     | '/work/$slug'
+    | '/blog/'
     | '/work/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/blog'
     | '/contact'
     | '/experience'
     | '/lab'
     | '/research'
+    | '/blog/$slug'
     | '/research/$slug'
     | '/work/$slug'
+    | '/blog'
     | '/work'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/blog'
     | '/contact'
     | '/experience'
     | '/lab'
     | '/research'
+    | '/blog/$slug'
     | '/research/$slug'
     | '/work/$slug'
+    | '/blog/'
     | '/work/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  BlogRoute: typeof BlogRoute
   ContactRoute: typeof ContactRoute
   ExperienceRoute: typeof ExperienceRoute
   LabRoute: typeof LabRoute
   ResearchRoute: typeof ResearchRouteWithChildren
+  BlogSlugRoute: typeof BlogSlugRoute
   WorkSlugRoute: typeof WorkSlugRoute
+  BlogIndexRoute: typeof BlogIndexRoute
   WorkIndexRoute: typeof WorkIndexRoute
 }
 
@@ -189,13 +202,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContactRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -217,6 +223,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/work/$slug': {
       id: '/work/$slug'
       path: '/work/$slug'
@@ -230,6 +243,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/research/$slug'
       preLoaderRoute: typeof ResearchSlugRouteImport
       parentRoute: typeof ResearchRoute
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/blog/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -249,12 +269,13 @@ const ResearchRouteWithChildren = ResearchRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  BlogRoute: BlogRoute,
   ContactRoute: ContactRoute,
   ExperienceRoute: ExperienceRoute,
   LabRoute: LabRoute,
   ResearchRoute: ResearchRouteWithChildren,
+  BlogSlugRoute: BlogSlugRoute,
   WorkSlugRoute: WorkSlugRoute,
+  BlogIndexRoute: BlogIndexRoute,
   WorkIndexRoute: WorkIndexRoute,
 }
 export const routeTree = rootRouteImport
