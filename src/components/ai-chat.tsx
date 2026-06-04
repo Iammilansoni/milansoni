@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useServerFn } from "@tanstack/react-start";
-import { X, Send, Sparkles, Bot, User, ChevronDown } from "lucide-react";
+import { X, Send, Bot, User, ChevronDown, MessageCircleCode } from "lucide-react";
 import { sendChatMessage } from "@/lib/chat";
 
 type Message = {
@@ -96,7 +96,7 @@ export function AiChat() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed inset-0 bg-black/40 z-[998] md:hidden"
+            className="fixed inset-0 bg-black/40 z-998 md:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -109,7 +109,7 @@ export function AiChat() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-24 right-4 md:right-6 z-[999] w-[calc(100vw-2rem)] max-w-sm"
+            className="fixed bottom-24 right-4 md:right-6 z-999 w-[calc(100vw-2rem)] max-w-sm"
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
@@ -122,8 +122,8 @@ export function AiChat() {
               <div className="flex items-center justify-between px-5 py-4 border-b border-hairline/50 shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="relative">
-                    <div className="w-9 h-9 rounded-full bg-linear-to-br from-aurora-1 to-aurora-2 flex items-center justify-center">
-                      <Sparkles className="w-4 h-4 text-white" />
+                    <div className="w-9 h-9 rounded-full bg-linear-to-br from-aurora-1 to-aurora-3 flex items-center justify-center">
+                        <Bot className="w-4 h-4 text-white" />
                     </div>
                     <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-green-400 border-2 border-background" />
                   </div>
@@ -236,21 +236,23 @@ export function AiChat() {
       {/* Floating Trigger Button */}
       <motion.button
         onClick={() => setIsOpen((o) => !o)}
-        className="fixed bottom-5 right-4 md:right-6 z-[999] group"
+        className="fixed bottom-5 right-4 md:right-6 z-999 group"
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         aria-label="Open AI Chat"
       >
-        <div className="relative w-14 h-14 rounded-full bg-linear-to-br from-aurora-1 to-aurora-2 flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] shadow-aurora-1/30">
-          {/* Ping ring */}
-          <span className="absolute inset-0 rounded-full bg-aurora-1 opacity-20 animate-ping" />
+        <div className="relative w-14 h-14 rounded-full glass border border-aurora-1/40 flex items-center justify-center shadow-[0_8px_32px_rgba(0,0,0,0.4)] hover:border-aurora-1/80 transition-colors"
+          style={{ boxShadow: "0 0 24px -4px oklch(0.70 0.28 295 / 0.5), 0 8px 32px rgba(0,0,0,0.4)" }}
+        >
+          {/* Outer glow ring */}
+          <span className="absolute inset-0 rounded-full border border-aurora-1/20 scale-110 animate-ping" />
           <AnimatePresence mode="wait">
             {isOpen
               ? <motion.div key="close" initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                  <ChevronDown className="w-6 h-6 text-white" />
+                  <ChevronDown className="w-6 h-6 text-aurora-1" />
                 </motion.div>
               : <motion.div key="open" initial={{ rotate: 90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: -90, opacity: 0 }} transition={{ duration: 0.15 }}>
-                  <Sparkles className="w-6 h-6 text-white" />
+                  <Bot className="w-6 h-6 text-aurora-1" />
                 </motion.div>
             }
           </AnimatePresence>
