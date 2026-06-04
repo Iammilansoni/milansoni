@@ -1,28 +1,65 @@
-import { useServerFn } from "@tanstack/react-start";
 import { createFileRoute, notFound, Link } from "@tanstack/react-router";
-import { useQuery } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
 import { ArrowLeft, ArrowUpRight, Share2, Twitter, Linkedin, Link as LinkIcon, Check } from "lucide-react";
 import { useState } from "react";
 import { Reveal } from "@/components/reveal";
-import { getPostBySlug } from "@/lib/blog";
 import { ReadingProgress } from "@/components/blog/reading-progress";
 import { SITE, PROJECTS } from "@/lib/site";
 import "highlight.js/styles/atom-one-dark.css";
+import type { Article } from "@/lib/blog";
+
+// Import local markdown at BUILD TIME — embedded in the JS bundle, no fs needed
+import buildingMultiAgentRaw from "@/content/blog/building-multi-agent-ai.md?raw";
+
+// Parse frontmatter out of the raw markdown
+function parseLocalArticle(raw: string, slug: string): Article {
+  const fmMatch = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  const meta: Record<string, any> = {};
+  if (fmMatch) {
+    fmMatch[1].split("\n").forEach(line => {
+      const [key, ...rest] = line.split(":");
+      if (key && rest.length) {
+        let val = rest.join(":").trim();
+        if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1);
+        if (val.startsWith('[') && val.endsWith(']')) {
+          val = val.slice(1, -1);
+          meta[key.trim()] = val.split(",").map(s => s.trim().replace(/^"|"$/g, ""));
+        } else {
+          meta[key.trim()] = val;
+        }
+      }
+    });
+  }
+  const content = fmMatch ? fmMatch[2] : raw;
+  const wordCount = content.split(/\s+/).length;
+  return {
+    slug,
+    title: meta.title || slug,
+    description: meta.description || "",
+    content,
+    coverImage: meta.coverImage,
+    publishedAt: meta.publishedAt || "2024-03-12",
+    readingTime: `${Math.ceil(wordCount / 200)} min read`,
+    categories: meta.categories || [],
+    tags: meta.tags || [],
+    source: "local",
+    relatedProjectSlug: meta.relatedProjectSlug,
+  };
+}
+
+// Pre-built local articles map
+const LOCAL_ARTICLES: Record<string, Article> = {
+  "building-multi-agent-ai": parseLocalArticle(buildingMultiAgentRaw, "building-multi-agent-ai"),
+};
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: async ({ params, context }) => {
-    // This is optional if we use queries, but good for SSR
-  },
   head: ({ params }) => {
-    // Ideally we would return dynamic meta here, but TanStack Router's head 
-    // is tricky with async data in this setup without router context integration.
-    // For this implementation, we will use a generic one or render <Meta> in the component if supported.
+    const local = LOCAL_ARTICLES[params.slug];
     return {
       meta: [
-        { title: `Article | Milan Soni` },
+        { title: local ? `${local.title} | Milan Soni` : "Article | Milan Soni" },
       ]
     }
   },
@@ -31,13 +68,9 @@ export const Route = createFileRoute("/blog/$slug")({
 
 function ArticlePage() {
   const { slug } = Route.useParams();
-  const getPost = useServerFn(getPostBySlug);
-  
-  const { data: article, isLoading } = useQuery({
-    queryKey: ["post", slug],
-    queryFn: () => getPost({ data: slug } as any),
-    staleTime: 1000 * 60 * 30, // 30 mins
-  });
+
+  // Look up from build-time embedded articles
+  const article = LOCAL_ARTICLES[slug] || null;
 
   const [copied, setCopied] = useState(false);
   const handleCopyLink = () => {
@@ -45,10 +78,6 @@ function ArticlePage() {
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
-
-  if (isLoading) {
-    return <div className="min-h-screen pt-32 flex justify-center"><div className="w-10 h-10 border-4 border-aurora border-t-transparent rounded-full animate-spin"></div></div>;
-  }
 
   if (!article) {
     throw notFound();
