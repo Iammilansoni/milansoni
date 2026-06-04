@@ -9,6 +9,7 @@ const FeaturedProjects = lazy(() => import("@/components/sections/featured-proje
 const ExperienceTimeline = lazy(() => import("@/components/sections/experience-timeline").then(m => ({ default: m.ExperienceTimeline })));
 const Education = lazy(() => import("@/components/sections/education").then(m => ({ default: m.Education })));
 const TechMarquee = lazy(() => import("@/components/sections/tech-marquee").then(m => ({ default: m.TechMarquee })));
+const RecentArticles = lazy(() => import("@/components/sections/recent-articles").then(m => ({ default: m.RecentArticles })));
 const Testimonials = lazy(() => import("@/components/sections/testimonials").then(m => ({ default: m.Testimonials })));
 const CTASection = lazy(() => import("@/components/sections/cta").then(m => ({ default: m.CTASection })));
 
@@ -36,6 +37,7 @@ function Index() {
         <ExperienceTimeline />
         <Education />
         <TechMarquee />
+        <RecentArticles />
         <Testimonials />
         <CTASection />
       </Suspense>
