@@ -49,18 +49,23 @@ function ContactPage() {
     setPending(true);
 
     try {
-      const payload = new FormData();
-      payload.append("access_key", "afc8b487-79a3-4a1b-9c9d-45a13d613f63");
-      payload.append("name", parsed.data.name);
-      payload.append("email", parsed.data.email);
-      payload.append("message", parsed.data.message);
-      payload.append("subject", `New Portfolio Contact from ${parsed.data.name}`);
-      payload.append("from_name", "Milan Soni Portfolio");
-      payload.append("botcheck", ""); // honeypot — must be empty
+      const payload = {
+        access_key: "afc8b487-79a3-4a1b-9c9d-45a13d613f63",
+        name: parsed.data.name,
+        email: parsed.data.email,
+        message: parsed.data.message,
+        subject: `New Portfolio Contact from ${parsed.data.name}`,
+        from_name: "Milan Soni Portfolio",
+        botcheck: false
+      };
 
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        body: payload,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify(payload),
       });
       
       const data = await response.json();
