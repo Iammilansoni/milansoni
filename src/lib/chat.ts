@@ -103,33 +103,39 @@ PERSONALITY / HOW TO DESCRIBE MILAN:
 ==== END PROFILE ====
 `;
 
-export const sendChatMessage = createServerFn({ method: "POST" })
-  .handler(async ({ data }: { data: { message: string; history: { role: string; text: string }[] } }): Promise<string> => {
-    const apiKey = process.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return "The AI assistant is not configured yet. Please reach out to Milan directly at milansoni96946@gmail.com!";
-    }
+type ChatPayload = { message: string; history: { role: string; text: string }[] };
 
-    try {
-      const genAI = new GoogleGenerativeAI(apiKey);
-      const model = genAI.getGenerativeModel({
-        model: "gemini-1.5-flash",
-        systemInstruction: MILAN_CONTEXT,
-      });
+async function handleChat(payload: ChatPayload): Promise<string> {
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return "The AI assistant is not configured yet. Please reach out to Milan directly at milansoni96946@gmail.com!";
+  }
 
-      // Build chat history for context
-      const history = (data.history || [])
-        .slice(-6) // Last 3 exchanges for context window
-        .map((m) => ({
-          role: m.role === "user" ? "user" : "model",
-          parts: [{ text: m.text }],
-        }));
+  try {
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: MILAN_CONTEXT,
+    });
 
-      const chat = model.startChat({ history });
-      const result = await chat.sendMessage(data.message);
-      return result.response.text();
-    } catch (err) {
-      console.error("Gemini chat error:", err);
-      return "Sorry, I'm having trouble connecting right now. Reach Milan directly at milansoni96946@gmail.com!";
-    }
-  });
+    // Build chat history for context
+    const history = (payload.history || [])
+      .slice(-6) // Last 3 exchanges for context window
+      .map((m) => ({
+        role: m.role === "user" ? "user" : "model",
+        parts: [{ text: m.text }],
+      }));
+
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessage(payload.message);
+    return result.response.text();
+  } catch (err) {
+    console.error("Gemini chat error:", err);
+    return "Sorry, I'm having trouble connecting right now. Reach Milan directly at milansoni96946@gmail.com!";
+  }
+}
+
+export const sendChatMessage = createServerFn({ method: "POST" }).handler(
+  (ctx: any) => handleChat(ctx.data as ChatPayload)
+);
+
