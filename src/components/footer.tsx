@@ -140,7 +140,7 @@ export function Footer() {
                   <span className="h-1.5 w-1.5 rounded-full bg-aurora-1" />
                   🏆 SIH 2023
                 </span>
-                <span className="text-muted-foreground text-xs pl-4 font-mono">National Winner · Top 1%</span>
+                <span className="text-muted-foreground text-xs pl-4 font-mono">National Winner · Ministry of Coal</span>
               </li>
               <li className="flex flex-col gap-1.5">
                 <span className="text-foreground font-medium flex items-center gap-2.5">

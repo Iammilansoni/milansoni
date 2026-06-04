@@ -74,7 +74,7 @@ export const PROJECTS: Project[] = [
       "Redis + Celery over Serverless Functions: Document parsing (OCR) takes several minutes. Serverless functions timeout after 15-60s, necessitating a persistent background worker architecture."
     ],
     results:
-      "Won the Smart India Hackathon (SIH) 2023 National Finale out of 44,000+ competing teams. The platform is an enterprise-ready solution that automatically flags compliance hazards and extracts mission-critical entities.",
+      "Won the Smart India Hackathon (SIH) 2023 National Finale for the Ministry of Coal problem statement. The platform is an enterprise-ready solution that automatically flags compliance hazards and extracts mission-critical entities.",
     githubUrl: "https://github.com/Iammilansoni/MiningNiti",
     demoUrl: "https://miningniti.vercel.app/",
     heroImage: "/miningniti-dashboard.png",
@@ -224,8 +224,8 @@ export const EXPERIENCE = [
 ] as const;
 
 export const STATS = [
-  { value: "44,000+", label: "Teams competed against" },
-  { value: "#1", label: "National rank — SIH 2023" },
+  { value: "48", label: "National Nodal Centres" },
+  { value: "Govt", label: "Ministry of Coal solution" },
   { value: "40+", label: "Public GitHub repos" },
   { value: "10,000+", label: "Documents processed in RAG" },
   { value: "3", label: "Enterprise internships" },
