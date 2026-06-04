@@ -19,6 +19,7 @@ import { CustomCursor } from "@/components/ui/custom-cursor";
 import { Preloader } from "@/components/preloader";
 import { SoundProvider } from "@/lib/sound";
 import { AmbientBlobs } from "@/components/ambient-blobs";
+import { AiChat } from "@/components/ai-chat";
 import { SITE } from "@/lib/site";
 
 function NotFoundComponent() {
@@ -228,6 +229,7 @@ function RootComponent() {
             </AnimatePresence>
           </main>
           <Footer />
+          <AiChat />
         </motion.div>
       </SoundProvider>
     </QueryClientProvider>
