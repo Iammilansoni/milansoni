@@ -21,9 +21,9 @@ export const Route = createFileRoute("/work/$slug")({
         { property: "og:title", content: `${p.name} | AI & Full Stack Case Study | Milan Soni` },
         { property: "og:description", content: p.blurb },
         { property: "og:type", content: "article" },
-        { property: "og:url", content: `https://milan-soni-portfolio.vercel.app/work/${p.slug}` },
+        { property: "og:url", content: `https://milansoni.vercel.app/work/${p.slug}` },
       ],
-      links: [{ rel: "canonical", href: `https://milan-soni-portfolio.vercel.app/work/${p.slug}` }],
+      links: [{ rel: "canonical", href: `https://milansoni.vercel.app/work/${p.slug}` }],
       scripts: [{
         type: "application/ld+json",
         children: JSON.stringify([

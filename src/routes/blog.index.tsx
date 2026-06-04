@@ -15,9 +15,9 @@ export const Route = createFileRoute("/blog/")({
       { name: "description", content: "Thoughts on Software Engineering, Full Stack Development, AI, GenAI, RAG Systems, Career Growth, and Real-World Projects." },
       { property: "og:title", content: "Articles & Insights | Milan Soni" },
       { property: "og:description", content: "Thoughts on Software Engineering, Full Stack Development, AI, GenAI, RAG Systems, Career Growth, and Real-World Projects." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/blog" },
+      { property: "og:url", content: "https://milansoni.vercel.app/blog" },
     ],
-    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/blog" }],
+    links: [{ rel: "canonical", href: "https://milansoni.vercel.app/blog" }],
   }),
   component: BlogIndex,
 });

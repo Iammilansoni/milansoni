@@ -27,9 +27,9 @@ export const Route = createFileRoute("/research")({
       { name: "description", content: "Read Milan Soni's research and deep dives on applied AI, full-stack architecture, and building production systems that scale." },
       { property: "og:title", content: "Research & Writing | Milan Soni" },
       { property: "og:description", content: "Read Milan Soni's research and deep dives on applied AI, full-stack architecture, and building production systems that scale." },
-      { property: "og:url", content: "https://milan-soni-portfolio.vercel.app/research" },
+      { property: "og:url", content: "https://milansoni.vercel.app/research" },
     ],
-    links: [{ rel: "canonical", href: "https://milan-soni-portfolio.vercel.app/research" }],
+    links: [{ rel: "canonical", href: "https://milansoni.vercel.app/research" }],
   }),
   component: ResearchIndex,
 });

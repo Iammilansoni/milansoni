@@ -69,12 +69,12 @@ function ArticlePage() {
             "@context": "https://schema.org",
             "@type": "Article",
             headline: article.title,
-            image: article.coverImage ? `https://milan-soni-portfolio.vercel.app${article.coverImage}` : undefined,
+            image: article.coverImage ? `https://milansoni.vercel.app${article.coverImage}` : undefined,
             datePublished: article.publishedAt,
             author: [{
               "@type": "Person",
               name: "Milan Soni",
-              url: "https://milan-soni-portfolio.vercel.app/"
+              url: "https://milansoni.vercel.app/"
             }]
           })
         }}
@@ -123,7 +123,7 @@ function ArticlePage() {
               {/* Share Buttons */}
               <div className="flex md:flex-col gap-3">
                 <a 
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://milan-soni-portfolio.vercel.app/blog/' + article.slug)}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://milansoni.vercel.app/blog/' + article.slug)}`}
                   target="_blank" rel="noreferrer"
                   className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors"
                   aria-label="Share on Twitter"
@@ -131,7 +131,7 @@ function ArticlePage() {
                   <Twitter className="w-4 h-4" />
                 </a>
                 <a 
-                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent('https://milan-soni-portfolio.vercel.app/blog/' + article.slug)}&title=${encodeURIComponent(article.title)}`}
+                  href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent('https://milansoni.vercel.app/blog/' + article.slug)}&title=${encodeURIComponent(article.title)}`}
                   target="_blank" rel="noreferrer"
                   className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors"
                   aria-label="Share on LinkedIn"
