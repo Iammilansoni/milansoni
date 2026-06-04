@@ -50,7 +50,7 @@ function ContactPage() {
 
     try {
       const payload = {
-        access_key: "afc8b487-79a3-4a1b-9c9d-45a13d613f63",
+        access_key: "2bc0512f-9c64-4086-9fed-0d790fc9e6c3",
         name: parsed.data.name,
         email: parsed.data.email,
         message: parsed.data.message,
