@@ -108,9 +108,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
       },
-      { rel: "icon", href: "/ms-logo.png", type: "image/png", sizes: "any" },
-      { rel: "shortcut icon", href: "/ms-logo.png" },
-      { rel: "apple-touch-icon", href: "/ms-logo.png" },
+      { rel: "icon", href: "/favicon.ico", sizes: "48x48" },
+      { rel: "icon", href: "/ms-favicon.png", type: "image/png", sizes: "any" },
+      { rel: "apple-touch-icon", href: "/ms-favicon.png" },
       { rel: "manifest", href: "/site.webmanifest" },
     ],
     scripts: [
