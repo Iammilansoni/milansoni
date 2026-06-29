@@ -172,20 +172,22 @@ milan-vision-labs/
 │   │   ├── about.tsx        # About page with journey timeline
 │   │   ├── work.index.tsx   # Projects listing
 │   │   ├── work.$slug.tsx   # Individual project case studies
-│   │   ├── research.tsx     # Publications
-│   │   ├── lab.tsx          # AI Lab
-│   │   ├── blog.tsx         # Blog (Medium + local)
+│   │   ├── blog.index.tsx   # Blog listing (Medium + local articles)
+│   │   ├── blog.$slug.tsx   # Individual blog post with TOC + code blocks
+│   │   ├── experience.tsx   # Work experience
 │   │   └── contact.tsx      # Contact form
 │   ├── components/
 │   │   ├── sections/        # Page sections (Hero, BentoGrid, FeaturedProjects, etc.)
 │   │   ├── ui/              # Reusable UI primitives (shadcn/ui + custom)
-│   │   └── blog/            # Blog components
+│   │   └── blog/            # Blog components (TOC, code blocks, cards)
 │   ├── lib/
-│   │   └── site.ts          # Centralized data (projects, experience, tech stack)
+│   │   ├── site.ts          # Centralized data (projects, experience, tech stack)
+│   │   ├── chat.ts          # Gemini AI chat server function
+│   │   └── blog.ts          # Article types and server functions
 │   └── hooks/               # Custom React hooks
 ├── public/                  # Static assets
-├── vite.config.ts           # Vite + TanStack Router plugin
-├── tailwind.config.ts       # Tailwind CSS v4 with Aurora palette
+├── vite.config.ts           # Vite + TanStack Start + Nitro
+├── components.json          # shadcn/ui config (new-york style)
 └── package.json
 ```
 
@@ -193,13 +195,13 @@ milan-vision-labs/
 
 - **Dynamic Hero Section** — Ambient drifting background blobs, noise overlays, and scroll-linked parallax
 - **Bento Grid Layout** — Re-engineered project card stacking with solid backdrops to prevent visual bleed-through
-- **Sticky Project Cards** — Scroll-pinned case study cards with scale/opacity transitions
 - **Tech Marquee** — Infinite scrolling technology showcase with dual-row animation
 - **WebGL Background** — Three.js-powered ambient background (lazy-loaded for performance)
 - **Command Palette** — Cmd+K search interface for quick navigation
-- **AI Chat** — Gemini-powered chat assistant with portfolio context
+- **AI Chat** — Gemini-powered chat assistant with portfolio context (contextual on blog posts)
+- **Blog System** — Markdown-based with TOC sidebar, code blocks with copy button, proof-of-work badges
 - **Scroll Progress** — Visual scroll indicator with aurora gradient
-- **Glassmorphic Design System** — Custom HSL "Aurora" color palette with glass effects
+- **Glassmorphic Design System** — Custom oklch "Aurora" color palette with glass effects
 - **SEO Optimized** — Meta tags, Open Graph, canonical URLs, structured data (JSON-LD)
 
 ---
@@ -259,7 +261,7 @@ This portfolio is deployed on **Vercel** with automatic deployments from the `ma
 
 <div align="center">
 
-**Built with React 19, Next.js 16, TanStack Router, Tailwind CSS v4, and Framer Motion.**
+**Built with React 19, TanStack Start, Tailwind CSS v4, and Framer Motion.**
 
 Designed & Developed with passion by Milan Soni.
 
