@@ -99,7 +99,6 @@ function ArticlePage() {
     <>
       <ReadingProgress />
 
-      {/* Schema Markup for SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -109,11 +108,7 @@ function ArticlePage() {
             headline: article.title,
             image: article.coverImage ? `https://milansoni.vercel.app${article.coverImage}` : undefined,
             datePublished: article.publishedAt,
-            author: [{
-              "@type": "Person",
-              name: "Milan Soni",
-              url: "https://milansoni.vercel.app/"
-            }]
+            author: [{ "@type": "Person", name: "Milan Soni", url: "https://milansoni.vercel.app/" }]
           })
         }}
       />
@@ -121,85 +116,65 @@ function ArticlePage() {
       <div className="relative min-h-screen pb-32">
         <div className="aurora-bg opacity-30" />
 
-        {/* Hero Section - Full Width */}
-        <div className="relative mx-auto max-w-7xl px-6 pt-32">
+        {/* Hero Section */}
+        <header className="relative mx-auto max-w-4xl px-6 pt-32 pb-8">
           <Reveal>
             <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10 font-mono uppercase tracking-wider">
               <ArrowLeft className="w-4 h-4" /> Back to Articles
             </Link>
 
-            <div className="max-w-4xl">
-              <div className="inline-flex items-center gap-3 text-xs font-mono text-muted-foreground glass px-4 py-2 rounded-full mb-6 border-hairline shadow-elevated">
-                <span>{new Date(article.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
-                <span className="w-1 h-1 rounded-full bg-aurora-1" />
-                <span>{article.readingTime}</span>
-                {isMedium && (
-                  <>
-                    <span className="w-1 h-1 rounded-full bg-aurora-2" />
-                    <span className="inline-flex items-center gap-1 text-aurora uppercase tracking-wider font-semibold">
-                      Medium
-                    </span>
-                  </>
-                )}
+            <div className="inline-flex items-center gap-3 text-xs font-mono text-muted-foreground glass px-4 py-2 rounded-full mb-6 border-hairline shadow-elevated">
+              <span>{new Date(article.publishedAt).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+              <span className="w-1 h-1 rounded-full bg-aurora-1" />
+              <span>{article.readingTime}</span>
+              {isMedium && (
+                <>
+                  <span className="w-1 h-1 rounded-full bg-aurora-2" />
+                  <span className="inline-flex items-center gap-1 text-aurora uppercase tracking-wider font-semibold">Medium</span>
+                </>
+              )}
+            </div>
+
+            <h1 className="font-display text-4xl md:text-5xl lg:text-[4rem] leading-[1.1] mb-8 tracking-tight">
+              {article.title}
+            </h1>
+
+            <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+              {article.description}
+            </p>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="h-12 w-12 rounded-full overflow-hidden border border-hairline p-0.5 glass">
+                  <img src="/ms-logo.png" alt={SITE.name} className="w-full h-full rounded-full object-cover bg-background" />
+                </div>
+                <div>
+                  <div className="text-foreground font-medium">{SITE.name}</div>
+                  <div className="text-xs text-muted-foreground font-mono">Software Engineer & GenAI Dev</div>
+                </div>
               </div>
-
-              <h1 className="font-display text-4xl md:text-5xl lg:text-[4rem] leading-[1.1] mb-8 tracking-tight">
-                {article.title}
-              </h1>
-
-              <p className="text-lg text-muted-foreground leading-relaxed mb-8 max-w-3xl">
-                {article.description}
-              </p>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="h-12 w-12 rounded-full overflow-hidden border border-hairline p-0.5 glass">
-                    <img src="/ms-logo.png" alt={SITE.name} className="w-full h-full rounded-full object-cover bg-background" />
-                  </div>
-                  <div>
-                    <div className="text-foreground font-medium">{SITE.name}</div>
-                    <div className="text-xs text-muted-foreground font-mono">Software Engineer & GenAI Dev</div>
-                  </div>
-                </div>
-
-                {/* Share Buttons */}
-                <div className="flex gap-3">
-                  <a
-                    href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://milansoni.vercel.app/blog/' + article.slug)}`}
-                    target="_blank" rel="noreferrer"
-                    className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors"
-                    aria-label="Share on Twitter"
-                  >
-                    <Twitter className="w-4 h-4" />
-                  </a>
-                  <a
-                    href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent('https://milansoni.vercel.app/blog/' + article.slug)}&title=${encodeURIComponent(article.title)}`}
-                    target="_blank" rel="noreferrer"
-                    className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors"
-                    aria-label="Share on LinkedIn"
-                  >
-                    <Linkedin className="w-4 h-4" />
-                  </a>
-                  <button
-                    onClick={handleCopyLink}
-                    className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors"
-                    aria-label="Copy Link"
-                  >
-                    {copied ? <Check className="w-4 h-4 text-green-400" /> : <LinkIcon className="w-4 h-4" />}
-                  </button>
-                </div>
+              <div className="flex gap-3">
+                <a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://milansoni.vercel.app/blog/' + article.slug)}`} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors" aria-label="Share on Twitter">
+                  <Twitter className="w-4 h-4" />
+                </a>
+                <a href={`https://www.linkedin.com/shareArticle?mini=true&url=${encodeURIComponent('https://milansoni.vercel.app/blog/' + article.slug)}&title=${encodeURIComponent(article.title)}`} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors" aria-label="Share on LinkedIn">
+                  <Linkedin className="w-4 h-4" />
+                </a>
+                <button onClick={handleCopyLink} className="w-10 h-10 rounded-full glass flex items-center justify-center text-muted-foreground hover:text-aurora hover:border-aurora/50 transition-colors" aria-label="Copy Link">
+                  {copied ? <Check className="w-4 h-4 text-green-400" /> : <LinkIcon className="w-4 h-4" />}
+                </button>
               </div>
             </div>
           </Reveal>
-        </div>
+        </header>
 
-        {/* Cover Image - Full Width */}
+        {/* Cover Image */}
         {article.coverImage && (
-          <div className="relative mx-auto max-w-5xl px-6 mt-12">
+          <div className="relative mx-auto max-w-4xl px-6 mb-12">
             <Reveal>
               <div className="relative">
                 <div className="absolute inset-0 bg-linear-to-tr from-aurora-1 to-aurora-2 blur-3xl opacity-20 transform scale-95 translate-y-4 rounded-full" />
-                <div className="relative w-full h-64 md:h-[450px] rounded-3xl overflow-hidden border border-hairline/60 shadow-elevated">
+                <div className="relative w-full h-64 md:h-[400px] rounded-3xl overflow-hidden border border-hairline/60 shadow-elevated">
                   <div className="absolute inset-0 bg-background/10 mix-blend-overlay z-10 pointer-events-none" />
                   <img src={article.coverImage} alt={article.title} className="w-full h-full object-cover" />
                 </div>
@@ -210,7 +185,7 @@ function ArticlePage() {
 
         {/* Medium Callout */}
         {isMedium && article.mediumUrl && (
-          <div className="mx-auto max-w-5xl px-6 mt-12">
+          <div className="mx-auto max-w-4xl px-6 mb-12">
             <Reveal>
               <div className="p-8 glass rounded-3xl border-aurora-2/30 border shadow-glow relative overflow-hidden">
                 <div className="absolute top-0 right-0 p-32 bg-aurora-2 opacity-10 blur-3xl rounded-full mix-blend-screen pointer-events-none" />
@@ -226,13 +201,22 @@ function ArticlePage() {
           </div>
         )}
 
-        {/* Two-Column Layout: TOC + Content */}
-        <div className="relative mx-auto max-w-7xl px-6 mt-16 flex gap-12">
-          {/* Left: Table of Contents */}
+        {/* Mobile TOC (above content on small screens) */}
+        <div className="lg:hidden px-6 mb-8">
           <TableOfContents markdown={article.content || ""} />
+        </div>
 
-          {/* Right: Article Content */}
-          <article className="flex-1 min-w-0">
+        {/* Two-Column: Desktop TOC (left) + Content (right) */}
+        <div className="relative mx-auto max-w-6xl px-6 flex gap-12">
+          {/* Desktop TOC */}
+          <div className="hidden lg:block">
+            <div className="sticky top-28">
+              <TableOfContents markdown={article.content || ""} />
+            </div>
+          </div>
+
+          {/* Article Content */}
+          <article className="flex-1 min-w-0 max-w-3xl">
             <Reveal>
               <div className="prose prose-invert prose-lg max-w-none
                 prose-headings:font-display prose-headings:font-normal prose-headings:tracking-tight
@@ -276,7 +260,6 @@ function ArticlePage() {
                 </ReactMarkdown>
               </div>
 
-              {/* Tags */}
               <div className="mt-12 pt-8 border-t border-hairline flex flex-wrap gap-2">
                 <span className="text-sm font-mono text-muted-foreground mr-4 flex items-center">Tags:</span>
                 {article.tags.map(tag => (
@@ -289,8 +272,9 @@ function ArticlePage() {
           </article>
         </div>
 
+        {/* Related Project */}
         {relatedProject && (
-          <div className="max-w-5xl mx-auto px-6 mt-24">
+          <div className="max-w-4xl mx-auto px-6 mt-24">
             <Reveal>
               <h3 className="text-xs font-mono uppercase tracking-widest text-aurora-2 mb-6 flex items-center gap-4">
                 <span>Featured Project</span>
@@ -313,7 +297,6 @@ function ArticlePage() {
         )}
       </div>
 
-      {/* Contextual AI chat scoped to this article */}
       <AiChat articleContext={article.content} />
     </>
   );
