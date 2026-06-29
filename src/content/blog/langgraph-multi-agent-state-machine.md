@@ -2,7 +2,7 @@
 title: "The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows"
 description: "LangChain's sequential chains broke down the moment I needed 6 AI agents to collaborate, retry on failure, and share state. LangGraph's state machine model gave me explicit control over agent orchestration. Here's the architecture, the code, and why it matters."
 publishedAt: "2026-06-29"
-coverImage: "/miningniti-dashboard.png"
+coverImage: "/LangGraph.png"
 categories: ["AI", "Agents", "LangGraph"]
 tags: ["LangGraph", "Multi-Agent", "State Machine", "FastAPI", "AI Agents"]
 relatedProjectSlug: "miningniti"

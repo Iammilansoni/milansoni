@@ -2,7 +2,7 @@
 title: "RSC + Streaming LLMs: Designing a Zero-Latency AI Dashboard with Next.js Server Actions"
 description: "Server Components eliminate the waterfall. Streaming responses eliminate the waiting. Combined, they create AI dashboards that feel instant even when the backend is calling multiple LLM providers. Here's how I built one."
 publishedAt: "2026-06-29"
-coverImage: "/miningniti-dashboard.png"
+coverImage: "/RSC Streaming.png"
 categories: ["AI", "Next.js", "Performance"]
 tags: ["React Server Components", "Streaming", "Next.js", "Server Actions", "AI"]
 relatedProjectSlug: "miningniti"

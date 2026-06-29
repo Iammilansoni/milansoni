@@ -2,7 +2,7 @@
 title: "Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month"
 description: "I replaced Pinecone and Weaviate with pgvector on Supabase's free tier and built a hybrid search pipeline combining BM25 + cosine similarity with Reciprocal Rank Fusion. Here's the architecture, the code, and the gotchas nobody talks about."
 publishedAt: "2026-06-29"
-coverImage: "/miningniti-dashboard.png"
+coverImage: "/Hybrid RAG Pipeline.png"
 categories: ["AI", "RAG", "PostgreSQL"]
 tags: ["pgvector", "Hybrid Search", "RRF", "Supabase", "FastAPI"]
 relatedProjectSlug: "miningniti"
