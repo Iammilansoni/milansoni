@@ -78,9 +78,30 @@ export function TableOfContents({ markdown }: { markdown: string }) {
 
   if (headings.length === 0) return null;
 
+  const tocList = (
+    <ul className="space-y-1">
+      {headings.map((h) => (
+        <li key={h.id}>
+          <button
+            onClick={() => scrollTo(h.id)}
+            className={cn(
+              "block w-full text-left text-sm py-1.5 transition-all duration-200 border-l-2 pl-3",
+              h.level === 3 && "ml-3",
+              activeId === h.id
+                ? "text-aurora-1 border-aurora-1 font-medium bg-aurora-1/5 rounded-r-lg"
+                : "text-muted-foreground border-transparent hover:text-foreground hover:border-hairline/50"
+            )}
+          >
+            {h.text}
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+
   return (
     <>
-      {/* Mobile TOC toggle */}
+      {/* Mobile TOC */}
       <div className="lg:hidden mb-8">
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -106,30 +127,16 @@ export function TableOfContents({ markdown }: { markdown: string }) {
               transition={{ duration: 0.2 }}
               className="overflow-hidden"
             >
-              <nav className="glass rounded-b-2xl border border-t-0 border-hairline px-5 py-4 space-y-1">
-                {headings.map((h) => (
-                  <button
-                    key={h.id}
-                    onClick={() => scrollTo(h.id)}
-                    className={cn(
-                      "block w-full text-left text-sm py-1.5 transition-colors",
-                      h.level === 3 && "pl-4",
-                      activeId === h.id
-                        ? "text-aurora-1 font-medium"
-                        : "text-muted-foreground hover:text-foreground"
-                    )}
-                  >
-                    {h.text}
-                  </button>
-                ))}
+              <nav className="glass rounded-b-2xl border border-t-0 border-hairline px-5 py-4">
+                {tocList}
               </nav>
             </motion.div>
           )}
         </AnimatePresence>
       </div>
 
-      {/* Desktop sticky TOC - Left sidebar */}
-      <nav className="hidden lg:block sticky top-28 w-64 shrink-0 h-fit">
+      {/* Desktop TOC - rendered inline, not fixed/sticky */}
+      <aside className="hidden lg:block w-64 shrink-0">
         <div className="glass rounded-2xl border border-hairline p-5">
           <div className="flex items-center gap-2 mb-4">
             <BookOpen className="w-4 h-4 text-aurora-1" />
@@ -137,26 +144,9 @@ export function TableOfContents({ markdown }: { markdown: string }) {
               On this page
             </p>
           </div>
-          <ul className="space-y-1">
-            {headings.map((h) => (
-              <li key={h.id}>
-                <button
-                  onClick={() => scrollTo(h.id)}
-                  className={cn(
-                    "block w-full text-left text-sm py-1.5 transition-all duration-200 border-l-2 pl-3",
-                    h.level === 3 && "ml-3",
-                    activeId === h.id
-                      ? "text-aurora-1 border-aurora-1 font-medium bg-aurora-1/5 rounded-r-lg"
-                      : "text-muted-foreground border-transparent hover:text-foreground hover:border-hairline/50"
-                  )}
-                >
-                  {h.text}
-                </button>
-              </li>
-            ))}
-          </ul>
+          {tocList}
         </div>
-      </nav>
+      </aside>
     </>
   );
 }
