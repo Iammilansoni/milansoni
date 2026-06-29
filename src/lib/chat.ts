@@ -103,7 +103,11 @@ PERSONALITY / HOW TO DESCRIBE MILAN:
 ==== END PROFILE ====
 `;
 
-type ChatPayload = { message: string; history: { role: string; text: string }[] };
+type ChatPayload = {
+  message: string;
+  history: { role: string; text: string }[];
+  articleContext?: string;
+};
 
 async function handleChat(payload: ChatPayload): Promise<string> {
   const apiKey = process.env.GEMINI_API_KEY;
@@ -113,9 +117,24 @@ async function handleChat(payload: ChatPayload): Promise<string> {
 
   try {
     const genAI = new GoogleGenerativeAI(apiKey);
+
+    // If article context is provided, scope the AI to that article
+    const systemInstruction = payload.articleContext
+      ? `${MILAN_CONTEXT}
+
+==== ARTICLE CONTEXT ====
+The user is reading a blog post on Milan's portfolio. Answer questions about THIS specific article.
+Base your answers on the article content below. If the question is about something not covered
+in the article, say so and redirect to general Milan context.
+
+ARTICLE CONTENT:
+${payload.articleContext.slice(0, 8000)}
+==== END ARTICLE CONTEXT ====`
+      : MILAN_CONTEXT;
+
     const model = genAI.getGenerativeModel({
       model: "gemini-3.5-flash",
-      systemInstruction: MILAN_CONTEXT,
+      systemInstruction,
     });
 
     // Build chat history for context

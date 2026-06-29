@@ -18,6 +18,7 @@ export type Article = {
   source: 'local' | 'medium';
   mediumUrl?: string;
   relatedProjectSlug?: string;
+  badges?: { label: string; value: string }[];
 };
 
 // Ensure path works on server side

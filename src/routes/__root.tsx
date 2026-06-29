@@ -223,7 +223,7 @@ function RootComponent() {
             </AnimatePresence>
           </main>
           <Footer />
-          <AiChat />
+          {!location.pathname.startsWith("/blog/") && <AiChat />}
           <Toaster theme="dark" position="bottom-right" richColors />
         </motion.div>
       </SoundProvider>

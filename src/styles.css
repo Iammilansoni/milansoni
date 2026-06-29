@@ -266,6 +266,16 @@
     100% { transform: translate3d(5%,  -4%,  0) scale(0.92); }
   }
 
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+
+  @keyframes spin-border {
+    to { --angle: 360deg; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .aurora-bg::before, .aurora-bg::after { animation: none; }
     .blob { animation: none !important; }
