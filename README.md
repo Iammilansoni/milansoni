@@ -1,15 +1,10 @@
 <div align="center">
 
-```
-╔╦╗ ╦ ╦   ╔═╗ ╔╗╔   ╔═╗ ╔═╗ ╔╗╔ ╦   ╔═╗ ╔═╗ ╦═╗ ╔╦╗ ╔═╗ ╔═╗ ╦   ╦ ╔═╗
-║║║ ║ ║   ╠═╣ ║║║   ╚═╗ ║ ║ ║║║ ║   ╠═╝ ║ ║ ╠╦╝  ║  ╠╣  ║ ║ ║   ║ ║ ║
-╩ ╩ ╩ ╩═╝ ╩ ╩ ╝╚╝   ╚═╝ ╚═╝ ╝╚╝ ╩   ╩   ╚═╝ ╩╚═  ╩  ╩   ╚═╝ ╩═╝ ╩ ╚═╝
-```
-> **AI Engineer · Full Stack Developer · RAG Specialist**
+# ╦═╗╔═╗╔╦╗╔═╗  ╔╦╗╔═╗╦═╗╔╦╗╔═╗╔═╗╔╦╗╔═╗
+# ╠╦╝║╣  ║ ║╣    ║ ║╣ ╠╦╝║║║║╣ ╚═╗ ║ ╚═╗
+# ╩╚═╚═╝ ╩ ╚═╝   ╩ ╚═╝╩╚═╩ ╩╚═╝╚═╝ ╩ ╚═╝
 
-# Milan Soni — AI Engineer & Full Stack Developer
-
-**Building production RAG pipelines, multi-agent AI systems, and scalable enterprise platforms.**
+**AI Engineer · Full Stack Developer · RAG Specialist**
 
 [![Portfolio](https://img.shields.io/badge/Portfolio-milansoni.vercel.app-aurora?style=for-the-badge)](https://milansoni.vercel.app)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-sonimilan-0A66C2?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/sonimilan/)
@@ -17,6 +12,10 @@
 [![Email](https://img.shields.io/badge/Email-milansoni96946@gmail.com-EA4335?style=for-the-badge&logo=gmail)](mailto:milansoni96946@gmail.com)
 
 ---
+
+# Milan Soni — AI Engineer & Full Stack Developer
+
+**Building production RAG pipelines, multi-agent AI systems, and scalable enterprise platforms.**
 
 </div>
 
@@ -205,8 +204,8 @@ milan-vision-labs/
 
 ```bash
 # Clone the repository
-git clone https://github.com/Iammilansoni/milan-vision-labs.git
-cd milan-vision-labs
+git clone https://github.com/Iammilansoni/milansoni.git
+cd milansoni
 
 # Install dependencies
 bun install    # or npm install

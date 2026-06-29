@@ -6,12 +6,18 @@ import { ArrowLeft, ArrowUpRight, Share2, Twitter, Linkedin, Link as LinkIcon, C
 import { useState } from "react";
 import { Reveal } from "@/components/reveal";
 import { ReadingProgress } from "@/components/blog/reading-progress";
+import { CodeBlock } from "@/components/blog/code-block";
+import { TableOfContents } from "@/components/blog/table-of-contents";
 import { SITE, PROJECTS } from "@/lib/site";
+import { AiChat } from "@/components/ai-chat";
 import "highlight.js/styles/atom-one-dark.css";
 import type { Article } from "@/lib/blog";
 
 // Import local markdown at BUILD TIME — embedded in the JS bundle, no fs needed
 import buildingMultiAgentRaw from "@/content/blog/building-multi-agent-ai.md?raw";
+import hybridRagRaw from "@/content/blog/hybrid-rag-pipeline-zero-cost.md?raw";
+import langgraphRaw from "@/content/blog/langgraph-multi-agent-state-machine.md?raw";
+import rscStreamingRaw from "@/content/blog/rsc-streaming-llms-nextjs.md?raw";
 
 // Parse frontmatter out of the raw markdown
 function parseLocalArticle(raw: string, slug: string): Article {
@@ -52,6 +58,9 @@ function parseLocalArticle(raw: string, slug: string): Article {
 // Pre-built local articles map
 const LOCAL_ARTICLES: Record<string, Article> = {
   "building-multi-agent-ai": parseLocalArticle(buildingMultiAgentRaw, "building-multi-agent-ai"),
+  "hybrid-rag-pipeline-zero-cost": parseLocalArticle(hybridRagRaw, "hybrid-rag-pipeline-zero-cost"),
+  "langgraph-multi-agent-state-machine": parseLocalArticle(langgraphRaw, "langgraph-multi-agent-state-machine"),
+  "rsc-streaming-llms-nextjs": parseLocalArticle(rscStreamingRaw, "rsc-streaming-llms-nextjs"),
 };
 
 export const Route = createFileRoute("/blog/$slug")({
@@ -89,6 +98,7 @@ function ArticlePage() {
   return (
     <>
       <ReadingProgress />
+      <TableOfContents markdown={article.content || ""} />
       
       {/* Schema Markup for SEO */}
       <script
@@ -112,7 +122,7 @@ function ArticlePage() {
       <div className="relative min-h-screen pb-32">
         <div className="aurora-bg opacity-30" />
         
-        <article className="relative mx-auto max-w-3xl px-6 pt-32">
+        <article className="relative mx-auto max-w-3xl lg:pr-64 px-6 pt-32">
           <Reveal>
             <Link to="/blog" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors mb-10 font-mono uppercase tracking-wider">
               <ArrowLeft className="w-4 h-4" /> Back to Articles
@@ -215,9 +225,28 @@ function ArticlePage() {
               prose-img:rounded-2xl prose-img:border prose-img:border-hairline/50 prose-img:shadow-lg
               prose-th:text-foreground prose-th:border-hairline prose-td:border-hairline
             ">
-              <ReactMarkdown 
+              <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[rehypeHighlight]}
+                components={{
+                  code: ({ className, children, ...props }) => {
+                    const isBlock = className?.includes("language-");
+                    if (isBlock) {
+                      return <CodeBlock className={className} {...props}>{children}</CodeBlock>;
+                    }
+                    return <code className={className} {...props}>{children}</code>;
+                  },
+                  h2: ({ children, ...props }) => {
+                    const text = typeof children === "string" ? children : "";
+                    const id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").replace(/(^-|-$)/g, "");
+                    return <h2 id={id} {...props}>{children}</h2>;
+                  },
+                  h3: ({ children, ...props }) => {
+                    const text = typeof children === "string" ? children : "";
+                    const id = text.toLowerCase().replace(/[^a-z0-9\s-]/g, "").replace(/\s+/g, "-").replace(/-+/g, "-").replace(/(^-|-$)/g, "");
+                    return <h3 id={id} {...props}>{children}</h3>;
+                  },
+                }}
               >
                 {article.content || ""}
               </ReactMarkdown>
@@ -257,6 +286,9 @@ function ArticlePage() {
           </div>
         )}
       </div>
+
+      {/* Contextual AI chat scoped to this article */}
+      <AiChat articleContext={article.content} />
     </>
   );
 }

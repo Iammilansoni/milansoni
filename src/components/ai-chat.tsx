@@ -19,7 +19,7 @@ const SUGGESTED_QUESTIONS = [
   "Is Milan open to work?",
 ];
 
-export function AiChat() {
+export function AiChat({ articleContext }: { articleContext?: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -62,7 +62,7 @@ export function AiChat() {
         .map((m) => ({ role: m.role, text: m.text }));
 
       try {
-        const reply = await chat({ data: { message: text.trim(), history } } as any);
+        const reply = await chat({ data: { message: text.trim(), history, articleContext } } as any);
         setMessages((prev) => [
           ...prev,
           { id: Date.now().toString() + "-ai", role: "assistant", text: reply || "..." },

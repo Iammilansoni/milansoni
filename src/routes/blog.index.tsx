@@ -21,6 +21,60 @@ const STATIC_ARTICLES: Article[] = [
     relatedProjectSlug: "miningniti",
   },
   {
+    slug: "hybrid-rag-pipeline-zero-cost",
+    title: "Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month",
+    description:
+      "I replaced Pinecone and Weaviate with pgvector on Supabase's free tier and built a hybrid search pipeline combining BM25 + cosine similarity with Reciprocal Rank Fusion. Here's the architecture, the code, and the gotchas nobody talks about.",
+    publishedAt: "2026-06-29T00:00:00Z",
+    readingTime: "12 min read",
+    categories: ["AI", "RAG", "PostgreSQL"],
+    tags: ["pgvector", "Hybrid Search", "RRF", "Supabase"],
+    source: "local",
+    coverImage: "/miningniti-dashboard.png",
+    relatedProjectSlug: "miningniti",
+    badges: [
+      { label: "Cost", value: "$0/mo" },
+      { label: "Retrieval", value: "92% acc" },
+      { label: "Latency", value: "~120ms" },
+    ],
+  },
+  {
+    slug: "langgraph-multi-agent-state-machine",
+    title: "The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows",
+    description:
+      "LangChain's sequential chains broke down the moment I needed 6 AI agents to collaborate, retry on failure, and share state. LangGraph's state machine model gave me explicit control over agent orchestration.",
+    publishedAt: "2026-06-29T00:00:00Z",
+    readingTime: "14 min read",
+    categories: ["AI", "Agents", "LangGraph"],
+    tags: ["LangGraph", "Multi-Agent", "State Machine", "FastAPI"],
+    source: "local",
+    coverImage: "/miningniti-dashboard.png",
+    relatedProjectSlug: "miningniti",
+    badges: [
+      { label: "Agents", value: "6 parallel" },
+      { label: "Reliability", value: "98.7%" },
+      { label: "Speed", value: "3.2s total" },
+    ],
+  },
+  {
+    slug: "rsc-streaming-llms-nextjs",
+    title: "RSC + Streaming LLMs: Designing a Zero-Latency AI Dashboard with Next.js Server Actions",
+    description:
+      "Server Components eliminate the waterfall. Streaming responses eliminate the waiting. Combined, they create AI dashboards that feel instant even when the backend is calling multiple LLM providers.",
+    publishedAt: "2026-06-29T00:00:00Z",
+    readingTime: "13 min read",
+    categories: ["AI", "Next.js", "Performance"],
+    tags: ["React Server Components", "Streaming", "Server Actions"],
+    source: "local",
+    coverImage: "/miningniti-dashboard.png",
+    relatedProjectSlug: "miningniti",
+    badges: [
+      { label: "TTFB", value: "120ms" },
+      { label: "JS Bundle", value: "-40%" },
+      { label: "Perceived", value: "<500ms" },
+    ],
+  },
+  {
     slug: "i-built-and-shipped-many-ai-agents-heres-the-uncomfortable-truth-about-agentic-ai",
     title: "I Built & Shipped 10+ AI Agents. Here Is the Uncomfortable Truth About the Hype.",
     description:
