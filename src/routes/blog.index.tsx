@@ -30,7 +30,7 @@ const STATIC_ARTICLES: Article[] = [
     categories: ["AI", "RAG", "PostgreSQL"],
     tags: ["pgvector", "Hybrid Search", "RRF", "Supabase"],
     source: "local",
-    coverImage: "/miningniti-dashboard.png",
+    coverImage: "/Hybrid RAG Pipeline.png",
     relatedProjectSlug: "miningniti",
     badges: [
       { label: "Cost", value: "$0/mo" },
@@ -48,7 +48,7 @@ const STATIC_ARTICLES: Article[] = [
     categories: ["AI", "Agents", "LangGraph"],
     tags: ["LangGraph", "Multi-Agent", "State Machine", "FastAPI"],
     source: "local",
-    coverImage: "/miningniti-dashboard.png",
+    coverImage: "/LangGraph.png",
     relatedProjectSlug: "miningniti",
     badges: [
       { label: "Agents", value: "6 parallel" },
@@ -66,7 +66,7 @@ const STATIC_ARTICLES: Article[] = [
     categories: ["AI", "Next.js", "Performance"],
     tags: ["React Server Components", "Streaming", "Server Actions"],
     source: "local",
-    coverImage: "/miningniti-dashboard.png",
+    coverImage: "/RSC Streaming.png",
     relatedProjectSlug: "miningniti",
     badges: [
       { label: "TTFB", value: "120ms" },
