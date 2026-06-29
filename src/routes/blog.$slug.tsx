@@ -98,8 +98,7 @@ function ArticlePage() {
   return (
     <>
       <ReadingProgress />
-      <TableOfContents markdown={article.content || ""} />
-      
+
       {/* Schema Markup for SEO */}
       <script
         type="application/ld+json"
