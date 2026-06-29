@@ -11,7 +11,7 @@ export function FeaturedProjects() {
       <div className="mx-auto max-w-7xl px-6 py-28">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
-            Selected work · 2023 — 2025
+            Selected work · 2023 — 2026
           </p>
           <h2 className="mt-3 font-display text-4xl md:text-6xl max-w-3xl">
             Production-grade systems, <span className="text-aurora">not class projects.</span>

@@ -104,10 +104,10 @@ export const Hero = memo(function Hero() {
           className="mt-6 flex flex-col items-center gap-3 pointer-events-none w-full max-w-2xl px-4"
         >
           <div className="text-sm font-mono text-muted-foreground/60 tracking-widest text-center whitespace-nowrap rounded-full border border-white/10 bg-white/5 px-4 py-1.5 backdrop-blur-md shadow-sm">
-            <span className="text-muted-foreground/30 mr-2">[01]</span> AI ENGINEER · FULL STACK
+            <span className="text-muted-foreground/30 mr-2">[01]</span> AI ENGINEER · FULL STACK · RAG SPECIALIST
           </div>
           <p className="text-muted-foreground/40 text-center text-lg md:text-xl leading-relaxed">
-            Engineering <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide">intelligent</em> systems, deterministic <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide">agentic workflows</em>, and highly scalable architectures.
+            Engineering <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide">intelligent</em> systems, <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide">multi-agent AI pipelines</em>, and production <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide">RAG architectures</em>.
           </p>
         </motion.div>
       </motion.div>
@@ -135,10 +135,10 @@ export const Hero = memo(function Hero() {
         
         <div className="mt-6 flex flex-col items-center gap-3 w-full max-w-2xl px-4">
           <div className="text-sm font-mono text-aurora-2 font-bold drop-shadow-[0_0_15px_rgba(255,255,255,0.5)] tracking-widest text-center whitespace-nowrap rounded-full border border-transparent px-4 py-1.5">
-            <span className="text-aurora-1/50 mr-2">[01]</span> AI ENGINEER · FULL STACK
+            <span className="text-aurora-1/50 mr-2">[01]</span> AI ENGINEER · FULL STACK · RAG SPECIALIST
           </div>
           <p className="text-aurora-1 text-center text-lg md:text-xl leading-relaxed font-medium drop-shadow-[0_0_10px_rgba(var(--aurora-1),0.8)]">
-            Engineering <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide text-white">intelligent</em> systems, deterministic <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide text-white">agentic workflows</em>, and highly scalable architectures.
+            Engineering <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide text-white">intelligent</em> systems, <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide text-white">multi-agent AI pipelines</em>, and production <em className="font-display italic text-3xl md:text-4xl pr-1 tracking-wide text-white">RAG architectures</em>.
           </p>
         </div>
       </motion.div>
@@ -180,7 +180,7 @@ export const Hero = memo(function Hero() {
           <span className="font-display text-xl md:text-2xl text-aurora-1 group-hover:text-aurora-2 transition-colors flex items-center gap-1">
             Winner <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
           </span>
-          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">SIH '23 (Ministry of Coal)</span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">SIH '23 (Coal India & CMPDI)</span>
         </a>
         <div className="w-px h-8 md:h-10 bg-hairline" />
         <a href="https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing" target="_blank" rel="noreferrer" className="flex flex-col items-center pointer-events-auto group hover:opacity-80 transition-opacity">
@@ -191,8 +191,8 @@ export const Hero = memo(function Hero() {
         </a>
         <div className="w-px h-8 md:h-10 bg-hairline" />
         <div className="flex flex-col items-center">
-          <span className="font-display text-xl md:text-2xl text-foreground">8.10</span>
-          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">CGPA · B.Tech CSE</span>
+          <span className="font-display text-xl md:text-2xl text-foreground">6</span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">AI Agents Deployed</span>
         </div>
         <div className="w-px h-8 md:h-10 bg-hairline" />
         <div className="flex flex-col items-center">

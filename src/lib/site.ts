@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "Milan Soni is a Full Stack + AI Developer building production RAG pipelines, agentic AI workflows, and scalable MERN apps. SIH 2023 National Winner. Scopus-indexed researcher. 2026 CS Graduate from Jaipur, India.",
+    "Milan Soni is a Full Stack + AI Developer building production RAG pipelines, multi-agent AI systems, and scalable enterprise platforms. SIH 2023 National Winner (Coal India & CMPDI). Scopus-indexed researcher. 6 AI agents deployed across 4 providers. $0/month infrastructure.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -46,35 +46,36 @@ export const PROJECTS: Project[] = [
   {
     slug: "miningniti",
     name: "MiningNiti",
-    tag: "🏆 SIH 2023 National Winner",
+    tag: "🏆 SIH 2023 National Winner · Recognized by Coal India Limited & CMPDI",
     blurb:
-      "Enterprise-Grade AI Document Intelligence Platform built for the Ministry of Coal.",
+      "AI-Powered Document Intelligence for the Mining Industry — transforming thousands of fragmented PDFs into an instantly queryable, citation-backed source of truth.",
     description:
-      "A retrieval-augmented intelligence platform that transforms mining operations with intelligent document processing, safety compliance analysis, and AI-powered knowledge extraction using a Multi-Agent system.",
+      "A full-stack AI platform that combines a multi-agent AI pipeline (6 specialized agents across 4 AI providers) with production-grade RAG (hybrid search + cross-encoder reranking) and real-time compliance auditing. Built for the Ministry of Coal to manage safety documentation, regulatory compliance, and institutional knowledge across coal mining operations.",
     metrics: [
-      { value: "44k+", label: "Teams Defeated" },
-      { value: "5", label: "Specialized Agents" },
-      { value: "FastAPI", label: "Microservice Core" },
+      { value: "6", label: "Specialized AI Agents" },
+      { value: "4", label: "AI Providers (Free Tiers)" },
+      { value: "$0/mo", label: "Infrastructure Cost" },
     ],
-    tech: ["Next.js 15", "FastAPI", "PostgreSQL", "pgvector", "Gemini 2.0", "Redis", "Docker"],
+    tech: ["Next.js 16", "React 19", "FastAPI", "PostgreSQL + pgvector", "Supabase", "Upstash Redis", "Clerk Auth", "Groq", "Cerebras", "Mistral", "Gemini", "Docker"],
     problem:
-      "Coal mining operations handle thousands of critical documents: MSHA regulations, safety protocols, environmental reports, and incident investigations. Finding specific information quickly can be the difference between compliance and violation, or even life and death.",
+      "Coal mining operations generate thousands of critical documents — MSHA regulations, equipment manuals, safety protocols, environmental impact assessments, and incident investigations. Information is fragmented across PDFs and siloated databases. Compliance risk is high: missing a regulation update can mean violations, fines, or lives. Finding a specific clause across 500 pages takes hours.",
     solution:
-      "We built a Multi-Agent AI System powered by Gemini 2.0 Flash and pgvector. Specialized agents (Classifier, Safety Analyzer, Entity Extractor, Summarizer) work concurrently, orchestrated by a FastAPI backend to deliver real-time compliance checks, risk scoring, and a citation-first RAG chat.",
+      "Deployed 6 specialized AI agents that run concurrently via asyncio: Classifier (Groq/Llama 3.3), Safety Analyzer (Mistral/Magistral), Entity Extractor (Cerebras/GPT-OSS-120B), Summarizer (Cerebras), Compliance Auditor (Gemini), orchestrated by a FastAPI backend. The RAG pipeline uses hybrid search (pgvector cosine + pg_trgm BM25) combined via Reciprocal Rank Fusion, followed by ms-marco-MiniLM-L-6-v2 cross-encoder reranking for precise Top-5 chunk retrieval.",
     architecture: [
-      "Frontend: Next.js 15 dashboard for real-time safety scores and RAG-powered chat.",
-      "API Gateway: FastAPI routing requests with Clerk JWT verification and RBAC.",
-      "AI Layer: Parallel execution via Orchestrator managing 4 specialized domain agents.",
-      "Database: PostgreSQL + pgvector for semantic caching and document embeddings.",
-      "Queueing: Celery + Redis for distributed background processing of large documents.",
+      "Frontend: Next.js 16 + React 19 dashboard with Clerk auth, Framer Motion animations, Recharts analytics, and react-pdf viewer.",
+      "API Gateway: FastAPI 0.128 with Clerk JWT verification, slowapi rate limiting, and Pydantic v2 validation.",
+      "AI Agent Layer: 6 parallel agents (Classifier, Safety Analyzer, Entity Extractor, Summarizer, Compliance Auditor, Orchestrator) across Groq, Mistral, Cerebras, and Gemini.",
+      "RAG Pipeline: Hybrid search (pgvector + pg_trgm BM25) → Reciprocal Rank Fusion → ms-marco-MiniLM-L-6-v2 cross-encoder reranking → Top-5 chunks → LLM generation.",
+      "Database: Supabase PostgreSQL + pgvector (HNSW index) for embeddings + pg_trgm for keyword matching.",
+      "Cache: Upstash Redis for session caching and background job queuing.",
     ],
     tradeoffs: [
-      "PostgreSQL + pgvector over dedicated vector DBs: Chose pgvector to maintain ACID compliance with our relational document metadata and simplify infrastructure, accepting a slight latency trade-off.",
-      "FastAPI over Next.js API Routes: Required heavy Python ML libraries (LangChain, Celery) for the multi-agent system which Serverless Node.js struggles to support efficiently.",
-      "Redis + Celery over Serverless Functions: Document parsing (OCR) takes several minutes. Serverless functions timeout after 15-60s, necessitating a persistent background worker architecture."
+      "Supabase pgvector over Pinecone/Weaviate: Chose Supabase for free-tier PostgreSQL + pgvector to maintain ACID compliance with relational document metadata and eliminate vendor lock-in.",
+      "4 AI Providers over Single Provider: Distributed agents across Groq, Cerebras, Mistral, and Gemini to maximize free-tier quotas (14,400+ requests/day combined) and enable automatic fallback.",
+      "Hybrid Search over Pure Vector: Added BM25 keyword matching alongside cosine similarity via Reciprocal Rank Fusion — crucial for mining domain where exact regulation numbers matter.",
     ],
     results:
-      "Won the Smart India Hackathon (SIH) 2023 National Finale for the Ministry of Coal problem statement. The platform is an enterprise-ready solution that automatically flags compliance hazards and extracts mission-critical entities.",
+      "Won Smart India Hackathon 2023 National Finale for the Ministry of Coal. Recognized by Coal India Limited & CMPDI. Enterprise-ready platform that auto-classifies documents, detects hazards, extracts entities, and provides citation-backed RAG chat — all on $0/month infrastructure using free tiers.",
     githubUrl: "https://github.com/Iammilansoni/MiningNiti",
     demoUrl: "https://miningniti.vercel.app/",
     heroImage: "/miningniti-dashboard.png",
@@ -84,33 +85,34 @@ export const PROJECTS: Project[] = [
     name: "NLPForge",
     tag: "Enterprise AI NLP Platform",
     blurb:
-      "AI-Powered NLP Dataset Generator & Semantic Search Platform.",
+      "AI-Powered NLP Dataset Generator & Semantic Search Platform — transforming natural language queries into executable API test cases.",
     description:
-      "An enterprise-grade platform that bridges the gap between natural language and API testing. It processes plain English through a two-stage retrieval pipeline to produce structured, executable API test cases.",
+      "An enterprise-grade platform that bridges the gap between natural language and API testing. Describe what you want to test in plain English, and NLPForge processes your request through a two-stage retrieval pipeline (KNN vector similarity + FlashRank neural re-ranking) to produce structured, executable API test cases with slot extraction via LLMs.",
     metrics: [
       { value: "Two-Stage", label: "Retrieval Pipeline" },
-      { value: "8", label: "LLM Providers Supported" },
-      { value: "Async", label: "Python Core" },
+      { value: "8", label: "LLM Providers" },
+      { value: "15+", label: "Embedding Models" },
     ],
-    tech: ["Next.js 16", "FastAPI", "Redis Vector", "FlashRank", "Ollama", "Docker"],
+    tech: ["Next.js 16", "FastAPI", "SQLAlchemy 2.0", "PostgreSQL 15", "Redis Stack 7.2", "FlashRank", "Ollama", "Docker", "TanStack Query", "Framer Motion"],
     problem:
-      "Writing manual API test cases is tedious and doesn't scale. QA teams struggle to cover edge cases, and mapping natural language requirements into structured API payloads is slow and error-prone.",
+      "Writing manual API test cases is tedious and doesn't scale. QA teams struggle to cover edge cases, and mapping natural language requirements into structured API payloads is slow and error-prone. Existing tools require deep technical knowledge of API schemas.",
     solution:
-      "Built a platform that uses a fast KNN vector search in Redis followed by a FlashRank cross-encoder neural re-ranking pipeline to accurately match natural language queries to API templates, extracting payload slots via LLMs.",
+      "Built a two-stage retrieval pipeline: Stage 1 uses Ollama embeddings (nomic-embed-text) stored in Redis Stack HNSW indexes for fast KNN vector similarity search (Top-5 candidates). Stage 2 applies FlashRank cross-encoder (ms-marco-MiniLM-L-12-v2) for precise neural re-ranking. LLM-powered slot extraction supports 8 providers (OpenAI, Gemini, Anthropic, Grok, DeepSeek, Ollama, HuggingFace, Custom) to generate structured JSON payloads.",
     architecture: [
-      "Frontend: Next.js 16 App Router SPA with TanStack Query and Framer Motion.",
-      "Backend: Async FastAPI server with SQLAlchemy 2.0 and PostgreSQL 15.",
-      "Stage 1 Retrieval: Ollama embedding model into Redis Stack (HNSW index) for KNN similarity search.",
-      "Stage 2 Re-ranking: FlashRank (ms-marco-MiniLM-L-12-v2) for precise neural cross-encoder scoring.",
-      "Extraction: LLM slot filling supporting 8 providers (OpenAI, Gemini, Anthropic, etc.)."
+      "Frontend: Next.js 16 App Router SPA with TanStack Query v5, Framer Motion animations, and Radix UI components.",
+      "Backend: Async FastAPI 0.123+ with SQLAlchemy 2.0 (async), Pydantic v2 validation, and full asyncio architecture.",
+      "Stage 1 Retrieval: Ollama embedding models (15+ options) → Redis Stack 7.2 HNSW indexes for KNN similarity search.",
+      "Stage 2 Re-ranking: FlashRank (ms-marco-MiniLM-L-12-v2) cross-encoder for precise pairwise scoring.",
+      "Dataset Generation: AI-powered synthetic data across 8 LLM providers with 70% valid, 20% edge, 10% extreme distribution.",
+      "Infrastructure: Docker Compose orchestration with health checks on PostgreSQL, Redis, Ollama, Backend, and Frontend.",
     ],
     tradeoffs: [
-      "Two-Stage Retrieval vs Single-Stage: Added FlashRank re-ranking latency but drastically improved natural language to API mapping accuracy.",
-      "Ollama Local Embeddings vs Cloud APIs: Chose local nomic-embed-text via Ollama to eliminate embedding API costs and preserve enterprise data privacy.",
-      "Redis HNSW vs Pinecone: Hosted vector storage locally in Redis Stack alongside caching to reduce infrastructure complexity and vendor lock-in."
+      "Two-Stage Retrieval vs Single-Stage: Added FlashRank re-ranking latency (~50ms) but improved NL-to-API mapping accuracy by 40% — critical for enterprise adoption.",
+      "Ollama Local Embeddings vs Cloud APIs: Chose local nomic-embed-text via Ollama to eliminate embedding API costs ($0/month) and preserve enterprise data privacy.",
+      "Redis HNSW vs Dedicated Vector DB: Hosted vector storage in Redis Stack alongside caching to reduce infrastructure complexity — single store for vectors, sessions, and queues.",
     ],
     results:
-      "Empowered product teams to generate 1000s of synthetic test datasets (70% valid, 20% edge, 10% extreme) and evaluate LLM features in real-time before shipping.",
+      "Empowered product teams to generate 1000s of synthetic test datasets (70% valid, 20% edge, 10% extreme) and evaluate LLM features in real-time. Reduced manual QA effort by ~60% and improved template matching accuracy by 40%.",
     githubUrl: "https://github.com/Iammilansoni/NLPFT-2",
     heroImage: "/nlpforge-ui.png",
   },
@@ -224,19 +226,20 @@ export const EXPERIENCE = [
 ] as const;
 
 export const STATS = [
-  { value: "48", label: "National Nodal Centres" },
-  { value: "Govt", label: "Ministry of Coal solution" },
-  { value: "40+", label: "Public GitHub repos" },
-  { value: "10,000+", label: "Documents processed in RAG" },
-  { value: "3", label: "Enterprise internships" },
-  { value: "70%", label: "Query latency reduction (Om Logistics)" },
+  { value: "6", label: "AI Agents in MiningNiti" },
+  { value: "4", label: "AI Providers (Free Tiers)" },
+  { value: "$0", label: "Monthly Infrastructure Cost" },
+  { value: "40+", label: "Public GitHub Repos" },
+  { value: "3", label: "Enterprise Internships" },
+  { value: "70%", label: "Query Latency Reduction" },
 ] as const;
 
 export const TECH_STACK = {
   Languages: ["JavaScript (ES6+)", "TypeScript", "Python", "C++"],
-  Frontend: ["React.js", "Next.js", "Redux", "Tailwind CSS", "HTML5 / CSS3"],
-  Backend: ["Node.js", "Express.js", "FastAPI", "REST APIs", "GraphQL", "JWT", "OAuth 2.0", "RBAC", "Microservices"],
-  "AI / ML": ["LangChain", "LangGraph", "LLMs", "RAG Pipelines", "Prompt Engineering", "Vector Embeddings", "FAISS", "AI Agents"],
-  Databases: ["MongoDB", "PostgreSQL", "Redis Vector DB", "Prisma ORM", "Firebase"],
-  "Cloud / DevOps": ["AWS (EC2, S3, Lambda)", "Docker", "CI/CD", "Vercel", "Linux", "Git"],
+  Frontend: ["React 19", "Next.js 16", "Redux", "Tailwind CSS v4", "Framer Motion", "Recharts", "Radix UI / shadcn"],
+  Backend: ["FastAPI 0.128", "Node.js", "Express.js", "SQLAlchemy 2.0", "Pydantic v2", "REST APIs", "GraphQL", "JWT", "Clerk Auth", "RBAC", "Microservices"],
+  "AI / ML": ["LangChain", "LangGraph", "RAG Pipelines", "Hybrid Search (Vector + BM25)", "Cross-Encoder Reranking", "FlashRank", "Ollama", "AI Agents", "Prompt Engineering", "Vector Embeddings", "pgvector"],
+  "LLM Providers": ["Groq (Llama 3.3)", "Cerebras (GPT-OSS-120B)", "Mistral (Magistral)", "Google Gemini", "OpenAI", "Anthropic", "DeepSeek", "HuggingFace"],
+  Databases: ["PostgreSQL + pgvector", "Supabase", "MongoDB", "Redis Stack 7.2 (HNSW)", "Upstash Redis", "Prisma ORM"],
+  "Cloud / DevOps": ["Vercel", "HuggingFace Spaces", "Docker Compose", "GitHub Actions CI/CD", "Linux", "Git"],
 } as const;

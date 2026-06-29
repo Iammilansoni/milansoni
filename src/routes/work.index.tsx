@@ -7,9 +7,9 @@ export const Route = createFileRoute("/work/")({
   head: () => ({
     meta: [
       { title: "AI & Full Stack Projects | Milan Soni" },
-      { name: "description", content: "Explore enterprise-grade AI platforms, including MiningNiti (SIH 2023 Winner), NLPForge, and SmartLearnX built by Milan Soni." },
+      { name: "description", content: "Explore enterprise-grade AI platforms: MiningNiti (SIH 2023 Winner, 6 AI agents, $0/mo infra), NLPForge (two-stage retrieval pipeline, 8 LLM providers), and SmartLearnX (AI-powered LMS, 91.4% dropout prediction accuracy) built by Milan Soni." },
       { property: "og:title", content: "AI & Full Stack Projects | Milan Soni" },
-      { property: "og:description", content: "Explore enterprise-grade AI platforms, including MiningNiti (SIH 2023 Winner), NLPForge, and SmartLearnX built by Milan Soni." },
+      { property: "og:description", content: "Explore enterprise-grade AI platforms: MiningNiti (SIH 2023 Winner, 6 AI agents, $0/mo infra), NLPForge (two-stage retrieval pipeline, 8 LLM providers), and SmartLearnX (AI-powered LMS, 91.4% dropout prediction accuracy) built by Milan Soni." },
       { property: "og:url", content: "https://milansoni.vercel.app/work" },
     ],
     links: [{ rel: "canonical", href: "https://milansoni.vercel.app/work" }],

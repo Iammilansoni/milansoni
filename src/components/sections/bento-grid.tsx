@@ -11,29 +11,29 @@ const CAPABILITIES = [
   {
     icon: Brain,
     area: "AI / LLM Engineering",
-    summary: "Production RAG pipelines, agentic orchestration, evaluation harnesses, and observability.",
-    signals: ["LangChain", "LangGraph", "FAISS", "Redis Vector DB", "RAG", "Prompt Engineering"],
+    summary: "Production RAG pipelines with hybrid search, multi-agent orchestration (6 agents), cross-encoder reranking, and evaluation harnesses.",
+    signals: ["LangChain", "LangGraph", "pgvector", "FlashRank", "RAG", "AI Agents", "Hybrid Search"],
     depth: 95,
   },
   {
     icon: Globe,
-    area: "Full Stack (MERN + Next.js)",
-    summary: "End-to-end web apps with server-side rendering, REST & GraphQL APIs, and enterprise auth.",
-    signals: ["Next.js", "React", "Node.js", "FastAPI", "TypeScript", "JWT + RBAC"],
+    area: "Full Stack (Next.js + FastAPI)",
+    summary: "End-to-end web apps with Next.js 16 App Router, FastAPI async backends, Clerk auth, and enterprise-grade RBAC.",
+    signals: ["Next.js 16", "React 19", "FastAPI", "TypeScript", "Clerk Auth", "Pydantic v2", "SQLAlchemy 2.0"],
     depth: 92,
   },
   {
     icon: Database,
     area: "Data & Infrastructure",
-    summary: "Multi-tenant databases, vector stores, Docker microservices, and CI/CD pipelines.",
-    signals: ["MongoDB", "PostgreSQL", "Redis", "Docker", "AWS (EC2, S3, Lambda)", "CI/CD"],
+    summary: "Multi-tenant databases with pgvector, Redis HNSW indexes, Docker orchestration, and $0/month free-tier deployments.",
+    signals: ["PostgreSQL + pgvector", "Supabase", "Upstash Redis", "Docker Compose", "HuggingFace Spaces", "Vercel"],
     depth: 85,
   },
   {
     icon: Layers,
     area: "Systems Thinking",
-    summary: "Algorithm design in C++, scalable backend architecture, and cross-team delivery.",
-    signals: ["C++", "Graph Algorithms", "System Design", "Microservices", "Agile/Scrum"],
+    summary: "Algorithm design, scalable backend architecture, multi-provider AI orchestration, and cross-team delivery.",
+    signals: ["C++", "System Design", "Microservices", "Async Architecture", "Reciprocal Rank Fusion"],
     depth: 88,
   },
 ];
@@ -42,8 +42,8 @@ const PROOF_POINTS = [
   {
     kicker: "🏆 SIH 2023",
     headline: "National Winner",
-    sub: "Ministry of Coal problem statement",
-    detail: "Built a production-grade AI document intelligence platform for the Ministry of Coal in a 48-hr sprint.",
+    sub: "Ministry of Coal · Recognized by Coal India Limited & CMPDI",
+    detail: "Built MiningNiti — an AI document intelligence platform with 6 specialized agents, hybrid RAG search, and compliance auditing. Deployed on $0/month free-tier infrastructure.",
     accent: "aurora-1",
     links: [
       { label: "Official Results", href: "https://www.sih.gov.in/sih2023-grand-finale-result" },
@@ -54,7 +54,7 @@ const PROOF_POINTS = [
     kicker: "📄 Scopus Indexed",
     headline: "PICET-2026",
     sub: "IET Conference Proceedings",
-    detail: "Peer-reviewed research on hybrid attention-based temporal modeling for LMS dropout prediction.",
+    detail: "Peer-reviewed research on hybrid attention-based temporal modeling for LMS dropout prediction (91.4% accuracy).",
     accent: "aurora-2",
     links: [
       { label: "Read Paper", href: "https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing" },
@@ -95,7 +95,7 @@ export const BentoGrid = memo(function BentoGrid() {
           </h2>
           <p className="mt-6 text-muted-foreground max-w-2xl text-base md:text-lg leading-relaxed">
             Three internships, one national win, one Scopus-indexed publication.
-            Here is the technical breadth behind those results.
+            Here is the technical breadth behind those results — including 6 AI agents across 4 providers.
           </p>
         </Reveal>
 
