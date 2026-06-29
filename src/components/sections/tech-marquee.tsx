@@ -19,27 +19,27 @@ const ROW_1 = [
   { name: "LangGraph", icon: Network },
   { name: "LLMs", icon: Brain },
   { name: "RAG Pipelines", icon: Layers },
-  { name: "Vector Embeddings", icon: DatabaseZap },
-  { name: "FAISS", icon: Cpu },
-  { name: "Redis Vector DB", icon: SiRedis },
-  { name: "PostgreSQL", icon: SiPostgresql },
-  { name: "MongoDB", icon: SiMongodb },
-  { name: "Prisma ORM", icon: SiPrisma }
+  { name: "Hybrid Search", icon: DatabaseZap },
+  { name: "FlashRank", icon: Cpu },
+  { name: "pgvector", icon: SiPostgresql },
+  { name: "Redis HNSW", icon: SiRedis },
+  { name: "Supabase", icon: SiPostgresql },
+  { name: "AI Agents", icon: Network }
 ];
 
 const ROW_2 = [
-  { name: "React.js", icon: SiReact },
-  { name: "Next.js", icon: SiNextdotjs },
+  { name: "React 19", icon: SiReact },
+  { name: "Next.js 16", icon: SiNextdotjs },
   { name: "TypeScript", icon: SiTypescript },
   { name: "JavaScript (ES6+)", icon: SiJavascript },
   { name: "C++", icon: SiCplusplus },
-  { name: "Tailwind CSS", icon: SiTailwindcss },
-  { name: "Redux", icon: SiRedux },
-  { name: "GraphQL", icon: SiGraphql },
-  { name: "AWS (EC2, S3, Lambda)", icon: FaAws },
-  { name: "Docker", icon: SiDocker },
-  { name: "CI/CD", icon: GitMerge },
-  { name: "Vercel", icon: SiVercel },
+  { name: "Tailwind CSS v4", icon: SiTailwindcss },
+  { name: "Framer Motion", icon: SiRedux },
+  { name: "Clerk Auth", icon: SiGraphql },
+  { name: "Groq / Cerebras / Mistral", icon: FaAws },
+  { name: "Docker Compose", icon: SiDocker },
+  { name: "GitHub Actions", icon: GitMerge },
+  { name: "Vercel + HuggingFace", icon: SiVercel },
   { name: "Linux", icon: SiLinux },
   { name: "REST APIs", icon: FileJson }
 ];

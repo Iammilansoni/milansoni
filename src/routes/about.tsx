@@ -70,9 +70,10 @@ function About() {
             <Reveal delay={0.1}>
               <p>
                 Since then I've shipped production systems at three companies — an enterprise AI
-                testing platform on FastAPI + Redis Vector, a multi-tenant financial intelligence
-                SaaS on Next.js + Node, and a LangChain-powered document workflow engine for
-                logistics.
+                testing platform on FastAPI + Redis with two-stage retrieval (NLPForge), a multi-tenant financial intelligence
+                SaaS on Next.js + Node (FinSageAI360), and a LangChain-powered document workflow engine for
+                logistics (Om Logistics). My latest work includes deploying 6 specialized AI agents
+                across 4 providers (Groq, Cerebras, Mistral, Gemini) on $0/month infrastructure.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
