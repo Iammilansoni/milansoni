@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, List } from "lucide-react";
+import { ChevronDown, List, BookOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type TocItem = {
@@ -128,23 +128,26 @@ export function TableOfContents({ markdown }: { markdown: string }) {
         </AnimatePresence>
       </div>
 
-      {/* Desktop sticky TOC */}
-      <nav className="hidden lg:block fixed right-8 top-32 w-56 z-40">
+      {/* Desktop sticky TOC - Left sidebar */}
+      <nav className="hidden lg:block sticky top-28 w-64 shrink-0 h-fit">
         <div className="glass rounded-2xl border border-hairline p-5">
-          <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground mb-4">
-            On this page
-          </p>
+          <div className="flex items-center gap-2 mb-4">
+            <BookOpen className="w-4 h-4 text-aurora-1" />
+            <p className="text-[10px] font-mono uppercase tracking-widest text-muted-foreground">
+              On this page
+            </p>
+          </div>
           <ul className="space-y-1">
             {headings.map((h) => (
               <li key={h.id}>
                 <button
                   onClick={() => scrollTo(h.id)}
                   className={cn(
-                    "block w-full text-left text-sm py-1 transition-colors border-l-2 pl-3",
+                    "block w-full text-left text-sm py-1.5 transition-all duration-200 border-l-2 pl-3",
                     h.level === 3 && "ml-3",
                     activeId === h.id
-                      ? "text-aurora-1 border-aurora-1 font-medium"
-                      : "text-muted-foreground border-transparent hover:text-foreground hover:border-hairline"
+                      ? "text-aurora-1 border-aurora-1 font-medium bg-aurora-1/5 rounded-r-lg"
+                      : "text-muted-foreground border-transparent hover:text-foreground hover:border-hairline/50"
                   )}
                 >
                   {h.text}
