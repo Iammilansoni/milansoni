@@ -178,6 +178,17 @@ export const PROJECTS: Project[] = [
 
 export const EXPERIENCE = [
   {
+    company: "OmniRoute",
+    role: "Open Source Contributor",
+    period: "Jul 2026",
+    location: "Remote",
+    highlights: [
+      "Synchronized 42 international locales with upstream architectural changes, eliminating documentation drift across the gateway's global user base",
+      "Optimized repository metadata accuracy by expanding tracked routing strategies (13 → 17) and service modules (36 → 134) to reflect actual codebase structure",
+      "Ensured zero-regression deployment through automated docs-sync-strict validation, earning direct merge approval into the v3.8.44 release branch",
+    ],
+  },
+  {
     company: "nTheta Works Pvt. Ltd.",
     role: "Full Stack Developer Intern",
     period: "Oct – Dec 2025",
