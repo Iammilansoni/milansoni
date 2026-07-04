@@ -62,6 +62,16 @@ const PROOF_POINTS = [
       { label: "Track 3: ID 759", href: "https://picet.in/" }
     ]
   },
+  {
+    kicker: "⭐ Open Source",
+    headline: "10.9k Stars",
+    sub: "OmniRoute AI Gateway · 280+ Contributors",
+    detail: "Synchronized 42 international locales and corrected architectural metrics for a major AI gateway project, earning direct merge into the v3.8.44 release branch.",
+    accent: "aurora-3",
+    links: [
+      { label: "GitHub Repo", href: "https://github.com/diegosouzapw/OmniRoute" },
+    ]
+  },
 ];
 
 // ─── Component ────────────────────────────────────────────────────────────────
