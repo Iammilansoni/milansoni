@@ -238,7 +238,7 @@ export const STATS = [
   { value: "6", label: "AI Agents in MiningNiti" },
   { value: "4", label: "AI Providers (Free Tiers)" },
   { value: "$0", label: "Monthly Infrastructure Cost" },
-  { value: "40+", label: "Public GitHub Repos" },
+  { value: "10.9k", label: "Stars · OmniRoute" },
   { value: "3", label: "Enterprise Internships" },
   { value: "70%", label: "Query Latency Reduction" },
 ] as const;
