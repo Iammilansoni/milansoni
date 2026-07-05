@@ -1,0 +1,133 @@
+# Milan Soni — AI Engineer & Full Stack Developer
+
+> Building production RAG pipelines, multi-agent AI systems, and scalable enterprise platforms.
+
+## Profile
+
+- **Name**: Milan Soni
+- **Role**: AI Engineer & Full Stack Developer
+- **Location**: Churu, Rajasthan, India
+- **Education**: B.Tech CSE, Global Institute of Technology, Jaipur (CGPA: 8.10, graduating 2026)
+- **Email**: milansoni96946@gmail.com
+- **GitHub**: https://github.com/Iammilansoni
+- **LinkedIn**: https://www.linkedin.com/in/sonimilan/
+- **Medium**: https://medium.com/@milansoni96946
+- **Portfolio**: https://milansoni.vercel.app
+
+## Core Expertise
+
+- **AI / LLM Engineering**: Production RAG pipelines with hybrid search (vector + BM25), multi-agent orchestration (6 agents), cross-encoder reranking, evaluation harnesses
+- **Full Stack**: React 19, Next.js 16, TanStack Start, FastAPI, Clerk auth, enterprise RBAC
+- **Data & Infrastructure**: PostgreSQL + pgvector, Redis HNSW indexes, Docker, $0/month free-tier deployments
+- **Systems Thinking**: Algorithm design, scalable backend architecture, multi-provider AI orchestration
+
+## Awards & Recognition
+
+- **SIH 2023 National Winner** — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
+- **Scopus-Indexed Researcher** — Peer-reviewed paper on hybrid attention-based temporal modeling (PICET-2026, IET Conference Proceedings)
+
+## Projects
+
+### MiningNiti — AI Document Intelligence for Mining
+
+> SIH 2023 National Winner | Recognized by Coal India Limited & CMPDI
+
+A full-stack AI platform combining a multi-agent AI pipeline (6 specialized agents across 4 AI providers) with production-grade RAG (hybrid search + cross-encoder reranking) and real-time compliance auditing. Built for the Ministry of Coal.
+
+- **Agents**: Classifier (Groq/Llama 3.3), Safety Analyzer (Mistral/Magistral), Entity Extractor (Cerebras/GPT-OSS-120B), Summarizer (Cerebras), Compliance Auditor (Gemini), Orchestrator
+- **RAG Pipeline**: Hybrid search (pgvector cosine + pg_trgm BM25) → Reciprocal Rank Fusion → ms-marco-MiniLM-L-6-v2 cross-encoder reranking → Top-5 chunks → LLM generation
+- **Tech**: Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Groq, Cerebras, Mistral, Gemini, Docker
+- **Metrics**: 6 AI agents, 4 providers, $0/month infrastructure cost
+- **Impact**: Won SIH 2023 National Finale. Reduced manual compliance analysis by 90%. Pipeline completion rate: 98.7%. End-to-end latency: 3.2s (down from 14s sequential).
+- **GitHub**: https://github.com/Iammilansoni/MiningNiti
+- **Demo**: https://miningniti.vercel.app/
+
+### NLPForge — NLP Dataset Generator & Semantic Search
+
+> Enterprise AI NLP Platform (built at nTheta Works)
+
+An enterprise-grade platform bridging natural language and API testing. Two-stage retrieval pipeline (KNN vector similarity + FlashRank neural re-ranking) produces structured, executable API test cases.
+
+- **Pipeline**: Ollama embeddings (nomic-embed-text) → Redis Stack HNSW indexes → FlashRank cross-encoder (ms-marco-MiniLM-L-12-v2) reranking
+- **Tech**: Next.js 16, FastAPI, SQLAlchemy 2.0, PostgreSQL 15, Redis Stack 7.2, FlashRank, Ollama, Docker
+- **Metrics**: 8 LLM providers, 15+ embedding models, 40% accuracy improvement, 60% QA effort reduction
+- **GitHub**: https://github.com/Iammilansoni/NLPFT-2
+
+### FinSageAI360 — AI Financial Intelligence
+
+> Built at OBG Outsourcing
+
+A multi-tenant SaaS that ingests accounting feeds, normalises them, and surfaces AI-generated cashflow, risk, and anomaly insights.
+
+- **Tech**: Next.js, Node.js, MongoDB, Prisma, JWT, AI Analytics
+- **Metrics**: +45% faster report cycles, +30% operational efficiency, enterprise-grade RBAC
+
+### SmartLearnX — AI-Powered LMS
+
+> Freelance Project
+
+An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack web technologies.
+
+- **ML Models**: Logistic Regression dropout prediction (91.4% accuracy), Random Forest academic forecasting (0.89 R²)
+- **NLP**: BERT quiz generation, spaCy chatbot assistant
+- **Tech**: React, TypeScript, Node.js, FastAPI, MongoDB, Redis, Docker, Machine Learning
+
+## Experience
+
+| Role | Company | Period | Key Impact |
+|------|---------|--------|------------|
+| Open Source Contributor | OmniRoute (10.8k★) | Jul 2026 | 3 PRs merged across v3.8.44–v3.8.45 (docs/i18n, provider registry, UI filter, HTTP 400 fix) |
+| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval, 40% accuracy improvement, 60% QA reduction |
+| AI & Full Stack Developer | Freelance | Jul – Aug 2025 | 91.4% dropout prediction, NLP chatbot, 0.89 R² forecasting |
+| Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | +45% report speed, +30% efficiency, enterprise RBAC |
+| Software Developer Intern | Om Logistics | Jun – Aug 2024 | 70% latency reduction, 10K+ docs, LangChain + FAISS |
+
+## Tech Stack
+
+- **Languages**: JavaScript (ES6+), TypeScript, Python, C++
+- **Frontend**: React 19, Next.js 16, TanStack Start/Router/Query, Tailwind CSS v4, Framer Motion, Recharts, Radix UI / shadcn, Three.js
+- **Backend**: FastAPI 0.128, Node.js, Express.js, SQLAlchemy 2.0, Pydantic v2, JWT, Clerk Auth, RBAC, Microservices
+- **AI / ML**: LangChain, LangGraph, RAG Pipelines, Hybrid Search (Vector + BM25), Cross-Encoder Reranking, FlashRank, Ollama, AI Agents, pgvector
+- **LLM Providers**: Groq (Llama 3.3), Cerebras (GPT-OSS-120B), Mistral (Magistral), Google Gemini, OpenAI, Anthropic, DeepSeek, HuggingFace
+- **Databases**: PostgreSQL + pgvector, Supabase, MongoDB, Redis Stack 7.2 (HNSW), Upstash Redis, Prisma ORM
+- **Cloud / DevOps**: Vercel, Nitro, HuggingFace Spaces, Docker Compose, GitHub Actions CI/CD, Linux, Git
+
+## Blog Articles
+
+### RSC + Streaming LLMs: Designing a Zero-Latency AI Dashboard with Next.js Server Actions
+React Server Components + chunked streaming for AI dashboards. TTFB dropped from 3.2s to 120ms. Client JS reduced by 40%. Covers Server Actions, Vercel AI SDK, progressive rendering with Framer Motion.
+
+### The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows
+Migration from LangChain SequentialChain to LangGraph for MiningNiti's 6-agent pipeline. Pipeline completion: 72% → 98.7%. Latency: 14s → 3.2s via asyncio. Covers state management, conditional edges, error resilience.
+
+### Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month
+Replaced Pinecone ($400/mo) with pgvector on Supabase free tier. Hybrid search (BM25 + cosine) with Reciprocal Rank Fusion. Cross-encoder reranking with FlashRank. <10ms queries on 100K vectors.
+
+### How I Built a Production-Grade Multi-Agent AI System That Won a National Hackathon
+Deep dive into MiningNiti's architecture: 4 agent specialists (Classifier, Safety Analyzer, Entity Extractor, Summarizer), async background processing, RAG-powered chat, Celery task queue.
+
+## Research
+
+### Deploying Agentic AI in Production
+State machines over prompt engineering for production agents. Critiques ReAct loops (infinite loops, context exhaustion, unpredictable latency). Advocates LangGraph deterministic orchestration with Pydantic/Zod guardrails.
+
+## Portfolio Website
+
+This repository (milan-vision-labs) is a production-grade personal portfolio built with:
+- **Framework**: TanStack Start (React 19 + Vite + Nitro)
+- **Styling**: Tailwind CSS v4 with oklch "Aurora" design tokens, glassmorphic effects
+- **3D**: Three.js neural network particle system (lazy-loaded)
+- **AI Chat**: Gemini-powered chat assistant with portfolio context
+- **Blog**: Markdown-based with TOC, syntax highlighting, Medium RSS integration
+- **SEO**: JSON-LD structured data, Open Graph, sitemap, robots.txt
+- **Deploy**: Vercel (auto-deploy from main branch)
+
+## Contact
+
+| Platform | Link |
+|----------|------|
+| Email | milansoni96946@gmail.com |
+| LinkedIn | linkedin.com/in/sonimilan |
+| GitHub | github.com/Iammilansoni |
+| Medium | medium.com/@milansoni96946 |
+| Portfolio | milansoni.vercel.app |

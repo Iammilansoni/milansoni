@@ -112,6 +112,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/ms-favicon.png", type: "image/png", sizes: "any" },
       { rel: "apple-touch-icon", href: "/ms-favicon.png" },
       { rel: "manifest", href: "/site.webmanifest" },
+      { rel: "alternate", type: "text/plain", href: "/llms.txt", title: "LLM-friendly profile" },
+      { rel: "alternate", type: "text/plain", href: "/llms-full.txt", title: "LLM-friendly profile (full)" },
     ],
     scripts: [
       {

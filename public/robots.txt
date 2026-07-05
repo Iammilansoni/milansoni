@@ -5,3 +5,20 @@ Allow: /
 Disallow: /api/
 
 Sitemap: https://milansoni.vercel.app/sitemap.xml
+
+# AI agent discovery
+User-agent: GPTBot
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: ClaudeBot
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: Google-Extended
+Allow: /llms.txt
+Allow: /llms-full.txt
+
+User-agent: CCBot
+Allow: /llms.txt
+Allow: /llms-full.txt
