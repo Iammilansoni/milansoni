@@ -34,9 +34,9 @@ I build production RAG pipelines, multi-agent AI systems, and scalable enterpris
 
 ## Open Source — OmniRoute
 
-> [OmniRoute](https://github.com/diegosouzapw/OmniRoute) · 10.9k★ · 231+ LLM providers · Open-source universal AI gateway
+> [OmniRoute](https://github.com/diegosouzapw/OmniRoute) · 10.8k★ · 230+ LLM providers · Open-source universal AI gateway
 
-Contributed across documentation, provider registry, frontend UX, and backend core:
+Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests. Across 3 merged PRs, I shipped an accessible React/Next.js dashboard filter, integrated Claude 5 Sonnet into the provider registry with regression tests, and audited documentation across 42 locales. The deepest work was diagnosing a system-message ordering bug affecting strict LLM providers — I proposed a declarative Zod schema configuration that the core maintainer validated over a hardcoded alternative, earning an invitation to contribute a follow-up architectural refactor. Shipped across v3.8.44 and v3.8.45 production releases.
 
 | Contribution | What I Did | Status |
 |-------------|-----------|--------|
@@ -45,6 +45,28 @@ Contributed across documentation, provider registry, frontend UX, and backend co
 | **UI Filter** (PR [#6245](https://github.com/diegosouzapw/OmniRoute/pull/6245)) | Built an accessible "Configured Only" toggle for the provider-rankings dashboard. Added test coverage and memory-leak safeguards through code review. | Merged → v3.8.45 |
 | **Memory Injection** (PR [#6172](https://github.com/diegosouzapw/OmniRoute/pull/6172)) | Diagnosed HTTP 400 regression for strict LLM providers caused by system-message ordering. Delivered a tested fix with `systemMessageMustBeFirst` provider flag — design adopted into maintainer's shipped fix. | In review |
 | **Schema Proposal** ([#6241](https://github.com/diegosouzapw/OmniRoute/issues/6241)) | Proposed standardizing reasoning-model parameters (effort/thinking) as first-class fields in the core request schema. | Open |
+
+### Technical Breakdown
+
+**Frontend Engineering (React / Next.js)**
+
+Designed and shipped an accessible "Configured Only" filter for the live provider-rankings dashboard at `/dashboard/free-provider-rankings`. The component fetches live connection state from `/api/providers`, filters the rankings table and podium view in real time, and adds a "Status" column with empty-state handling. Implemented as a `role="switch"` toggle with `aria-checked` for screen reader accessibility. Iterated through code review to add a `useEffect` cleanup flag preventing memory leaks on unmount, plus a full Vitest test suite. Added 4 new i18n keys and a CHANGELOG entry — merged as 168 additions across 4 files, 9/9 tests passing.
+
+**API & Provider Integrations (Claude 5 Sonnet)**
+
+Located the `claude_web` provider registry entry at `open-sse/config/providers/registry/claude/web/index.ts` and added `{ id: "claude-sonnet-5", name: "Claude 5 Sonnet (web)" }` with a registry regression test per the repo's test-coverage requirement. An earlier attempt (PR #6207) was superseded by the corrected version — learned to validate against the full test suite before submitting. Shipped with a "Verified" signed commit from the maintainer into v3.8.45.
+
+**Architecture & CI/CD Pipelines**
+
+Audited 9 core docs containing untranslated Portuguese and Chinese prose mixed into English-only documents, plus ~20 localized READMEs carrying duplicated OAuth blocks. Normalized all flagged docs, consolidated a trilingual Fly.io deployment guide, and corrected stale architecture facts (routing strategies 13 → 17, service modules 36 → 134). Verified against the project's `docs-sync-strict` CI gate across all 42 locales — zero regressions.
+
+**Core Backend Logic & Schema Design**
+
+Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP 400 when a memory-injected system message lands at a non-zero array index. Instead of a hardcoded check, I proposed a declarative approach: a `systemMessageMustBeFirst` flag in the provider schema plus a `PROVIDERS_SYSTEM_MUST_BE_FIRST` set, with branching logic in `injectMemory()` to merge or unshift the system message to index 0 for strict providers while preserving cache-safe behavior for lenient ones. The maintainer validated the declarative Zod schema approach over a hardcoded alternative and adopted the naming convention into the broader shipped fix (PR #6225). Delivered with 25/25 Vitest + 30/30 Node test-runner coverage.
+
+### Key Takeaways
+
+This contribution bridged the gap between academic learning and high-scale production engineering in three ways. First, working against a live 10.8k★ codebase with 21,000+ tests forced a discipline around CI/CD validation that no coursework replicates — every change had to pass `docs-sync-strict` across 42 locales or it didn't ship. Second, the schema design feedback loop with the maintainer taught me how production systems evolve through collaboration, not just code — the declarative approach won because it was extensible, not because it was cleverer. Third, iterating through code review (memory-leak safeguards, test coverage, lint compliance) built the muscle for shipping code that other engineers actually depend on.
 
 ---
 
