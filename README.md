@@ -30,7 +30,7 @@ I'm **Milan Soni**, an AI Engineer and Full Stack Developer based in Churu, Raja
 - **SIH 2023 National Winner** — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
 - **Scopus-Indexed Researcher** — Peer-reviewed paper on hybrid attention-based temporal modeling (PICET-2026, IET Conference Proceedings)
 - **CS Graduate (2026)** — B.Tech CSE from Global Institute of Technology, Jaipur (CGPA: 8.10)
-- **3 Enterprise Internships** — Shipped production systems at nTheta Works, OBG Outsourcing, and Om Logistics
+- **3 Enterprise Internships + Open Source** — Shipped production systems at nTheta Works, OBG Outsourcing, and Om Logistics + contributed to OmniRoute
 
 ---
 
@@ -39,7 +39,7 @@ I'm **Milan Soni**, an AI Engineer and Full Stack Developer based in Churu, Raja
 | Area | What I Do |
 |------|-----------|
 | **AI / LLM Engineering** | Production RAG pipelines with hybrid search, multi-agent orchestration (6 agents), cross-encoder reranking, evaluation harnesses |
-| **Full Stack** | Next.js 16 + React 19 frontends, FastAPI async backends, Clerk auth, enterprise RBAC |
+| **Full Stack** | React 19 + TanStack Start frontends, FastAPI async backends, Clerk auth, enterprise RBAC |
 | **Data & Infrastructure** | PostgreSQL + pgvector, Redis HNSW indexes, Docker orchestration, $0/month free-tier deployments |
 | **Systems Thinking** | Algorithm design, scalable backend architecture, multi-provider AI orchestration |
 
@@ -139,6 +139,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
+| Open Source Contributor | [OmniRoute](https://github.com/diegosouzapw/OmniRoute) | Jul 2026 | 3 PRs merged (docs/i18n, provider registry, UI filter) across v3.8.44–v3.8.45 |
 | Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval, 40% accuracy improvement |
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | 91.4% dropout prediction, NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | +45% report speed, +30% efficiency |
@@ -146,16 +147,44 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 ---
 
+## Open Source — OmniRoute
+
+> [OmniRoute](https://github.com/diegosouzapw/OmniRoute) · 10.8k★ · 230+ LLM providers · Open-source universal AI gateway
+
+Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
+
+### Frontend Engineering (React / Next.js)
+
+Designed and shipped an accessible **"Configured Only"** filter for the live provider-rankings dashboard. Fetches live connection state from `/api/providers`, filters rankings table and podium view in real time, adds a "Status" column with empty-state handling. Implemented as `role="switch"` with `aria-checked` for screen reader accessibility. Iterated through code review to add a `useEffect` cleanup flag preventing memory leaks on unmount, plus a full Vitest test suite. **168 additions across 4 files, 9/9 tests passing.**
+
+### API & Provider Integrations (Claude 5 Sonnet)
+
+Integrated the newly released **Claude 5 Sonnet** into the `claude_web` provider registry at `open-sse/config/providers/registry/claude/web/index.ts` with a registry regression test per the repo's coverage requirement. Learned to validate against the full test suite before submitting — an earlier attempt was superseded by the corrected version. **Shipped with a "Verified" signed commit into v3.8.45.**
+
+### Architecture & CI/CD Pipelines
+
+Audited 9 core docs containing untranslated Portuguese/Chinese prose mixed into English-only documents, plus ~20 localized READMEs carrying duplicated OAuth blocks. Normalized all flagged docs, consolidated a trilingual Fly.io deployment guide, and corrected stale architecture facts (routing strategies **13 → 17**, service modules **36 → 134**). Verified against `docs-sync-strict` CI gate across all **42 locales** — zero regressions.
+
+### Core Backend Logic & Schema Design
+
+Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP 400 when a memory-injected system message lands at a non-zero array index. Proposed a **declarative Zod schema** approach: a `systemMessageMustBeFirst` flag in the provider schema plus branching logic in `injectMemory()` — the maintainer validated this over a hardcoded alternative and adopted the naming into the broader shipped fix (PR #6225). **25/25 Vitest + 30/30 Node test-runner coverage.**
+
+### Key Takeaways
+
+This contribution bridged the gap between academic learning and high-scale production engineering in three ways. First, working against a live 10.8k★ codebase with 21,000+ tests forced a discipline around CI/CD validation that no coursework replicates — every change had to pass `docs-sync-strict` across 42 locales or it didn't ship. Second, the schema design feedback loop with the maintainer taught me how production systems evolve through collaboration, not just code — the declarative approach won because it was extensible, not because it was cleverer. Third, iterating through code review (memory-leak safeguards, test coverage, lint compliance) built the muscle for shipping code that other engineers actually depend on.
+
+---
+
 ## Tech Stack
 
 ```
 Languages       : JavaScript (ES6+) · TypeScript · Python · C++
-Frontend        : React 19 · Next.js 16 · Redux · Tailwind CSS v4 · Framer Motion · Recharts · Radix UI / shadcn
+Frontend        : React 19 · TanStack Start · TanStack Router · TanStack Query · Tailwind CSS v4 · Framer Motion · Recharts · Radix UI / shadcn · Three.js
 Backend         : FastAPI 0.128 · Node.js · Express.js · SQLAlchemy 2.0 · Pydantic v2 · JWT · Clerk Auth · RBAC · Microservices
 AI / ML         : LangChain · LangGraph · RAG Pipelines · Hybrid Search (Vector + BM25) · Cross-Encoder Reranking · FlashRank · Ollama · AI Agents · pgvector
 LLM Providers   : Groq (Llama 3.3) · Cerebras (GPT-OSS-120B) · Mistral (Magistral) · Google Gemini · OpenAI · Anthropic · DeepSeek · HuggingFace
 Databases       : PostgreSQL + pgvector · Supabase · MongoDB · Redis Stack 7.2 (HNSW) · Upstash Redis · Prisma ORM
-Cloud / DevOps  : Vercel · HuggingFace Spaces · Docker Compose · GitHub Actions CI/CD · Linux · Git
+Cloud / DevOps  : Vercel · Nitro · HuggingFace Spaces · Docker Compose · GitHub Actions CI/CD · Linux · Git
 ```
 
 ---
@@ -167,42 +196,49 @@ This repository is a production-grade personal portfolio built with modern web e
 ```
 milan-vision-labs/
 ├── src/
-│   ├── routes/              # TanStack Router file-based routes
-│   │   ├── index.tsx        # Home (Hero + Bento + Projects + Experience + Education)
-│   │   ├── about.tsx        # About page with journey timeline
-│   │   ├── work.index.tsx   # Projects listing
-│   │   ├── work.$slug.tsx   # Individual project case studies
-│   │   ├── blog.index.tsx   # Blog listing (Medium + local articles)
-│   │   ├── blog.$slug.tsx   # Individual blog post with TOC + code blocks
-│   │   ├── experience.tsx   # Work experience
-│   │   └── contact.tsx      # Contact form
+│   ├── routes/                  # TanStack Router file-based routes
+│   │   ├── __root.tsx           # Root layout (nav, footer, AI chat, command palette)
+│   │   ├── index.tsx            # Home (Hero + Bento + Projects + Experience + Education + Marquee + Articles + Testimonials + CTA)
+│   │   ├── about.tsx            # About page with journey timeline
+│   │   ├── work.index.tsx       # Projects listing
+│   │   ├── work.$slug.tsx       # Individual project case studies
+│   │   ├── blog.index.tsx       # Blog listing (Medium + local articles)
+│   │   ├── blog.$slug.tsx       # Individual blog post with TOC + code blocks
+│   │   ├── experience.tsx       # Work experience
+│   │   └── contact.tsx          # Contact form
 │   ├── components/
-│   │   ├── sections/        # Page sections (Hero, BentoGrid, FeaturedProjects, etc.)
-│   │   ├── ui/              # Reusable UI primitives (shadcn/ui + custom)
-│   │   └── blog/            # Blog components (TOC, code blocks, cards)
+│   │   ├── sections/            # Page sections (Hero, BentoGrid, FeaturedProjects, etc.)
+│   │   ├── ui/                  # 50+ reusable UI primitives (shadcn/ui + custom)
+│   │   └── blog/                # Blog components (TOC, code blocks, reading progress)
+│   ├── content/
+│   │   └── blog/                # Local markdown articles
 │   ├── lib/
-│   │   ├── site.ts          # Centralized data (projects, experience, tech stack)
-│   │   ├── chat.ts          # Gemini AI chat server function
-│   │   └── blog.ts          # Article types and server functions
-│   └── hooks/               # Custom React hooks
-├── public/                  # Static assets
-├── vite.config.ts           # Vite + TanStack Start + Nitro
-├── components.json          # shadcn/ui config (new-york style)
+│   │   ├── site.ts              # Centralized data (projects, experience, tech stack)
+│   │   ├── chat.ts              # Gemini AI chat server function
+│   │   ├── blog.ts              # Article types + server functions (local + Medium)
+│   │   ├── medium.functions.ts  # Medium RSS feed integration
+│   │   ├── sound.tsx            # Sound effects
+│   │   └── utils.ts             # Utility functions
+│   ├── hooks/                   # Custom React hooks
+│   └── styles.css               # Tailwind v4 + oklch Aurora design tokens
+├── public/                      # Static assets (favicon, images, resume, blog covers)
+├── vite.config.ts               # Vite + TanStack Start + Nitro
+├── components.json              # shadcn/ui config (new-york style)
 └── package.json
 ```
 
 ### Key Features
 
-- **Dynamic Hero Section** — Ambient drifting background blobs, noise overlays, and scroll-linked parallax
+- **Dynamic Hero Section** — Ambient drifting blobs, noise overlays, and scroll-linked parallax
 - **Bento Grid Layout** — Re-engineered project card stacking with solid backdrops to prevent visual bleed-through
 - **Tech Marquee** — Infinite scrolling technology showcase with dual-row animation
-- **WebGL Background** — Three.js-powered ambient background (lazy-loaded for performance)
+- **WebGL Background** — Three.js-powered neural network particle system (lazy-loaded for performance)
 - **Command Palette** — Cmd+K search interface for quick navigation
-- **AI Chat** — Gemini-powered chat assistant with portfolio context (contextual on blog posts)
-- **Blog System** — Markdown-based with TOC sidebar, code blocks with copy button, proof-of-work badges
+- **AI Chat** — Gemini-powered chat assistant with portfolio context (scoped to article content on blog posts)
+- **Blog System** — Markdown-based with TOC sidebar, code blocks with syntax highlighting, reading progress, and Medium RSS integration
 - **Scroll Progress** — Visual scroll indicator with aurora gradient
-- **Glassmorphic Design System** — Custom oklch "Aurora" color palette with glass effects
-- **SEO Optimized** — Meta tags, Open Graph, canonical URLs, structured data (JSON-LD)
+- **Glassmorphic Design System** — Custom oklch "Aurora" color palette with glass effects, powered by Tailwind CSS v4
+- **SEO Optimized** — Meta tags, Open Graph, canonical URLs, structured data (JSON-LD), sitemap, robots.txt
 
 ---
 
@@ -211,7 +247,7 @@ milan-vision-labs/
 ```bash
 # Clone the repository
 git clone https://github.com/Iammilansoni/milansoni.git
-cd milansoni
+cd milan-vision-labs
 
 # Install dependencies
 bun install    # or npm install
@@ -232,6 +268,7 @@ bun preview    # or npm run preview
 |---------|-------------|
 | `bun dev` | Start Vite dev server |
 | `bun build` | Production build |
+| `bun build:dev` | Development-mode build |
 | `bun preview` | Preview production build |
 | `bun lint` | Run ESLint |
 | `bun format` | Format with Prettier |
@@ -240,7 +277,7 @@ bun preview    # or npm run preview
 
 ## Deployment
 
-This portfolio is deployed on **Vercel** with automatic deployments from the `main` branch.
+This portfolio is deployed on **Vercel** with automatic deployments from the `main` branch. The build uses **Nitro** with the Vercel preset for edge-optimized server-side rendering.
 
 **Live:** [https://milansoni.vercel.app](https://milansoni.vercel.app)
 
@@ -261,7 +298,7 @@ This portfolio is deployed on **Vercel** with automatic deployments from the `ma
 
 <div align="center">
 
-**Built with React 19, TanStack Start, Tailwind CSS v4, and Framer Motion.**
+**Built with React 19, TanStack Start, Tailwind CSS v4, Three.js, and Framer Motion.**
 
 Designed & Developed with passion by Milan Soni.
 
