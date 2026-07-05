@@ -66,7 +66,7 @@ const PROOF_POINTS = [
     kicker: "⭐ Open Source",
     headline: "10.9k Stars",
     sub: "OmniRoute AI Gateway · 280+ Contributors",
-    detail: "Synchronized 42 international locales and corrected architectural metrics for a major AI gateway project, earning direct merge into the v3.8.44 release branch.",
+    detail: "3 PRs merged (docs/i18n across 42 locales, Claude 5 Sonnet provider registry, accessible UI filter) — all shipped in v3.8.44/v3.8.45 releases. Plus a provider-flag design adopted into the maintainer's shipped fix.",
     accent: "aurora-3",
     links: [
       { label: "GitHub Repo", href: "https://github.com/diegosouzapw/OmniRoute" },

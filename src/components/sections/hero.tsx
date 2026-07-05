@@ -199,6 +199,13 @@ export const Hero = memo(function Hero() {
           <span className="font-display text-xl md:text-2xl text-foreground">3+</span>
           <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">Enterprise Internships</span>
         </div>
+        <div className="w-px h-8 md:h-10 bg-hairline" />
+        <a href="https://github.com/diegosouzapw/OmniRoute" target="_blank" rel="noreferrer" className="flex flex-col items-center pointer-events-auto group hover:opacity-80 transition-opacity">
+          <span className="font-display text-xl md:text-2xl text-foreground group-hover:text-aurora-2 transition-colors flex items-center gap-1">
+            10.9k★ <ArrowUpRight className="h-3 w-3 md:h-4 md:w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+          </span>
+          <span className="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-muted-foreground">Open Source · OmniRoute</span>
+        </a>
       </motion.div>
     </motion.section>
   );

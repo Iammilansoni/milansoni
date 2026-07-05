@@ -183,9 +183,11 @@ export const EXPERIENCE = [
     period: "Jul 2026",
     location: "Remote",
     highlights: [
-      "Synchronized 42 international locales with upstream architectural changes, eliminating documentation drift across the gateway's global user base",
-      "Optimized repository metadata accuracy by expanding tracked routing strategies (13 → 17) and service modules (36 → 134) to reflect actual codebase structure",
-      "Ensured zero-regression deployment through automated docs-sync-strict validation, earning direct merge approval into the v3.8.44 release branch",
+      "Audited and normalized 9 core docs and 20+ localized READMEs across 42 locales, removing untranslated Portuguese/Chinese prose and correcting stale architecture metrics (routing strategies 13 → 17, service modules 36 → 134) — passed docs-sync-strict CI gate, merged into v3.8.44 (PR #6105)",
+      "Shipped Claude 5 Sonnet support in the provider registry within hours of a user-reported bug, including regression test coverage — merged into v3.8.45 (PR #6209)",
+      "Designed and shipped an accessible 'Configured Only' toggle for the provider-rankings dashboard, iterating through code review to add test coverage and memory-leak safeguards — merged into v3.8.45 (PR #6245)",
+      "Diagnosed an HTTP 400 regression for strict LLM providers caused by system-message ordering in the memory-injection pipeline; delivered a tested fix with a systemMessageMustBeFirst provider flag — design adopted into the maintainer's shipped fix (PR #6172, in review)",
+      "Proposed a core schema extension to standardize reasoning-model parameters (effort/thinking) across the multi-provider routing platform (Issue #6241, under discussion)",
     ],
   },
   {
