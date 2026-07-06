@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LlmsRouteImport } from './routes/llms'
 import { Route as ExperienceRouteImport } from './routes/experience'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
@@ -18,6 +19,11 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as WorkSlugRouteImport } from './routes/work.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
+const LlmsRoute = LlmsRouteImport.update({
+  id: '/llms',
+  path: '/llms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ExperienceRoute = ExperienceRouteImport.update({
   id: '/experience',
   path: '/experience',
@@ -64,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/experience': typeof ExperienceRoute
+  '/llms': typeof LlmsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/work/$slug': typeof WorkSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -74,6 +81,7 @@ export interface FileRoutesByTo {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/experience': typeof ExperienceRoute
+  '/llms': typeof LlmsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/work/$slug': typeof WorkSlugRoute
   '/blog': typeof BlogIndexRoute
@@ -85,6 +93,7 @@ export interface FileRoutesById {
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/experience': typeof ExperienceRoute
+  '/llms': typeof LlmsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/work/$slug': typeof WorkSlugRoute
   '/blog/': typeof BlogIndexRoute
@@ -97,6 +106,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/experience'
+    | '/llms'
     | '/blog/$slug'
     | '/work/$slug'
     | '/blog/'
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/experience'
+    | '/llms'
     | '/blog/$slug'
     | '/work/$slug'
     | '/blog'
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/about'
     | '/contact'
     | '/experience'
+    | '/llms'
     | '/blog/$slug'
     | '/work/$slug'
     | '/blog/'
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   ExperienceRoute: typeof ExperienceRoute
+  LlmsRoute: typeof LlmsRoute
   BlogSlugRoute: typeof BlogSlugRoute
   WorkSlugRoute: typeof WorkSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
@@ -136,6 +149,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/llms': {
+      id: '/llms'
+      path: '/llms'
+      fullPath: '/llms'
+      preLoaderRoute: typeof LlmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/experience': {
       id: '/experience'
       path: '/experience'
@@ -200,6 +220,7 @@ const rootRouteChildren: RootRouteChildren = {
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   ExperienceRoute: ExperienceRoute,
+  LlmsRoute: LlmsRoute,
   BlogSlugRoute: BlogSlugRoute,
   WorkSlugRoute: WorkSlugRoute,
   BlogIndexRoute: BlogIndexRoute,

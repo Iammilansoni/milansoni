@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "Milan Soni is a Full Stack + AI Developer building production RAG pipelines, multi-agent AI systems, and scalable enterprise platforms. SIH 2023 National Winner (Coal India & CMPDI). Scopus-indexed researcher. 6 AI agents deployed across 4 providers. $0/month infrastructure.",
+    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 10.8k★ open-source AI gateway (3 PRs merged, 21,000+ tests), built a 6-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams), and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -183,11 +183,11 @@ export const EXPERIENCE = [
     period: "Jul 2026",
     location: "Remote",
     highlights: [
-      "Audited and normalized 9 core docs and 20+ localized READMEs across 42 locales, removing untranslated Portuguese/Chinese prose and correcting stale architecture metrics (routing strategies 13 → 17, service modules 36 → 134) — passed docs-sync-strict CI gate, merged into v3.8.44 (PR #6105)",
-      "Shipped Claude 5 Sonnet support in the provider registry within hours of a user-reported bug, including regression test coverage — merged into v3.8.45 (PR #6209)",
-      "Designed and shipped an accessible 'Configured Only' toggle for the provider-rankings dashboard, iterating through code review to add test coverage and memory-leak safeguards — merged into v3.8.45 (PR #6245)",
-      "Diagnosed an HTTP 400 regression for strict LLM providers caused by system-message ordering in the memory-injection pipeline; delivered a tested fix with a systemMessageMustBeFirst provider flag — design adopted into the maintainer's shipped fix (PR #6172, in review)",
-      "Proposed a core schema extension to standardize reasoning-model parameters (effort/thinking) across the multi-provider routing platform (Issue #6241, under discussion)",
+      "Diagnosed an HTTP 400 regression in the memory-injection pipeline affecting strict LLM providers (Xiaomi MiMo); proposed a declarative systemMessageMustBeFirst Zod schema flag adopted by the maintainer into the shipped fix — 25/25 Vitest + 30/30 Node test-runner coverage (PR #6225)",
+      "Built an accessible 'Configured Only' filter toggle for the provider-rankings dashboard, mapping live connection state to a filterable data grid — 168 additions across 4 files, 9/9 tests passing, shipped into v3.8.45 (PR #6245)",
+      "Integrated Claude 5 Sonnet into the claude_web provider registry with regression test coverage, shipping a verified signed commit within hours of the model's release (PR #6209, v3.8.45)",
+      "Audited and normalized 9 core docs + 20+ localized READMEs across 42 locales, removing untranslated Portuguese/Chinese prose and correcting stale architecture metrics (routing strategies 13→17, service modules 36→134) — passed docs-sync-strict CI gate with zero regressions (PR #6105, v3.8.44)",
+      "Proposed a schema extension (Issue #6241) to standardize effort and thinking parameters across the multi-provider routing platform for next-gen reasoning models",
     ],
   },
   {
@@ -196,9 +196,8 @@ export const EXPERIENCE = [
     period: "Oct – Dec 2025",
     location: "Remote",
     highlights: [
-      "Architected FastAPI microservices + Next.js / TypeScript dashboards for NLPForge-Tester, an enterprise LLM API testing platform",
-      "Containerized via Docker with automated CI/CD pipelines on Linux servers",
-      "Engineered two-stage semantic retrieval (Redis Vector DB + FlashRank neural re-ranking) — improved template matching by 40% and cut manual QA effort by ~60%",
+      "Built a two-stage semantic retrieval pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for NLPForge, an enterprise LLM API testing platform — improved template matching accuracy by 40% and reduced manual QA effort by 60%",
+      "Shipped async FastAPI microservices + Next.js/TypeScript dashboards with Docker Compose orchestration and CI/CD on Linux servers",
     ],
   },
   {
@@ -207,9 +206,8 @@ export const EXPERIENCE = [
     period: "Jul 2025 – Aug 2025",
     location: "Remote",
     highlights: [
-      "Architected SmartLearnX, an AI-powered Learning Management System utilizing React, Node.js, and FastAPI microservices",
-      "Engineered a dropout prediction model (Logistic Regression, 91.4% accuracy) and academic forecasting system (Random Forest, 0.89 R²)",
-      "Integrated NLP features (BERT, spaCy) for automated quiz generation and a 24/7 intelligent virtual chatbot assistant",
+      "Built SmartLearnX, an AI-powered LMS, with a dropout prediction model (Logistic Regression, 91.4% accuracy) and academic performance forecasting (Random Forest, R² = 0.89) deployed as a FastAPI microservice alongside a React/Node.js frontend",
+      "Integrated NLP features (BERT for quiz generation, spaCy chatbot) serving 24/7 student support with sub-2-second response times under load",
     ],
   },
   {
@@ -218,9 +216,8 @@ export const EXPERIENCE = [
     period: "May – Jul 2025",
     location: "Jaipur",
     highlights: [
-      "Led FinSageAI360, an AI-driven financial intelligence platform (Next.js, Redux, Tailwind CSS, Prisma ORM) with real-time KPI dashboards",
-      "Designed secure REST API backend (Node.js + Express.js + MongoDB) with JWT auth and RBAC",
-      "Reduced manual operational effort by 30% and accelerated financial report generation by 45%",
+      "Led FinSageAI360, a multi-tenant financial intelligence SaaS — cut monthly close reporting time by 45% and reduced manual operational effort by 30% through AI-driven anomaly detection and real-time KPI dashboards",
+      "Designed a JWT-authenticated REST API (Node.js/Express/MongoDB) with granular RBAC for multi-tenant data isolation",
     ],
   },
   {
@@ -229,9 +226,8 @@ export const EXPERIENCE = [
     period: "Jun – Aug 2024",
     location: "Delhi",
     highlights: [
-      "Optimized enterprise document search via LangChain + FAISS vector embeddings — reduced query latency by 70% across 10,000+ documents",
-      "Designed and integrated RESTful APIs (Node.js) to automate logistics workflows",
-      "Improved retrieval accuracy by 40% and eliminated 20% of manual data-entry tasks",
+      "Optimized enterprise document search by implementing LangChain + FAISS vector embeddings — reduced query latency by 70% across 10,000+ documents and improved retrieval accuracy by 40%",
+      "Built RESTful APIs (Node.js) to automate logistics workflows, eliminating 20% of manual data-entry tasks",
     ],
   },
 ] as const;
