@@ -32,38 +32,29 @@ AWARDS & RECOGNITION:
 
 WORK EXPERIENCE:
 
-1. OmniRoute — Open Source Contributor (Jul 2026, Remote)
-   - Contributed to OmniRoute (10.8k★ GitHub stars), the largest open-source universal AI gateway
-   - Shipped Claude 5 Sonnet integration into provider registry (PR #6209, v3.8.45)
-   - Designed accessible "Configured Only" filter for provider-rankings dashboard with full Vitest test suite (PR #6245)
-   - Diagnosed HTTP 400 regression for strict LLM providers — proposed systemMessageMustBeFirst flag, design adopted by maintainer (PR #6225)
-   - Audited and normalized 9 core docs + 20+ localized READMEs across 42 locales (PR #6105)
-   - 25/25 Vitest + 30/30 Node test-runner coverage on all contributions
+1. OmniRoute (10.8k★) — Open Source Contributor (Jul 2026, Remote)
+   - Diagnosed HTTP 400 regression in memory-injection pipeline for strict LLM providers; proposed declarative Zod schema flag adopted by maintainer (PR #6225, 25/25 Vitest + 30/30 Node coverage)
+   - Built accessible "Configured Only" filter toggle mapping live connection state to filterable data grid (PR #6245, 168 additions, 9/9 tests, v3.8.45)
+   - Integrated Claude 5 Sonnet into provider registry with regression test (PR #6209, v3.8.45)
+   - Normalized 9 core docs + 20+ READMEs across 42 locales, zero regressions (PR #6105, v3.8.44)
+   - Proposed schema extension for reasoning-model parameters (Issue #6241)
 
 2. nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct–Dec 2025, Remote)
-   - Built NLPForge-Tester: enterprise LLM API testing platform
-   - FastAPI microservices + Next.js/TypeScript dashboards
-   - Two-stage semantic retrieval (Redis Vector + FlashRank) → 40% better template matching, 60% less QA effort
-   - Docker containerization + CI/CD pipelines
+   - Built two-stage semantic retrieval pipeline (Ollama → Redis HNSW → FlashRank) for NLPForge enterprise LLM testing platform
+   - 40% accuracy improvement, 60% QA effort reduction
+   - Async FastAPI microservices + Next.js/TypeScript dashboards, Docker Compose + CI/CD
 
 3. Freelance Client — AI & Full Stack Developer (Jul–Aug 2025, Remote)
-   - Built SmartLearnX: AI-powered Learning Management System
-   - React + Node.js + FastAPI microservices
-   - Dropout prediction ML model (Logistic Regression, 91.4% accuracy)
-   - Academic forecasting (Random Forest, R²=0.89)
-   - BERT + spaCy for NLP quiz generation + chatbot
+   - Built SmartLearnX AI-powered LMS: dropout prediction (Logistic Regression, 91.4%), academic forecasting (Random Forest, R²=0.89)
+   - BERT quiz generation, spaCy chatbot, sub-2s response times under load
 
 4. OBG Outsourcing Pvt. Ltd. — Full Stack Developer Intern (May–Jul 2025, Jaipur)
-   - Led FinSageAI360: AI-driven financial intelligence platform
-   - Next.js + Redux + Tailwind + Prisma ORM
-   - Node.js + Express + MongoDB backend with JWT + RBAC
-   - Reduced manual effort by 30%, accelerated report generation by 45%
+   - Led FinSageAI360 multi-tenant financial intelligence SaaS: +45% report speed, +30% efficiency
+   - JWT-authenticated REST API with granular RBAC for multi-tenant data isolation
 
 5. Om Logistics Ltd. — Software Developer Intern (Jun–Aug 2024, Delhi)
-   - LangChain + FAISS vector embeddings for enterprise document search
-   - Reduced query latency by 70% across 10,000+ documents
-   - RESTful APIs for logistics workflow automation
-   - Improved retrieval accuracy by 40%, eliminated 20% manual data entry
+   - LangChain + FAISS vector embeddings: 70% latency reduction across 10,000+ documents, 40% accuracy improvement
+   - RESTful APIs eliminating 20% manual data-entry tasks
 
 KEY PROJECTS:
 

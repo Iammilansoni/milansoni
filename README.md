@@ -25,12 +25,12 @@
 
 ## About Me
 
-I'm **Milan Soni**, an AI Engineer and Full Stack Developer based in Churu, Rajasthan. I specialize in transforming complex real-world bottlenecks into intelligent, automated, and beautifully designed software systems.
+I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure.
 
 - **SIH 2023 National Winner** — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
+- **Open Source Contributor** — 3 PRs merged to OmniRoute (10.8k★), 21,000+ tests, across 4 releases
 - **Scopus-Indexed Researcher** — Peer-reviewed paper on hybrid attention-based temporal modeling (PICET-2026, IET Conference Proceedings)
 - **CS Graduate (2026)** — B.Tech CSE from Global Institute of Technology, Jaipur (CGPA: 8.10)
-- **3 Enterprise Internships + Open Source** — Shipped production systems at nTheta Works, OBG Outsourcing, and Om Logistics + contributed to OmniRoute
 
 ---
 
@@ -139,11 +139,11 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
-| Open Source Contributor | [OmniRoute](https://github.com/diegosouzapw/OmniRoute) | Jul 2026 | 3 PRs merged (docs/i18n, provider registry, UI filter) across v3.8.44–v3.8.45 |
-| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval, 40% accuracy improvement |
-| AI & Full Stack Developer | Freelance | Jul – Aug 2025 | 91.4% dropout prediction, NLP chatbot |
-| Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | +45% report speed, +30% efficiency |
-| Software Developer Intern | Om Logistics | Jun – Aug 2024 | 70% latency reduction, 10K+ docs |
+| Open Source Contributor | [OmniRoute](https://github.com/diegosouzapw/OmniRoute) (10.8k★) | Jul 2026 | 3 PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
+| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval pipeline: 40% accuracy improvement, 60% QA reduction |
+| AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
+| Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
+| Software Developer Intern | Om Logistics | Jun – Aug 2024 | LangChain + FAISS: 70% latency reduction across 10K+ docs |
 
 ---
 
@@ -155,23 +155,19 @@ Contributed to the largest open-source universal AI gateway — a single OpenAI-
 
 ### Frontend Engineering (React / Next.js)
 
-Designed and shipped an accessible **"Configured Only"** filter for the live provider-rankings dashboard. Fetches live connection state from `/api/providers`, filters rankings table and podium view in real time, adds a "Status" column with empty-state handling. Implemented as `role="switch"` with `aria-checked` for screen reader accessibility. Iterated through code review to add a `useEffect` cleanup flag preventing memory leaks on unmount, plus a full Vitest test suite. **168 additions across 4 files, 9/9 tests passing.**
+Shipped an accessible **"Configured Only"** filter for the provider-rankings dashboard — maps live `/api/providers` connection state to a filterable data grid with a "Status" column, `role="switch"` with `aria-checked` for screen reader accessibility, `useEffect` cleanup for memory-leak prevention, and a full Vitest suite. **168 additions across 4 files, 9/9 tests passing (PR #6245, v3.8.45).**
 
 ### API & Provider Integrations (Claude 5 Sonnet)
 
-Integrated the newly released **Claude 5 Sonnet** into the `claude_web` provider registry at `open-sse/config/providers/registry/claude/web/index.ts` with a registry regression test per the repo's coverage requirement. Learned to validate against the full test suite before submitting — an earlier attempt was superseded by the corrected version. **Shipped with a "Verified" signed commit into v3.8.45.**
+Integrated **Claude 5 Sonnet** into the `claude_web` provider registry with a registry regression test, shipping a verified signed commit within hours of the model's release. **PR #6209, v3.8.45.**
 
 ### Architecture & CI/CD Pipelines
 
-Audited 9 core docs containing untranslated Portuguese/Chinese prose mixed into English-only documents, plus ~20 localized READMEs carrying duplicated OAuth blocks. Normalized all flagged docs, consolidated a trilingual Fly.io deployment guide, and corrected stale architecture facts (routing strategies **13 → 17**, service modules **36 → 134**). Verified against `docs-sync-strict` CI gate across all **42 locales** — zero regressions.
+Audited 9 core docs and ~20 localized READMEs across 42 locales, removing untranslated Portuguese/Chinese prose and correcting stale architecture facts (routing strategies **13→17**, service modules **36→134**). Passed `docs-sync-strict` CI gate — **zero regressions (PR #6105, v3.8.44).**
 
 ### Core Backend Logic & Schema Design
 
-Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP 400 when a memory-injected system message lands at a non-zero array index. Proposed a **declarative Zod schema** approach: a `systemMessageMustBeFirst` flag in the provider schema plus branching logic in `injectMemory()` — the maintainer validated this over a hardcoded alternative and adopted the naming into the broader shipped fix (PR #6225). **25/25 Vitest + 30/30 Node test-runner coverage.**
-
-### Key Takeaways
-
-This contribution bridged the gap between academic learning and high-scale production engineering in three ways. First, working against a live 10.8k★ codebase with 21,000+ tests forced a discipline around CI/CD validation that no coursework replicates — every change had to pass `docs-sync-strict` across 42 locales or it didn't ship. Second, the schema design feedback loop with the maintainer taught me how production systems evolve through collaboration, not just code — the declarative approach won because it was extensible, not because it was cleverer. Third, iterating through code review (memory-leak safeguards, test coverage, lint compliance) built the muscle for shipping code that other engineers actually depend on.
+Diagnosed an HTTP 400 regression for strict LLM providers (Xiaomi MiMo) caused by system-message ordering in the memory-injection pipeline. Proposed a **declarative Zod schema** with a `systemMessageMustBeFirst` flag — adopted by the maintainer into the broader shipped fix. **25/25 Vitest + 30/30 Node test-runner coverage (PR #6225).**
 
 ---
 
