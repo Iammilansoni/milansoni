@@ -23,7 +23,7 @@ export function ExperienceTimeline() {
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Experience</p>
-          <h2 className="mt-3 font-display text-5xl md:text-7xl max-w-3xl leading-[0.9]">
+          <h2 className="mt-3 font-display text-display max-w-3xl leading-[0.9]">
             Shipping inside <br className="hidden md:block"/>
             <span className="text-aurora">real engineering teams.</span>
           </h2>
@@ -35,7 +35,7 @@ export function ExperienceTimeline() {
           
           {/* Animated glowing line */}
           <motion.div 
-            className="absolute left-[15px] md:left-1/2 top-0 w-px md:-translate-x-1/2 bg-linear-to-b from-aurora-1 via-aurora-2 to-aurora-3 shadow-[0_0_15px_rgba(255,255,255,0.8)] z-10"
+            className="absolute left-[15px] md:left-1/2 top-0 w-px md:-translate-x-1/2 bg-linear-to-b from-aurora-1 via-aurora-2 to-aurora-3 dark:shadow-[0_0_15px_rgba(255,255,255,0.8)] shadow-[0_0_10px_color-mix(in_oklab,var(--aurora-1)_40%,transparent)] z-10"
             style={{ height: lineHeight }}
           />
 
