@@ -2,8 +2,9 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Points, PointMaterial } from "@react-three/drei";
 import * as THREE from "three";
+import { useTheme } from "@/lib/theme";
 
-function NeuralNetwork({ count = 2000 }) {
+function NeuralNetwork({ count = 2000, dark = true }: { count?: number; dark?: boolean }) {
   const ref = useRef<THREE.Points>(null);
 
   // Generate random points in a sphere
@@ -40,11 +41,11 @@ function NeuralNetwork({ count = 2000 }) {
       <Points ref={ref} positions={positions} stride={3} frustumCulled={false}>
         <PointMaterial
           transparent
-          color="#b088f5"
+          color={dark ? "#b088f5" : "#4c1d95"}
           size={0.015}
           sizeAttenuation={true}
           depthWrite={false}
-          blending={THREE.AdditiveBlending}
+          blending={dark ? THREE.AdditiveBlending : THREE.NormalBlending}
         />
       </Points>
     </group>
@@ -52,10 +53,19 @@ function NeuralNetwork({ count = 2000 }) {
 }
 
 export function WebGLBackground() {
+  const { theme } = useTheme();
+  const dark = theme === "dark";
+
+  // `screen` + additive blending glow beautifully on the near-black canvas but
+  // vanish completely against light paper — there we darken instead.
   return (
-    <div className="absolute inset-0 z-[-1] opacity-60 mix-blend-screen pointer-events-none">
+    <div
+      className={`absolute inset-0 z-[-1] pointer-events-none ${
+        dark ? "opacity-60 mix-blend-screen" : "opacity-70 mix-blend-multiply"
+      }`}
+    >
       <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
-        <NeuralNetwork />
+        <NeuralNetwork dark={dark} />
       </Canvas>
     </div>
   );
