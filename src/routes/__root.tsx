@@ -19,7 +19,7 @@ import { ScrollProgress } from "@/components/scroll-progress";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { Preloader } from "@/components/preloader";
 import { SoundProvider } from "@/lib/sound";
-import { ThemeProvider, themeInitScript } from "@/lib/theme";
+import { ThemeProvider, themeInitScript, useTheme } from "@/lib/theme";
 import { AmbientBlobs } from "@/components/ambient-blobs";
 import { AiChat } from "@/components/ai-chat";
 import { SITE } from "@/lib/site";
@@ -190,50 +190,56 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-      <SoundProvider>
-        {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
-        
-        {/* 
-          Always render the main content so that it is included in the SSR HTML payload.
-          This allows AI bots and search engine crawlers to read the content.
-          We visually hide it until the preloader finishes using opacity and pointer-events. 
-        */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: preloaderDone ? 1 : 0 }}
-          transition={{ duration: 1 }}
-          style={{
-            pointerEvents: preloaderDone ? "auto" : "none",
-            height: preloaderDone ? "auto" : "100vh",
-            overflow: preloaderDone ? "visible" : "hidden"
-          }}
-        >
-          <div className="fixed inset-0 z-50 pointer-events-none noise" aria-hidden="true" />
-          {/* Global ambient drifting blobs — visible on every page */}
-          <AmbientBlobs className="fixed z-1" opacity={0.6} />
-          <CustomCursor />
-          <ScrollProgress />
-          <Nav onOpenCommand={() => setCmdOpen(true)} />
-          <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
-          <main id="main-content" className="pt-24">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={location.pathname}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: reduce ? 0 : 0.25 }}
-              >
-                <Outlet />
-              </motion.div>
-            </AnimatePresence>
-          </main>
-          <Footer />
-          {!location.pathname.startsWith("/blog/") && <AiChat />}
-          <Toaster theme="dark" position="bottom-right" richColors />
-        </motion.div>
-      </SoundProvider>
+        <SoundProvider>
+          {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
+
+          {/*
+            Always render the main content so that it is included in the SSR HTML payload.
+            This allows AI bots and search engine crawlers to read the content.
+            We visually hide it until the preloader finishes using opacity and pointer-events.
+          */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: preloaderDone ? 1 : 0 }}
+            transition={{ duration: 1 }}
+            style={{
+              pointerEvents: preloaderDone ? "auto" : "none",
+              height: preloaderDone ? "auto" : "100vh",
+              overflow: preloaderDone ? "visible" : "hidden"
+            }}
+          >
+            <div className="fixed inset-0 z-50 pointer-events-none noise" aria-hidden="true" />
+            {/* Global ambient drifting blobs — visible on every page */}
+            <AmbientBlobs className="fixed z-1" opacity={0.6} />
+            <CustomCursor />
+            <ScrollProgress />
+            <Nav onOpenCommand={() => setCmdOpen(true)} />
+            <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
+            <main id="main-content" className="pt-24">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={location.pathname}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: reduce ? 0 : 0.25 }}
+                >
+                  <Outlet />
+                </motion.div>
+              </AnimatePresence>
+            </main>
+            <Footer />
+            {!location.pathname.startsWith("/blog/") && <AiChat />}
+            <ThemedToaster />
+          </motion.div>
+        </SoundProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
+}
+
+/** Toaster that follows the active theme (must live under ThemeProvider). */
+function ThemedToaster() {
+  const { theme } = useTheme();
+  return <Toaster theme={theme} position="bottom-right" richColors />;
 }
