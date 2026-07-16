@@ -19,6 +19,7 @@ import { ScrollProgress } from "@/components/scroll-progress";
 import { CustomCursor } from "@/components/ui/custom-cursor";
 import { Preloader } from "@/components/preloader";
 import { SoundProvider } from "@/lib/sound";
+import { ThemeProvider, themeInitScript } from "@/lib/theme";
 import { AmbientBlobs } from "@/components/ambient-blobs";
 import { AiChat } from "@/components/ai-chat";
 import { SITE } from "@/lib/site";
@@ -84,7 +85,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: SITE.title },
       { name: "description", content: SITE.description },
       { name: "author", content: SITE.name },
-      { name: "theme-color", content: "#0a0a14" },
+      { name: "theme-color", content: "#f5f3fa" },
       { property: "og:site_name", content: SITE.name },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "Milan Soni Portfolio | Software Engineer & GenAI Engineer" },
@@ -158,8 +159,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Set theme class before paint — no flash of the wrong theme */}
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <HeadContent />
       </head>
       <body>
@@ -186,6 +189,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
       <SoundProvider>
         {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
         
@@ -229,6 +233,7 @@ function RootComponent() {
           <Toaster theme="dark" position="bottom-right" richColors />
         </motion.div>
       </SoundProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }

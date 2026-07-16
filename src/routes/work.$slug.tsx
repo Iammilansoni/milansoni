@@ -94,7 +94,7 @@ function CaseStudy() {
           )}
 
           {p.heroImage && (
-            <div className="mt-16 w-full rounded-3xl border border-hairline bg-black/40 p-2 shadow-2xl backdrop-blur-sm overflow-hidden">
+            <div className="mt-16 w-full rounded-3xl border border-hairline bg-foreground/[0.03] p-2 shadow-2xl backdrop-blur-sm overflow-hidden">
               <img src={p.heroImage} alt={`${p.name} UI`} loading="eager" fetchPriority="high" className="w-full rounded-2xl object-cover border border-hairline/50" />
             </div>
           )}
