@@ -241,8 +241,7 @@ export const Hero = memo(function Hero() {
 
         <KineticName
           text="MILAN SONI"
-          className="font-display text-hero font-bold text-foreground mix-blend-plus-lighter"
-          style={{ filter: "brightness(1.3) drop-shadow(0 0 30px color-mix(in oklab, var(--aurora-1) 40%, transparent))" }}
+          className="font-display text-hero font-bold text-foreground hero-bright"
         />
 
         <div className="mt-6 flex flex-col items-center gap-3 w-full max-w-2xl px-4">

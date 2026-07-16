@@ -22,7 +22,7 @@ export function CTASection() {
         <div className="absolute inset-0 bg-gradient-to-t from-aurora-1/20 to-transparent blur-3xl opacity-50 rounded-[4rem] -z-10" />
         
         <div className="glass rounded-[3rem] p-12 md:p-24 text-center overflow-hidden border border-hairline/50 relative">
-          <div className="absolute inset-0 aurora-bg opacity-30 mix-blend-screen" />
+          <div className="absolute inset-0 aurora-bg opacity-30 dark:mix-blend-screen" />
           
           <div className="relative z-10 flex flex-col items-center justify-center">
             <p className="font-mono text-sm uppercase tracking-[0.3em] text-aurora-2 mb-8">
@@ -39,7 +39,7 @@ export function CTASection() {
             
             <div className="mt-16">
               <Magnetic strength={30}>
-                <Link to="/contact" className="relative inline-flex items-center justify-center rounded-full bg-foreground text-background px-12 py-6 text-xl font-medium transition duration-500 hover:scale-105 hover:bg-aurora-1 hover:text-primary-foreground dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] shadow-[0_0_40px_rgba(var(--aurora-1),0.15)] hover:shadow-[0_0_40px_rgba(var(--aurora-1),0.5)]">
+                <Link to="/contact" className="relative inline-flex items-center justify-center rounded-full bg-foreground text-background px-12 py-6 text-xl font-medium transition duration-500 hover:scale-105 hover:bg-aurora-1 hover:text-primary-foreground dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] shadow-[0_0_40px_color-mix(in_oklab,var(--aurora-1)_18%,transparent)] hover:shadow-[0_0_40px_color-mix(in_oklab,var(--aurora-1)_50%,transparent)]">
                   Start a conversation
                 </Link>
               </Magnetic>

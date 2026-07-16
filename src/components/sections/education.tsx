@@ -14,7 +14,7 @@ export function Education() {
 
   return (
     <section className="relative py-28 overflow-hidden bg-background">
-      <div className="absolute inset-0 aurora-bg opacity-30 mix-blend-screen pointer-events-none" />
+      <div className="absolute inset-0 aurora-bg opacity-30 dark:mix-blend-screen pointer-events-none" />
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Foundation</p>
