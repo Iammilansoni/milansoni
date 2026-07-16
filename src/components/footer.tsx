@@ -51,13 +51,13 @@ export function Footer() {
               href={SITE.socials.email}
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
-              className="group/btn inline-flex items-center justify-center gap-3 rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition-all hover:bg-aurora-1 hover:text-white shadow-lg"
+              className="group/btn inline-flex items-center justify-center gap-3 rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition-all hover:bg-aurora-1 hover:text-primary-foreground shadow-lg"
             >
               <TextRoll text="Send me a message" />
               <ArrowUpRight className="h-4 w-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
             </motion.a>
             <motion.a
-              href="/MilanSoni_resume.pdf"
+              href="/Milan_Soni_Resume.pdf"
               whileHover={{ scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
               className="inline-flex items-center justify-center gap-3 rounded-full border border-hairline bg-background/50 backdrop-blur-sm px-8 py-4 text-sm font-medium hover:bg-secondary transition-all"
