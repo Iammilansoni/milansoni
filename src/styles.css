@@ -63,7 +63,9 @@
   --color-hairline: var(--hairline);
 
   --shadow-glow: 0 0 80px -10px color-mix(in oklab, var(--primary) 40%, transparent);
-  --shadow-elevated: 0 30px 80px -20px oklch(0 0 0 / 0.6);
+  /* Resolves per-theme (see --elevated below) — a 60% black drop is right on
+     the near-black canvas but far too heavy on light paper. */
+  --shadow-elevated: var(--elevated);
 }
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -111,6 +113,7 @@
   --hairline: oklch(0.22 0.02 265 / 0.10);
   --blob-opacity: 0.14;
   --grain-opacity: 0.018;
+  --elevated: 0 24px 60px -24px oklch(0.22 0.02 265 / 0.20);
 
   --sidebar: oklch(0.99 0.003 265);
   --sidebar-foreground: oklch(0.24 0.022 265);
@@ -164,6 +167,7 @@
   --hairline: oklch(1 0 0 / 0.10);
   --blob-opacity: 0.09;
   --grain-opacity: 0.04;
+  --elevated: 0 30px 80px -20px oklch(0 0 0 / 0.6);
 
   --sidebar: oklch(0.14 0.012 264);
   --sidebar-foreground: oklch(0.97 0.005 240);
@@ -361,6 +365,18 @@
   }
 
   .hairline { border-color: var(--hairline); }
+
+  /* Cursor-revealed bright hero layer. Additive `plus-lighter` + a brightness
+     lift only make sense against the near-black canvas — on light paper they
+     blow the text out to white. There, the crisper full-strength ink (vs the
+     faded base layer) carries the reveal instead. */
+  .hero-bright {
+    mix-blend-mode: normal;
+  }
+  .dark .hero-bright {
+    mix-blend-mode: plus-lighter;
+    filter: brightness(1.3) drop-shadow(0 0 30px color-mix(in oklab, var(--aurora-1) 40%, transparent));
+  }
 
   .noise::after {
     content: "";
