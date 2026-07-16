@@ -3,6 +3,7 @@ import { Reveal } from "@/components/reveal";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Trophy, BookOpen, ArrowUpRight, Cpu, Globe, Database, Brain, Layers } from "lucide-react";
 import { Tilt } from "@/components/ui/tilt";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { AmbientBlobs } from "@/components/ambient-blobs";
 
 // ─── Data ────────────────────────────────────────────────────────────────────
@@ -114,6 +115,7 @@ export const BentoGrid = memo(function BentoGrid() {
           {CAPABILITIES.map((cap, i) => (
             <Reveal key={cap.area} delay={i * 0.07}>
               <Tilt>
+                <SpotlightCard className="rounded-3xl">
                 <div className="group glass rounded-3xl p-6 md:p-8 flex flex-col md:flex-row md:items-center justify-between gap-6 hover:bg-secondary/20 transition-all duration-500 relative overflow-hidden">
                   {/* Hover glow */}
                   <div className="absolute inset-0 bg-linear-to-r from-aurora-1/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
@@ -157,6 +159,7 @@ export const BentoGrid = memo(function BentoGrid() {
                     </div>
                   </div>
                 </div>
+                </SpotlightCard>
               </Tilt>
             </Reveal>
           ))}
@@ -169,6 +172,7 @@ export const BentoGrid = memo(function BentoGrid() {
           {PROOF_POINTS.map((p, i) => (
             <Reveal key={p.headline} delay={i * 0.1} className="md:col-span-4">
               <Tilt className="h-full">
+                <SpotlightCard className="rounded-3xl h-full">
                 <div className="glass rounded-3xl p-6 h-full flex flex-col gap-4 group hover:bg-secondary/20 transition-all duration-500 relative overflow-hidden">
                   <div className="absolute inset-0 bg-linear-to-br from-aurora-1/8 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   <div className="font-mono text-[10px] uppercase tracking-widest text-aurora-2">{p.kicker}</div>
@@ -195,6 +199,7 @@ export const BentoGrid = memo(function BentoGrid() {
                     </div>
                   )}
                 </div>
+                </SpotlightCard>
               </Tilt>
             </Reveal>
           ))}
@@ -202,6 +207,7 @@ export const BentoGrid = memo(function BentoGrid() {
           {/* Availability / Identity — the CTA card */}
           <Reveal className="md:col-span-4" delay={0.2}>
             <Tilt className="h-full">
+              <SpotlightCard className="rounded-3xl h-full">
               <div className="glass rounded-3xl p-6 md:p-8 h-full flex flex-col justify-between relative overflow-hidden group border border-aurora-1/10 hover:border-aurora-1/25 transition-all duration-500">
                 <div className="absolute inset-0 bg-linear-to-br from-aurora-1/10 to-aurora-3/5 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
 
@@ -229,6 +235,7 @@ export const BentoGrid = memo(function BentoGrid() {
                   Let's talk <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
               </div>
+              </SpotlightCard>
             </Tilt>
           </Reveal>
         </motion.div>

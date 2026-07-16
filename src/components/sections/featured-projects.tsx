@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowUpRight } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Reveal } from "@/components/reveal";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
 import { PROJECTS } from "@/lib/site";
 
 export function FeaturedProjects() {
@@ -51,6 +52,7 @@ function ProjectCard({ p, index, total }: { p: typeof PROJECTS[0], index: number
       className="origin-top"
     >
       <motion.div style={{ scale, opacity }} className="origin-top">
+        <SpotlightCard className="rounded-[3rem]">
         <Link
           to="/work/$slug"
           params={{ slug: p.slug }}
@@ -93,6 +95,7 @@ function ProjectCard({ p, index, total }: { p: typeof PROJECTS[0], index: number
             </div>
           </div>
         </Link>
+        </SpotlightCard>
       </motion.div>
     </motion.div>
   );
