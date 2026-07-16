@@ -94,7 +94,7 @@ export function RecentArticles() {
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
               <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Writing</p>
-              <h2 className="mt-3 font-display text-4xl md:text-6xl max-w-3xl">Articles & Insights</h2>
+              <h2 className="mt-3 font-display text-display max-w-3xl">Articles & Insights</h2>
             </div>
             <Link 
               to="/blog" 

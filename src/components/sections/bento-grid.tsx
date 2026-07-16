@@ -96,7 +96,7 @@ export const BentoGrid = memo(function BentoGrid() {
           <p className="font-mono text-xs uppercase tracking-widest text-aurora-2 flex items-center gap-2">
             <span className="text-muted-foreground/40">[02]</span> Capability Matrix
           </p>
-          <h2 className="mt-4 font-display text-5xl md:text-7xl max-w-4xl leading-[0.9]">
+          <h2 className="mt-4 font-display text-display max-w-4xl leading-[0.9]">
             What I build,{" "}
             <em className="italic text-aurora">
               and how deep
@@ -187,7 +187,7 @@ export const BentoGrid = memo(function BentoGrid() {
                           href={link.href}
                           target="_blank"
                           rel="noreferrer"
-                          className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full bg-background border border-hairline hover:bg-aurora-1 hover:text-white hover:border-aurora-1 transition-all"
+                          className="inline-flex items-center gap-1 font-mono text-[10px] uppercase tracking-widest px-3 py-1.5 rounded-full bg-background border border-hairline hover:bg-aurora-1 hover:text-primary-foreground hover:border-aurora-1 transition-all"
                         >
                           {link.label} <ArrowUpRight className="h-3 w-3" />
                         </a>

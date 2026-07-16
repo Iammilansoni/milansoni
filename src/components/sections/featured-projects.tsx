@@ -13,7 +13,7 @@ export function FeaturedProjects() {
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">
             Selected work · 2023 — 2026
           </p>
-          <h2 className="mt-3 font-display text-4xl md:text-6xl max-w-3xl">
+          <h2 className="mt-3 font-display text-display max-w-3xl">
             Production-grade systems, <span className="text-aurora">not class projects.</span>
           </h2>
         </Reveal>
@@ -54,7 +54,7 @@ function ProjectCard({ p, index, total }: { p: typeof PROJECTS[0], index: number
         <Link
           to="/work/$slug"
           params={{ slug: p.slug }}
-          className="group block bg-background rounded-[3rem] p-8 md:p-12 transition relative overflow-hidden shadow-[0_-20px_40px_rgba(0,0,0,0.4)] border border-hairline/50"
+          className="group block bg-background rounded-[3rem] p-8 md:p-12 transition relative overflow-hidden shadow-[var(--shadow-elevated)] border border-hairline/50"
         >
           {/* Solid hover overlay */}
           <div className="absolute inset-0 bg-secondary/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-0" />

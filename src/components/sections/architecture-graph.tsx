@@ -42,7 +42,7 @@ const initialNodes = [
   { id: 'gemini', type: 'custom', position: { x: 650, y: 340 }, data: { label: 'LLM Engine', subLabel: 'Gemini 2.0 Flash', icon: Bot, isActive: false } },
 ];
 
-const edgeStyle = { stroke: '#ffffff', strokeWidth: 2, opacity: 0.2 };
+const edgeStyle = { stroke: 'var(--muted-foreground)', strokeWidth: 2, opacity: 0.2 };
 const activeEdgeStyle = { stroke: '#a855f7', strokeWidth: 3, opacity: 1 };
 
 const initialEdges = [
@@ -172,7 +172,7 @@ export function ArchitectureGraph() {
           </div>
         </Reveal>
 
-        <div className="w-full h-[500px] bg-black/40 border border-hairline rounded-2xl overflow-hidden backdrop-blur-sm relative">
+        <div className="w-full h-[500px] bg-foreground/[0.03] border border-hairline rounded-2xl overflow-hidden backdrop-blur-sm relative">
           <ReactFlow
             nodes={nodes}
             edges={edges}
@@ -184,7 +184,7 @@ export function ArchitectureGraph() {
             proOptions={{ hideAttribution: true }}
             className="react-flow-glass"
           >
-            <Background color="#ffffff" gap={16} size={1} opacity={0.05} />
+            <Background color="var(--muted-foreground)" gap={16} size={1} opacity={0.08} />
           </ReactFlow>
         </div>
       </div>

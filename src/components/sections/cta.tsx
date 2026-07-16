@@ -29,7 +29,7 @@ export function CTASection() {
               Open to Opportunities
             </p>
             
-            <h2 className="font-display text-[10vw] md:text-[8vw] leading-[0.8] tracking-tighter text-gradient pb-6">
+            <h2 className="font-display text-hero text-gradient pb-6">
               LET'S TALK
             </h2>
             
@@ -39,7 +39,7 @@ export function CTASection() {
             
             <div className="mt-16">
               <Magnetic strength={30}>
-                <Link to="/contact" className="relative inline-flex items-center justify-center rounded-full bg-foreground text-background px-12 py-6 text-xl font-medium transition duration-500 hover:scale-105 hover:bg-aurora-1 hover:text-white shadow-[0_0_40px_rgba(255,255,255,0.1)] hover:shadow-[0_0_40px_rgba(var(--aurora-1),0.5)]">
+                <Link to="/contact" className="relative inline-flex items-center justify-center rounded-full bg-foreground text-background px-12 py-6 text-xl font-medium transition duration-500 hover:scale-105 hover:bg-aurora-1 hover:text-primary-foreground dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] shadow-[0_0_40px_rgba(var(--aurora-1),0.15)] hover:shadow-[0_0_40px_rgba(var(--aurora-1),0.5)]">
                   Start a conversation
                 </Link>
               </Magnetic>

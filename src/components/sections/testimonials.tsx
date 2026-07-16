@@ -22,7 +22,7 @@ export function Testimonials() {
       <div className="relative z-10 mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Signals</p>
-          <h2 className="mt-3 font-display text-4xl md:text-6xl max-w-3xl">What people say.</h2>
+          <h2 className="mt-3 font-display text-display max-w-3xl">What people say.</h2>
         </Reveal>
       </div>
 
@@ -45,7 +45,7 @@ export function Testimonials() {
                 <figure className="glass rounded-4xl p-8 md:p-10 h-full flex flex-col group relative overflow-hidden transition-all duration-700 hover:shadow-[0_0_40px_-10px_rgba(var(--aurora-1),0.3)] hover:border-aurora-1/30 hover:bg-secondary/20">
                   <div className="absolute -inset-24 bg-linear-to-br from-aurora-1/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl pointer-events-none" />
                   
-                  <blockquote className="font-display text-2xl md:text-3xl leading-snug relative z-10 group-hover:text-white transition-colors duration-500">"{q.quote}"</blockquote>
+                  <blockquote className="font-display text-2xl md:text-3xl leading-snug relative z-10 transition-colors duration-500">"{q.quote}"</blockquote>
                   <figcaption className="pt-6 border-t border-hairline mt-auto relative z-10 group-hover:border-aurora-1/20 transition-colors duration-500">
                     <div className="text-base font-medium text-foreground group-hover:text-aurora-2 transition-colors duration-500">{q.name}</div>
                     <div className="text-sm text-muted-foreground">{q.role}</div>

@@ -18,7 +18,7 @@ export function Education() {
       <div className="relative mx-auto max-w-7xl px-6">
         <Reveal>
           <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Foundation</p>
-          <h2 className="mt-3 font-display text-4xl md:text-6xl max-w-3xl">
+          <h2 className="mt-3 font-display text-display max-w-3xl">
             Education & <span className="text-aurora">Credentials.</span>
           </h2>
         </Reveal>
@@ -132,7 +132,7 @@ export function Education() {
                 </div>
               </div>
               <div className="relative z-10 shrink-0 w-full md:w-auto mt-4 md:mt-0">
-                <a href="https://www.linkedin.com/in/sonimilan/overlay/1720793634608/single-media-viewer/?profileId=ACoAAD8piA8BZ-BgPuiIf8eBWQ8P0fjWXPcdZbw" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center w-full md:w-auto gap-2 text-sm font-medium px-6 py-3 rounded-full bg-foreground text-background hover:bg-aurora-1 hover:text-white transition-colors">
+                <a href="https://www.linkedin.com/in/sonimilan/overlay/1720793634608/single-media-viewer/?profileId=ACoAAD8piA8BZ-BgPuiIf8eBWQ8P0fjWXPcdZbw" target="_blank" rel="noreferrer" className="inline-flex items-center justify-center w-full md:w-auto gap-2 text-sm font-medium px-6 py-3 rounded-full bg-foreground text-background hover:bg-aurora-1 hover:text-primary-foreground transition-colors">
                   View Presentation <ArrowUpRight className="h-4 w-4" />
                 </a>
               </div>
