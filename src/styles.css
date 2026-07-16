@@ -16,6 +16,27 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
 
+  /* ── Fluid modular type scale (clamp-based, viewport-aware) ───────── */
+  --text-hero: clamp(3.25rem, 1.2rem + 11vw, 13rem);
+  --text-hero--line-height: 0.82;
+  --text-hero--letter-spacing: -0.045em;
+  --text-display: clamp(2.25rem, 1.15rem + 4.4vw, 4.75rem);
+  --text-display--line-height: 0.94;
+  --text-display--letter-spacing: -0.032em;
+  --text-headline: clamp(1.75rem, 1.2rem + 2.1vw, 3rem);
+  --text-headline--line-height: 1.02;
+  --text-headline--letter-spacing: -0.022em;
+  --text-title: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
+  --text-title--line-height: 1.15;
+  --text-title--letter-spacing: -0.015em;
+  --text-lead: clamp(1.0625rem, 0.98rem + 0.42vw, 1.375rem);
+  --text-lead--line-height: 1.55;
+
+  /* ── Shared easing curves (also usable as `ease-*` utilities) ─────── */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -45,10 +66,69 @@
   --shadow-elevated: 0 30px 80px -20px oklch(0 0 0 / 0.6);
 }
 
+/* ─────────────────────────────────────────────────────────────────────
+   LIGHT THEME (default `:root`) — warm paper, deep ink, vivid aurora.
+   Premium feel: frosted glass, soft depth shadows, subtle grain.
+   ───────────────────────────────────────────────────────────────────── */
 :root {
   --radius: 0.875rem;
+  color-scheme: light;
 
-  /* Deep near-black background with subtle blue undertone */
+  --background: oklch(0.97 0.006 265);
+  --foreground: oklch(0.18 0.024 265);
+
+  --card: oklch(1 0.001 265);
+  --card-foreground: oklch(0.18 0.024 265);
+  --popover: oklch(1 0.001 265);
+  --popover-foreground: oklch(0.18 0.024 265);
+
+  --primary: oklch(0.50 0.26 285);
+  --primary-foreground: oklch(0.99 0.003 265);
+
+  --secondary: oklch(0.93 0.010 265);
+  --secondary-foreground: oklch(0.24 0.022 265);
+
+  --muted: oklch(0.935 0.009 265);
+  --muted-foreground: oklch(0.42 0.024 265);
+
+  --accent: oklch(0.50 0.18 210);
+  --accent-foreground: oklch(0.99 0.003 265);
+
+  --destructive: oklch(0.56 0.22 25);
+  --destructive-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.22 0.02 265 / 0.12);
+  --input: oklch(0.22 0.02 265 / 0.16);
+  --ring: oklch(0.50 0.26 285 / 0.50);
+
+  /* Aurora — punchy enough to read against warm paper */
+  --aurora-1: oklch(0.48 0.28 295);
+  --aurora-2: oklch(0.48 0.22 245);
+  --aurora-3: oklch(0.50 0.17 195);
+
+  /* Frosted glass: translucent white with blur, gives cards depth on paper */
+  --glass: oklch(1 0 0 / 0.72);
+  --hairline: oklch(0.22 0.02 265 / 0.10);
+  --blob-opacity: 0.14;
+  --grain-opacity: 0.018;
+
+  --sidebar: oklch(0.99 0.003 265);
+  --sidebar-foreground: oklch(0.24 0.022 265);
+  --sidebar-primary: oklch(0.50 0.26 285);
+  --sidebar-primary-foreground: oklch(0.99 0.003 265);
+  --sidebar-accent: oklch(0.935 0.009 265);
+  --sidebar-accent-foreground: oklch(0.24 0.022 265);
+  --sidebar-border: oklch(0.22 0.02 265 / 0.12);
+  --sidebar-ring: oklch(0.50 0.26 285 / 0.50);
+}
+
+/* ─────────────────────────────────────────────────────────────────────
+   DARK THEME — the site's signature look (deep near-black + electric
+   indigo aurora). This is the default experience (see no-flash script).
+   ───────────────────────────────────────────────────────────────────── */
+.dark {
+  color-scheme: dark;
+
   --background: oklch(0.10 0.010 264);
   --foreground: oklch(0.98 0.005 240);
 
@@ -57,7 +137,6 @@
   --popover: oklch(0.13 0.014 264);
   --popover-foreground: oklch(0.98 0.005 240);
 
-  /* Electric indigo accent */
   --primary: oklch(0.75 0.22 285);
   --primary-foreground: oklch(0.12 0.012 264);
 
@@ -77,14 +156,14 @@
   --input: oklch(1 0 0 / 0.10);
   --ring: oklch(0.72 0.20 285 / 0.6);
 
-  /* Aurora gradient stops (Intensified) */
   --aurora-1: oklch(0.70 0.28 295);
   --aurora-2: oklch(0.75 0.24 220);
   --aurora-3: oklch(0.78 0.22 170);
 
-  /* Glass + hairline */
   --glass: oklch(1 0 0 / 0.02);
   --hairline: oklch(1 0 0 / 0.10);
+  --blob-opacity: 0.09;
+  --grain-opacity: 0.04;
 
   --sidebar: oklch(0.14 0.012 264);
   --sidebar-foreground: oklch(0.97 0.005 240);
@@ -96,14 +175,13 @@
   --sidebar-ring: oklch(0.72 0.20 285 / 0.6);
 }
 
-/* Force dark — site is dark-only by design */
-.dark, html {
-  color-scheme: dark;
-}
-
 @layer base {
   * {
     border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
   }
 
   html, body {
@@ -112,6 +190,14 @@
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+
+  /* Smooth, deliberate cross-fade when switching themes (only fires on
+     toggle — the no-flash script sets the class before first paint). */
+  html, body {
+    transition:
+      background-color 0.5s var(--ease-out-quint),
+      color 0.5s var(--ease-out-quint);
   }
 
   ::selection {
@@ -123,6 +209,19 @@
     font-family: var(--font-display);
     letter-spacing: -0.02em;
     font-weight: 400;
+  }
+
+  /* Consistent, theme-aware focus ring for keyboard users */
+  :focus-visible {
+    outline: 2px solid color-mix(in oklab, var(--primary) 70%, transparent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Light theme: softer shadows, higher elevation feel */
+  :root {
+    --shadow-glow: 0 0 60px -10px color-mix(in oklab, var(--primary) 20%, transparent);
+    --shadow-elevated: 0 20px 60px -15px oklch(0.20 0.02 265 / 0.10);
   }
 }
 
@@ -138,6 +237,18 @@
     border: 1px solid var(--hairline);
   }
 
+  /* Light-theme glass gets a subtle white top highlight for premium depth */
+  :root .glass {
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.6),
+      0 1px 3px 0 oklch(0.20 0.02 265 / 0.04);
+  }
+  :root .glass:hover {
+    box-shadow:
+      inset 0 1px 0 0 oklch(1 0 0 / 0.7),
+      0 4px 16px 0 oklch(0.20 0.02 265 / 0.06);
+  }
+
   .text-gradient {
     background: linear-gradient(120deg, var(--foreground) 0%, color-mix(in oklab, var(--primary) 70%, var(--foreground)) 50%, var(--foreground) 100%);
     -webkit-background-clip: text;
@@ -150,6 +261,63 @@
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+  }
+
+  /* ── Depth: soft radial mesh lighting for section backdrops ──────── */
+  .mesh {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(60% 55% at 15% 0%, color-mix(in oklab, var(--aurora-1) 22%, transparent) 0%, transparent 60%),
+      radial-gradient(50% 50% at 100% 30%, color-mix(in oklab, var(--aurora-2) 18%, transparent) 0%, transparent 55%),
+      radial-gradient(60% 60% at 50% 100%, color-mix(in oklab, var(--aurora-3) 14%, transparent) 0%, transparent 60%);
+    opacity: 0.5;
+  }
+
+  /* Vignette to focus the eye toward content centers */
+  .vignette::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 90% at 50% 0%, transparent 55%, color-mix(in oklab, var(--background) 90%, black) 100%);
+  }
+  /* Light theme: gentler vignette, warm fade instead of dark */
+  :root .vignette::after {
+    background: radial-gradient(120% 90% at 50% 0%, transparent 60%, color-mix(in oklab, var(--background) 95%, oklch(0.85 0.01 265)) 100%);
+  }
+
+  /* Cursor-following radial highlight for cards. Set --mx/--my via JS
+     (see SpotlightCard). Fades in on hover; sits above the card surface
+     but below its content. */
+  .spotlight {
+    position: relative;
+  }
+  .spotlight::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: radial-gradient(
+      280px circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--aurora-1) 55%, transparent),
+      transparent 60%
+    );
+    opacity: 0;
+    transition: opacity 0.4s var(--ease-out-quint);
+    pointer-events: none;
+    z-index: 1;
+    /* Render only the border ring so the fill stays clean */
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+  .spotlight:hover::before {
+    opacity: 1;
   }
 
   .aurora-bg {
@@ -179,6 +347,13 @@
     animation-delay: -6s;
   }
 
+  /* Light theme: softer aurora blobs, less glow, more pastel */
+  :root .aurora-bg::before,
+  :root .aurora-bg::after {
+    opacity: 0.18;
+    filter: blur(140px);
+  }
+
   @keyframes aurora-float {
     0%   { transform: translate3d(0,0,0) scale(1); }
     50%  { transform: translate3d(4%, -3%, 0) scale(1.08); }
@@ -191,7 +366,7 @@
     content: "";
     position: absolute; inset: 0;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>");
-    opacity: 0.04;
+    opacity: var(--grain-opacity);
     mix-blend-mode: overlay;
     pointer-events: none;
   }
@@ -212,7 +387,7 @@
     position: absolute;
     border-radius: 9999px;
     filter: blur(160px);
-    opacity: 0.09;
+    opacity: var(--blob-opacity);
     will-change: transform;
   }
 
@@ -241,7 +416,7 @@
     height: 45vw;
     top: 30%;
     left: 40%;
-    opacity: 0.05;
+    opacity: calc(var(--blob-opacity) * 0.6);
     animation: blob-drift-3 35s ease-in-out infinite alternate;
     animation-delay: -18s;
   }
@@ -276,9 +451,16 @@
     to { --angle: 360deg; }
   }
 
+  /* Subtle upward drift used for the hero "drag to explore" hint */
+  @keyframes hint-bob {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50%      { transform: translateY(3px); opacity: 0.9; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .aurora-bg::before, .aurora-bg::after { animation: none; }
     .blob { animation: none !important; }
+    html { scroll-behavior: auto; }
     /* Disable all CSS transitions and animations */
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
