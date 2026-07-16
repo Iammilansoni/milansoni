@@ -42,7 +42,7 @@ export function Testimonials() {
           {items.map((q, i) => (
             <div key={i} className="w-[320px] md:w-[480px] shrink-0 py-8">
               <Tilt className="block h-full">
-                <figure className="glass rounded-4xl p-8 md:p-10 h-full flex flex-col group relative overflow-hidden transition-all duration-700 hover:shadow-[0_0_40px_-10px_rgba(var(--aurora-1),0.3)] hover:border-aurora-1/30 hover:bg-secondary/20">
+                <figure className="glass rounded-4xl p-8 md:p-10 h-full flex flex-col group relative overflow-hidden transition-all duration-700 hover:shadow-[0_0_40px_-10px_color-mix(in_oklab,var(--aurora-1)_35%,transparent)] hover:border-aurora-1/30 hover:bg-secondary/20">
                   <div className="absolute -inset-24 bg-linear-to-br from-aurora-1/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-3xl pointer-events-none" />
                   
                   <blockquote className="font-display text-2xl md:text-3xl leading-snug relative z-10 transition-colors duration-500">"{q.quote}"</blockquote>
