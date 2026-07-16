@@ -8,6 +8,7 @@ import { Volume2, VolumeX, Menu } from "lucide-react";
 import { useSoundSystem } from "@/lib/sound";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { MSLogo } from "@/components/ui/ms-logo";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
   const [scrolled, setScrolled] = useState(false);
@@ -73,6 +74,9 @@ export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
           </nav>
 
           <div className="flex items-center gap-1">
+            <Magnetic strength={30}>
+              <ThemeToggle />
+            </Magnetic>
             <Magnetic strength={30}>
               <button
                 onClick={toggleMute}

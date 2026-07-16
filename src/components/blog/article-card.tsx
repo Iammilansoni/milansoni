@@ -78,7 +78,7 @@ function CardInner({ article, isFeatured }: { article: Article; isFeatured: bool
           <div className="flex items-center gap-3 text-xs font-mono text-muted-foreground">
             <span>{article.readingTime}</span>
             {isMedium && (
-              <span className="inline-flex items-center gap-1 bg-black text-white px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-semibold border border-white/20">
+              <span className="inline-flex items-center gap-1 bg-foreground text-background px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wider font-semibold">
                 Medium <ArrowUpRight className="w-3 h-3" />
               </span>
             )}
