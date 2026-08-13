@@ -73,7 +73,21 @@ KEY PROJECTS:
    - GitHub: https://github.com/Iammilansoni/MiningNiti
    - Demo: https://miningniti.vercel.app/
 
-2. NLPForge (Enterprise AI NLP Platform)
+2. HATF Early Warning (Scopus-indexed paper → shipped product)
+   - Research-to-product: implements Milan's co-authored PiCET-2026 paper on the Hybrid Attention Temporal Framework for early LMS dropout prediction
+   - Predicts dropout risk from week 2 of an 8-week course, explains every score, quantifies uncertainty, and audits its own fairness
+   - Model: 59,951-parameter HATF — multi-scale causal convolutions (kernels 1/3/7) → unidirectional LSTM → masked multi-head temporal attention → MC-dropout head (30 passes). One checkpoint serves every prediction week; trains on a laptop CPU
+   - Causality is structural, not conventional: left-padded convolutions + unidirectional LSTM make future weeks physically unreachable, proved by tests that overwrite masked weeks with noise 50x
+   - Explanations: occlusion-based sensitivity, surfaced as raising risk only when model sensitivity and the student's deviation from the cohort agree — so an explanation cannot contradict itself
+   - Results (held-out test students, synthetic data): ROC-AUC 0.789 at week 2 rising to 0.876 by week 8; pooled 0.845 (95% CI 0.751-0.924); expected calibration error 0.038; 28.4% of predictions escalated for human review; counterfactual invariance exactly 0.000000; 110 tests
+   - Intellectual honesty is the headline: eleven models were trained under identical conditions and HATF finishes last on the demo cohort — the table is published anyway. It still ships because at statistically indistinguishable accuracy it is the only model that also produces the attention, uncertainty and window-usage the explanation layer needs. The fairness regulariser is reported as a measured no-op (0.0000 change), and attention came out flat so the system says so rather than faking importance
+   - Stack: PyTorch (CPU), FastAPI, Next.js 15, React 19, TypeScript, Tailwind v4, pandas, scikit-learn, Streamlit, pytest, Docker, uv
+   - Deployment: FastAPI on Render (Docker), Next.js dashboard on Vercel
+   - GitHub: https://github.com/Iammilansoni/hatf-lms-early-warning-poc
+   - Demo: https://hatf-lms-early-warning-poc.vercel.app/
+   - IMPORTANT when describing this: the paper reports F1 94.2% / AUC 96.1% on 7,935 REAL students across 45 courses. The shipped POC runs on SYNTHETIC data and reports its own independently measured numbers. The two are NOT comparable and the POC does not reproduce the paper's results. Never present the paper's numbers as the product's.
+
+3. NLPForge (Enterprise AI NLP Platform)
    - AI-powered NLP dataset generator & semantic search
    - Two-stage retrieval: Ollama embeddings (nomic-embed-text) → Redis Stack HNSW → FlashRank cross-encoder (ms-marco-MiniLM-L-12-v2) reranking
    - 8 LLM providers, 15+ embedding models, 70% valid / 20% edge / 10% extreme data distribution
@@ -81,13 +95,13 @@ KEY PROJECTS:
    - Results: 40% accuracy improvement, 60% QA effort reduction
    - GitHub: https://github.com/Iammilansoni/NLPFT-2
 
-3. FinSageAI360 (Financial Intelligence SaaS)
+4. FinSageAI360 (Financial Intelligence SaaS)
    - Multi-tenant AI-driven financial intelligence platform
    - AI analytics for cashflow, risk, and anomaly detection
    - Stack: Next.js, Node.js, MongoDB, Prisma, JWT, AI Analytics
    - Results: +45% faster reporting, +30% efficiency, enterprise-grade RBAC
 
-4. SmartLearnX (AI-Powered LMS)
+5. SmartLearnX (AI-Powered LMS)
    - Adaptive educational ecosystem with personalized learning paths
    - ML: Logistic Regression dropout prediction (91.4% accuracy), Random Forest forecasting (0.89 R²)
    - NLP: BERT quiz generation, spaCy chatbot assistant
@@ -100,6 +114,12 @@ BLOG ARTICLES (on portfolio + Medium):
 4. "Building a Production-Grade Multi-Agent AI System" — Deep architecture dive, 90% faster compliance review
 
 RESEARCH:
+- PEER-REVIEWED PUBLICATION: "Hybrid Attention-Based Temporal Modeling for Early Dropout Prediction in Learning Management Systems"
+  - Authors: Pradeep Jha, Manju Mathur, Abhay Purohit, Milan Soni (4th author), Avadhi Singhal, Abhilash Joshi — Department of CSE, Global Institute of Technology, Jaipur
+  - Venue: 8th Parul University International Conference on Engineering & Technology (PiCET-2026), 1-2 May 2026 — "Innovations in Computing: Smart, Sustainable and Emerging Technologies"
+  - Publication: IET Conference Proceedings (Scopus indexed). Paper ID PU/PiCET26/COP/327. Accepted, in press
+  - Contribution: HATF combines multi-scale temporal convolution, recurrent modelling, temporal attention for interpretability, Bayesian-style uncertainty, and fairness-aware evaluation. Evaluated on three real LMS datasets — 7,935 students across 45 courses — reporting F1 94.2% and AUC 96.1%
+  - Milan implemented the paper as a working product (see project #2, HATF Early Warning), delivering one of the paper's own stated future-work items: an actual dashboard giving educators timely notifications
 - "Deploying Agentic AI in Production" — State machines over prompt engineering, LangGraph deterministic orchestration, Pydantic/Zod guardrails
 
 TECHNICAL SKILLS:
