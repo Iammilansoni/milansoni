@@ -53,14 +53,15 @@ const PROOF_POINTS = [
   },
   {
     kicker: "📄 Scopus Indexed",
-    headline: "PICET-2026",
-    sub: "IET Conference Proceedings",
-    detail: "Peer-reviewed research on hybrid attention-based temporal modeling for LMS dropout prediction (91.4% accuracy).",
+    headline: "PiCET-2026",
+    sub: "IET Conference Proceedings · Paper ID PU/PiCET26/COP/327",
+    detail: "Co-authored research on the Hybrid Attention Temporal Framework for early LMS dropout prediction — F1 94.2% / AUC 96.1% across 7,935 students. Then built it into a working product: risk from week 2, explained scores, calibrated uncertainty and a published fairness audit.",
     accent: "aurora-2",
     links: [
       { label: "Read Paper", href: "https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing" },
+      { label: "Live Product", href: "https://hatf-lms-early-warning-poc.vercel.app/" },
+      { label: "Source Code", href: "https://github.com/Iammilansoni/hatf-lms-early-warning-poc" },
       { label: "Certificate", href: "https://drive.google.com/file/d/1TbxYA73JiKCRnVgqTIqLMfLdVtKWDX_l/view?usp=sharing" },
-      { label: "Track 3: ID 759", href: "https://picet.in/" }
     ]
   },
   {
