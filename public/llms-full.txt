@@ -73,6 +73,37 @@ A full-stack AI platform combining a multi-agent AI pipeline (6 specialized agen
 
 ---
 
+### HATF Early Warning — Research Paper to Shipped Product
+
+> Scopus-indexed publication (PiCET-2026, IET Conference Proceedings) implemented as a working AI product
+
+**Problem**: Roughly one in three students who enrol in an online course never finish, and institutions usually notice too late to help. The problem has an awkward shape most tutorials skip: the prediction has to be early to matter, time flows one way so leakage is silent and fatal, the costs are asymmetric (a missed student is real harm, an unnecessary check-in costs five minutes), advisor time is finite, and a risk score without a reason is something no educator can act on, argue with, or overrule.
+
+**Solution**: A single 59,951-parameter HATF model serves every prediction week from one checkpoint — multi-scale causal convolutions (kernels 1/3/7) → unidirectional LSTM → masked multi-head temporal attention → MC-dropout head. Causality is structural rather than conventional: left-padded convolutions and a unidirectional LSTM make future weeks physically unreachable, proved by tests that overwrite masked weeks with noise 50×. Monte Carlo Dropout over 30 stochastic passes produces a posterior that escalates uncertain cases to a human instead of guessing, and Platt scaling puts outputs back on a scale where 0.30 means roughly a 30% chance.
+
+**Architecture**:
+- Data: synthetic LMS generator — 500 students, 8 weeks, 7 behavioural archetypes. Behaviour simulated first, label sampled from it with real noise. No real student data
+- Features: 25 leakage-free weekly signals across activity, assessment, interaction and timing — every feature at week t computed from weeks ≤ t
+- Model: multi-scale causal CNN → unidirectional LSTM → masked temporal attention → MC-dropout head (30 passes), CPU-only
+- Explanations: occlusion-based sensitivity, surfaced as raising risk only when model sensitivity and the student's cohort deviation agree
+- API: FastAPI, nine endpoints with OpenAPI docs, on Render. No endpoint performs an action on a student
+- Frontend: Next.js 15 App Router with React Server Components, on Vercel
+
+**Trade-offs**:
+- Published the baseline table even though the proposed model loses: eleven models under identical conditions, HATF last on the demo cohort. The whole table sits inside the noise (0.030 AUC spread against ±0.05 intervals on 82 test students). It still ships because at indistinguishable accuracy it is the only model that also produces the attention, uncertainty and window-usage the explanation layer is built on — a product reason, not a metric one
+- F2-optimal threshold with a 40% flag-rate cap over plain accuracy: missing a struggling student is a worse error than an unnecessary check-in, but flagging most of the cohort produces a spreadsheet nobody opens
+- Reported a negative result rather than burying it: the in-batch demographic-parity regulariser moved every held-out fairness gap by exactly 0.0000. Attention also came out effectively uniform, so the system detects that and says the model draws on history evenly instead of faking importance
+
+**Results**: ROC-AUC rises from 0.789 at week 2 to 0.876 by week 8 (pooled 0.845, 95% CI 0.751–0.924) on held-out test students. Expected calibration error 0.038. 28.4% of predictions escalated for human review. Counterfactual invariance exactly 0.000000 — every sensitive attribute of every test student rewritten and the model re-run. 110 tests, a 240 KB checkpoint that trains on a laptop CPU, API and dashboard live in production.
+
+**Note on numbers**: the paper reports F1 94.2% / AUC 96.1% on 7,935 real students across 45 courses. This implementation runs on synthetic data and reports its own independently measured numbers. The two are not comparable and the POC does not reproduce the paper's results.
+
+**Tech**: PyTorch (CPU), FastAPI, Next.js 15, React 19, TypeScript, Tailwind CSS v4, pandas, scikit-learn, Streamlit, pytest, Docker, uv, Render, Vercel
+
+**Links**: [GitHub](https://github.com/Iammilansoni/hatf-lms-early-warning-poc) | [Live Demo](https://hatf-lms-early-warning-poc.vercel.app/) | [Paper](https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing)
+
+---
+
 ### NLPForge — NLP Dataset Generator & Semantic Search
 
 > Enterprise AI NLP Platform (built at nTheta Works)
@@ -261,6 +292,24 @@ Deep dive into MiningNiti's architecture.
 ---
 
 ## Research
+
+### Hybrid Attention-Based Temporal Modeling for Early Dropout Prediction in Learning Management Systems
+
+Peer-reviewed conference paper, **Scopus indexed**.
+
+**Authors**: Pradeep Jha, Manju Mathur, Abhay Purohit, **Milan Soni** (4th author), Avadhi Singhal, Abhilash Joshi — Department of Computer Science & Engineering, Global Institute of Technology, Jaipur, Rajasthan, India
+
+**Venue**: 8th Parul University International Conference on Engineering & Technology (PiCET-2026), 1–2 May 2026 — "Innovations in Computing: Smart, Sustainable and Emerging Technologies"
+
+**Publication**: IET Conference Proceedings (Scopus indexed) · Paper ID PU/PiCET26/COP/327 · Accepted, in press
+
+**Contribution**: Introduces the Hybrid Attention Temporal Framework (HATF), combining multi-scale temporal convolution for short-term behavioural change, recurrent modelling for longer-range dependency, temporal attention for interpretability, Bayesian-style uncertainty, and fairness-aware evaluation. Evaluated on three real LMS datasets totalling 7,935 students across 45 courses, reporting F1 94.2% and AUC 96.1%.
+
+**From paper to product**: Milan implemented HATF as a working end-to-end system (see *HATF Early Warning* under Projects), delivering one of the paper's own stated future-work items — "implementation as an actual LMS platform or dashboard, which provides educators with instant notifications to support students on time." The implementation runs on synthetic data and reports its own independently measured numbers rather than reproducing the paper's.
+
+**Link**: [Read the paper](https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing)
+
+---
 
 ### Deploying Agentic AI in Production
 
