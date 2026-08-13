@@ -38,6 +38,18 @@ export type Project = {
   githubUrl?: string;
   demoUrl?: string;
   heroImage?: string;
+  /** Present when the project implements a peer-reviewed publication. */
+  research?: {
+    title: string;
+    authors: string;
+    venue: string;
+    paperId: string;
+    status: string;
+    paperUrl?: string;
+    certificateUrl?: string;
+    /** How the shipped product relates to the paper — stated honestly. */
+    relationship: string;
+  };
 };
 
 export const PROJECTS: Project[] = [
@@ -77,6 +89,58 @@ export const PROJECTS: Project[] = [
     githubUrl: "https://github.com/Iammilansoni/MiningNiti",
     demoUrl: "https://miningniti.vercel.app/",
     heroImage: "/miningniti-dashboard.png",
+  },
+  {
+    slug: "hatf-lms-early-warning",
+    name: "HATF Early Warning",
+    tag: "📄 Scopus-Indexed Paper → Shipped Product · PiCET-2026 (IET Proceedings)",
+    blurb:
+      "Turning a peer-reviewed research paper into a working AI product — early dropout prediction that reaches educators before students disappear.",
+    description:
+      "An end-to-end early-warning system built from my co-authored PiCET-2026 paper on the Hybrid Attention Temporal Framework (HATF). It predicts student dropout risk from week 2 of an 8-week course, explains every score in behaviours an advisor can independently verify, quantifies its own uncertainty, and measures its own bias. A paper ends at a results table; this delivers the paper's own stated future-work item — the dashboard that gets the prediction in front of a human in time.",
+    metrics: [
+      { value: "0.789", label: "ROC-AUC at Week 2 of 8" },
+      { value: "28.4%", label: "Escalated to Human Review" },
+      { value: "11", label: "Models Benchmarked" },
+    ],
+    tech: ["PyTorch", "FastAPI", "Next.js 15", "React 19", "TypeScript", "Tailwind CSS v4", "pandas", "scikit-learn", "Streamlit", "pytest", "Docker", "uv", "Render", "Vercel"],
+    problem:
+      "Roughly one in three students who enrol in an online course never finish, and institutions usually notice too late to help. The problem has an awkward shape most tutorials skip: the prediction has to be early to matter, time flows one way so leakage is silent and fatal, the costs are asymmetric (a missed student is real harm, an unnecessary check-in costs five minutes), advisor time is finite, and a risk score without a reason is something no educator can act on, argue with, or overrule.",
+    solution:
+      "A single 59,951-parameter HATF model — multi-scale causal convolutions (kernels 1/3/7), a unidirectional LSTM, masked temporal attention, and prediction-week embeddings — serves every prediction week from one checkpoint. Causality is structural rather than conventional: convolutions are left-padded and the LSTM is unidirectional, so future weeks are physically unreachable, proved by tests that overwrite masked weeks with noise 50×. Monte Carlo Dropout over 30 stochastic passes produces a posterior that escalates uncertain cases to a human instead of guessing, and Platt scaling puts the outputs back on a scale where 0.30 means roughly a 30% chance.",
+    architecture: [
+      "Data: synthetic LMS generator — 500 students, 8 weeks, 7 behavioural archetypes. Behaviour is simulated first and the label sampled from it with real noise, so the task is learnable but never separable. No real student data.",
+      "Features: 25 leakage-free weekly signals across activity, assessment, interaction and timing — every feature at week t computed from weeks ≤ t.",
+      "Model: multi-scale causal CNN → unidirectional LSTM → masked multi-head temporal attention → MC-dropout head (30 passes) on CPU.",
+      "Explanations: occlusion-based sensitivity, shown as raising risk only when model sensitivity and the student's deviation from the cohort agree — so an explanation can never contradict itself.",
+      "API: FastAPI with nine endpoints and OpenAPI docs, deployed on Render. No endpoint performs an action on a student.",
+      "Frontend: Next.js 15 App Router with React Server Components fetching server-side, deployed on Vercel — cohort triage, per-student reasoning, fairness report and model card.",
+    ],
+    tradeoffs: [
+      "Published the baseline table even though the proposed model loses: eleven models trained under identical conditions, and HATF finishes last on the demo cohort. The whole table sits inside the noise (0.030 AUC spread against ±0.05 intervals on 82 test students), and it still ships — because at statistically indistinguishable accuracy it is the only model that also produces the attention, uncertainty and window-usage the explanation layer is built on. A product reason, not a metric one.",
+      "F2-optimal threshold with a 40% flag-rate cap over plain accuracy: missing a struggling student is a worse error than an unnecessary check-in, but a model that flags most of the cohort has produced a spreadsheet nobody opens, not a signal.",
+      "Reported a negative result rather than burying it: the in-batch demographic-parity regulariser moved every held-out fairness gap by exactly 0.0000, making it a free no-op rather than a trade-off. Attention also came out effectively uniform, so the system detects that condition and says the model draws on history evenly instead of highlighting the top bars of a flat distribution.",
+    ],
+    results:
+      "ROC-AUC rises from 0.789 at week 2 to 0.876 by week 8 (pooled 0.845, 95% CI 0.751–0.924) on held-out test students, with expected calibration error of 0.038 and 28.4% of predictions escalated for human review. Counterfactual invariance measures exactly 0.000000 — every sensitive attribute of every test student rewritten and the model re-run, verifying rather than asserting that demographics are excluded. 110 tests, a 240 KB checkpoint that trains on a laptop CPU, and the full API and dashboard live in production.",
+    githubUrl: "https://github.com/Iammilansoni/hatf-lms-early-warning-poc",
+    demoUrl: "https://hatf-lms-early-warning-poc.vercel.app/",
+    research: {
+      title:
+        "Hybrid Attention-Based Temporal Modeling for Early Dropout Prediction in Learning Management Systems",
+      authors:
+        "Pradeep Jha, Manju Mathur, Abhay Purohit, Milan Soni, Avadhi Singhal, Abhilash Joshi — Department of CSE, Global Institute of Technology, Jaipur",
+      venue:
+        "8th Parul University International Conference on Engineering & Technology (PiCET-2026), 1–2 May 2026 · IET Conference Proceedings (Scopus indexed)",
+      paperId: "PU/PiCET26/COP/327",
+      status: "Accepted · in press",
+      paperUrl:
+        "https://drive.google.com/file/d/11DTgnEqtFGIB-PpX-SKyheMCue5xRe-_/view?usp=sharing",
+      certificateUrl:
+        "https://drive.google.com/file/d/1TbxYA73JiKCRnVgqTIqLMfLdVtKWDX_l/view?usp=sharing",
+      relationship:
+        "The paper evaluates HATF on three real LMS datasets totalling 7,935 students across 45 courses, reporting F1 94.2% and AUC 96.1%. This implementation runs on synthetic data and reports its own, independently measured numbers — the two are not comparable, and nothing here reproduces the paper's results. What it adds is the other half of the job: the explanation layer, the uncertainty escalation, the fairness audit, and an interface a non-ML educator can actually use.",
+    },
   },
   {
     slug: "nlpforge-tester",
