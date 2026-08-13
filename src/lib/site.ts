@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 10.8k★ open-source AI gateway (3 PRs merged, 21,000+ tests), built a 6-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams), and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
+    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 46.9k★ open-source AI gateway (3 PRs merged, 21,000+ tests), built a 6-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams), and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -300,7 +300,7 @@ export const STATS = [
   { value: "6", label: "AI Agents in MiningNiti" },
   { value: "4", label: "AI Providers (Free Tiers)" },
   { value: "$0", label: "Monthly Infrastructure Cost" },
-  { value: "10.9k", label: "Stars · OmniRoute" },
+  { value: "46.9k", label: "Stars · OmniRoute" },
   { value: "3", label: "Enterprise Internships" },
   { value: "70%", label: "Query Latency Reduction" },
 ] as const;

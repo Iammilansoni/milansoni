@@ -1,6 +1,6 @@
 # Milan Soni — AI Engineer & Full Stack Developer
 
-> AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 10.8k★ open-source AI gateway (3 PRs merged, 21,000+ tests), built a 6-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams), and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.
+> AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 46.9k★ open-source AI gateway (3 PRs merged, 21,000+ tests), built a 6-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams), and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.
 
 ## Profile
 
@@ -93,7 +93,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
-| Open Source Contributor | OmniRoute (10.8k★) | Jul 2026 | 3 PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
+| Open Source Contributor | OmniRoute (46.9k★) | Jul 2026 | 3 PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
 | Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval pipeline: 40% accuracy improvement, 60% QA reduction |
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |

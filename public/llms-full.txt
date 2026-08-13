@@ -173,7 +173,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 ### OmniRoute — Open Source Contributor (Jul 2026)
 
-> OmniRoute · 10.8k★ · 230+ LLM providers · Open-source universal AI gateway
+> OmniRoute · 46.9k★ · 230+ LLM providers · Open-source universal AI gateway
 
 Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
 
