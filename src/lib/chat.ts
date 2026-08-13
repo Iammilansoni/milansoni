@@ -32,7 +32,7 @@ AWARDS & RECOGNITION:
 
 WORK EXPERIENCE:
 
-1. OmniRoute (10.8k★) — Open Source Contributor (Jul 2026, Remote)
+1. OmniRoute (46.9k★) — Open Source Contributor (Jul 2026, Remote)
    - Diagnosed HTTP 400 regression in memory-injection pipeline for strict LLM providers; proposed declarative Zod schema flag adopted by maintainer (PR #6225, 25/25 Vitest + 30/30 Node coverage)
    - Built accessible "Configured Only" filter toggle mapping live connection state to filterable data grid (PR #6245, 168 additions, 9/9 tests, v3.8.45)
    - Integrated Claude 5 Sonnet into provider registry with regression test (PR #6209, v3.8.45)
@@ -142,7 +142,7 @@ PERSONALITY / HOW TO DESCRIBE MILAN:
 - Builds production-grade systems, not just class projects
 - Deeply passionate about AI/GenAI and applying it to real-world problems
 - Won SIH 2023 National Finale (Ministry of Coal) as a student — top 1% of 44,000+ teams
-- Active open source contributor to 10.8k★ OmniRoute repo
+- Active open source contributor to 46.9k★ OmniRoute repo
 - Writes technical blog posts sharing deep AI engineering knowledge
 - $0/month infrastructure philosophy — maximizes free tiers across 4 AI providers
 - Fast learner who ships code that other engineers depend on
