@@ -1,5 +1,5 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
-import { ArrowLeft, Github, ExternalLink } from "lucide-react";
+import { ArrowLeft, Github, ExternalLink, FileText } from "lucide-react";
 import { Reveal } from "@/components/reveal";
 import { Magnetic } from "@/components/ui/magnetic";
 import { PROJECTS, type Project } from "@/lib/site";
@@ -49,7 +49,21 @@ export const Route = createFileRoute("/work/$slug")({
             name: p.name,
             text: p.problem + " " + p.solution + " " + p.results,
             author: { "@type": "Person", name: "Milan Soni" }
-          }
+          },
+          ...(p.research ? [{
+            "@context": "https://schema.org",
+            "@type": "ScholarlyArticle",
+            headline: p.research.title,
+            author: p.research.authors
+              .split("—")[0]
+              .split(",")
+              .map((name) => ({ "@type": "Person", name: name.trim() })),
+            publisher: { "@type": "Organization", name: "IET Conference Proceedings" },
+            isPartOf: p.research.venue,
+            identifier: p.research.paperId,
+            creativeWorkStatus: p.research.status,
+            url: p.research.paperUrl,
+          }] : []),
         ]),
       }],
     };
@@ -78,7 +92,7 @@ function CaseStudy() {
           <h1 className="mt-5 font-display text-5xl md:text-7xl leading-none">{p.name}</h1>
           <p className="mt-6 text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">{p.description}</p>
           
-          {(p.githubUrl || p.demoUrl) && (
+          {(p.githubUrl || p.demoUrl || p.research?.paperUrl) && (
             <div className="mt-8 flex flex-wrap items-center gap-4">
               {p.githubUrl && (
                 <a href={p.githubUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-hairline bg-secondary/50 px-5 py-2.5 text-sm font-medium hover:bg-secondary transition">
@@ -90,6 +104,41 @@ function CaseStudy() {
                   <ExternalLink className="w-4 h-4" /> Visit Live Site
                 </a>
               )}
+              {p.research?.paperUrl && (
+                <a href={p.research.paperUrl} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 rounded-full border border-hairline bg-secondary/50 px-5 py-2.5 text-sm font-medium hover:bg-secondary transition">
+                  <FileText className="w-4 h-4" /> Read the Paper
+                </a>
+              )}
+            </div>
+          )}
+
+          {/* The publication this project implements, with the honest caveat
+              about how the shipped numbers relate to the published ones. */}
+          {p.research && (
+            <div className="mt-10 rounded-2xl border border-hairline bg-secondary/30 p-6">
+              <p className="flex items-center gap-2 font-mono text-xs uppercase tracking-widest text-muted-foreground">
+                <FileText className="h-3.5 w-3.5" /> Based on peer-reviewed research
+              </p>
+              <h2 className="mt-4 font-display text-xl leading-snug">{p.research.title}</h2>
+              <p className="mt-3 text-sm text-muted-foreground">{p.research.authors}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{p.research.venue}</p>
+              <div className="mt-4 flex flex-wrap items-center gap-2 font-mono text-xs">
+                <span className="rounded-full border border-hairline px-3 py-1 text-muted-foreground">
+                  {p.research.status}
+                </span>
+                <span className="rounded-full border border-hairline px-3 py-1 text-muted-foreground">
+                  Paper ID {p.research.paperId}
+                </span>
+                {p.research.certificateUrl && (
+                  <a href={p.research.certificateUrl} target="_blank" rel="noreferrer" className="rounded-full border border-hairline px-3 py-1 text-muted-foreground hover:text-foreground transition">
+                    Certificate ↗
+                  </a>
+                )}
+              </div>
+              <p className="mt-5 border-t border-hairline pt-5 text-sm leading-relaxed text-muted-foreground">
+                <span className="font-medium text-foreground">Paper vs. this implementation. </span>
+                {p.research.relationship}
+              </p>
             </div>
           )}
 
