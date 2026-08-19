@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Reveal } from "@/components/reveal";
+import { SectionHeader } from "@/components/section-header";
 import { ArticleCard } from "@/components/blog/article-card";
 import type { Article } from "@/lib/blog";
 
@@ -88,24 +88,28 @@ export function RecentArticles() {
   }, []);
 
   return (
-    <section id="articles" className="relative py-24 md:py-32">
+    <section id="articles" className="section-y relative">
       <div className="mx-auto max-w-6xl px-6">
-        <Reveal>
-          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
-            <div>
-              <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Writing</p>
-              <h2 className="mt-3 font-display text-display max-w-3xl">Articles & Insights</h2>
-            </div>
-            <Link 
-              to="/blog" 
-              className="inline-flex items-center gap-2 text-sm font-mono uppercase tracking-wider text-muted-foreground hover:text-aurora transition-colors"
-            >
-              View all articles <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </Reveal>
+        <SectionHeader
+          index={6}
+          kicker="Writing"
+          title={<>Notes from building the systems.</>}
+          lead="Architecture decisions, trade-offs, and the numbers behind them — written up while they were still fresh."
+        />
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mb-16 mt-8">
+          <Link
+            to="/blog"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-foreground transition-colors hover:text-accent"
+          >
+            All articles
+            <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+          </Link>
+        </div>
+
+        {/* Featured article spans the full row; the next two sit beside each
+            other beneath it. */}
+        <div className="grid gap-6 md:grid-cols-2">
           {posts.slice(0, 3).map((p, i) => (
             <ArticleCard key={p.slug} article={p} index={i} />
           ))}

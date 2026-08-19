@@ -30,10 +30,10 @@ function WorkIndex() {
       <div className="mt-16 grid md:grid-cols-2 gap-5">
         {PROJECTS.map((p, i) => (
           <Reveal key={p.slug} delay={i * 0.05}>
-            <Link to="/work/$slug" params={{ slug: p.slug }} className="group block glass rounded-3xl p-8 h-full hover:bg-secondary/60 transition relative overflow-hidden">
+            <Link to="/work/$slug" params={{ slug: p.slug }} className="card-hover group relative block h-full overflow-hidden rounded-3xl glass p-8">
               <div
-                className="pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-700"
-                style={{ background: "radial-gradient(closest-side, var(--aurora-2), transparent 70%)" }}
+                className="pointer-events-none absolute -top-20 -right-20 h-60 w-60 rounded-full opacity-0 transition-opacity duration-700 group-hover:opacity-100"
+                style={{ background: "radial-gradient(closest-side, color-mix(in oklab, var(--accent) 18%, transparent), transparent 70%)" }}
               />
               <span className="text-xs font-mono text-muted-foreground border border-hairline rounded-full px-3 py-1">{p.tag}</span>
               <h2 className="mt-5 font-display text-3xl">{p.name}</h2>
