@@ -59,7 +59,7 @@ WORK EXPERIENCE:
 6. CodeFiesta — Organising Team & Sponsorship Head (2024–2025, GIT Jaipur)
    - Sponsors: 18+ — outreach, partnership negotiation, sponsor relationships across editions 3.0 and 4.0
    - 2025 edition: 200 teams from 30+ colleges, 24-hour onsite build, 13 in the final round
-   - Logistics, scaling and technical operations onsite
+   - Handled logistics, scaling and technical operations across two editions of the event
 
 KEY PROJECTS:
 

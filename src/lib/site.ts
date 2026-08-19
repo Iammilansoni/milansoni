@@ -321,7 +321,7 @@ export const EXPERIENCE = [
     highlights: [
       "Sponsors: 18+ — outreach, partnership negotiation and sponsor relationships across editions 3.0 and 4.0",
       "2025 edition: 200 teams from 30+ colleges, 24-hour onsite build, 13 in the final round",
-      "Logistics, scaling and technical operations onsite",
+      "Handled logistics, scaling and technical operations across two editions of the event",
     ],
   },
 ] as const;
