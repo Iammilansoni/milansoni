@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <channel>
+    <title>Milan Soni — AI Engineering Notes</title>
+    <link>https://milansoni.vercel.app/blog</link>
+    <description>Architecture decisions, trade-offs, and measured results from building production RAG pipelines and multi-agent LLM systems.</description>
+    <language>en</language>
+    <lastBuildDate>Wed, 19 Aug 2026 06:12:49 GMT</lastBuildDate>
+    <atom:link href="https://milansoni.vercel.app/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month</title>
+      <link>https://milansoni.vercel.app/blog/hybrid-rag-pipeline-zero-cost</link>
+      <guid isPermaLink="true">https://milansoni.vercel.app/blog/hybrid-rag-pipeline-zero-cost</guid>
+      <description>I replaced Pinecone and Weaviate with pgvector on Supabase's free tier and built a hybrid search pipeline pairing lexical scoring with cosine similarity via Reciprocal Rank Fusion. Here's the architecture, the code, and the gotchas nobody talks about — including why the keyword half was eventually rewritten.</description>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Milan Soni</dc:creator>
+      <category>AI</category>
+      <category>RAG</category>
+      <category>PostgreSQL</category>
+    </item>
+    <item>
+      <title>The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows</title>
+      <link>https://milansoni.vercel.app/blog/langgraph-multi-agent-state-machine</link>
+      <guid isPermaLink="true">https://milansoni.vercel.app/blog/langgraph-multi-agent-state-machine</guid>
+      <description>LangChain's sequential chains broke down the moment I needed five AI agents to collaborate, retry on failure, and share state. LangGraph's state machine model gave me explicit control over agent orchestration. Here's the architecture, the code, and why it matters.</description>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Milan Soni</dc:creator>
+      <category>AI</category>
+      <category>Agents</category>
+      <category>LangGraph</category>
+    </item>
+    <item>
+      <title>RSC + Streaming LLMs: Designing a Zero-Latency AI Dashboard with Next.js Server Actions</title>
+      <link>https://milansoni.vercel.app/blog/rsc-streaming-llms-nextjs</link>
+      <guid isPermaLink="true">https://milansoni.vercel.app/blog/rsc-streaming-llms-nextjs</guid>
+      <description>Server Components eliminate the waterfall. Streaming responses eliminate the waiting. Combined, they create AI dashboards that feel instant even when the backend is calling multiple LLM providers. Here's how I built one.</description>
+      <pubDate>Mon, 29 Jun 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Milan Soni</dc:creator>
+      <category>AI</category>
+      <category>Next.js</category>
+      <category>Performance</category>
+    </item>
+    <item>
+      <title>How I Built a Production-Grade Multi-Agent AI System That Won a National Hackathon — and What It Taught Me About Real-World GenAI</title>
+      <link>https://milansoni.vercel.app/blog/building-multi-agent-ai</link>
+      <guid isPermaLink="true">https://milansoni.vercel.app/blog/building-multi-agent-ai</guid>
+      <description>I built MiningNiti — an AI document intelligence platform for India's coal mining industry — using a multi-agent architecture, RAG-powered chat, and async background processing. Here's every technical and architectural decision that got us there.</description>
+      <pubDate>Tue, 12 Mar 2024 00:00:00 GMT</pubDate>
+      <dc:creator>Milan Soni</dc:creator>
+      <category>AI</category>
+      <category>GenAI</category>
+      <category>Software Engineering</category>
+    </item>
+  </channel>
+</rss>
