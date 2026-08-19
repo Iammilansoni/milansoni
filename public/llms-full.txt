@@ -247,7 +247,7 @@ Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP
 
 - Sponsors: 18+ — outreach, partnership negotiation, sponsor relationships across editions 3.0 and 4.0
 - 2025 edition: 200 teams from 30+ colleges, 24-hour onsite build, 13 in the final round
-- Logistics, scaling and technical operations onsite
+- Handled logistics, scaling and technical operations across two editions of the event
 - Source: https://gitjaipur.com/wp-content/uploads/2026/01/hackathon-Report_4.0.pdf
 
 ---
