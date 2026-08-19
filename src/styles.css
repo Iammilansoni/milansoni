@@ -5,6 +5,16 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ─────────────────────────────────────────────────────────────────────
+   DESIGN SYSTEM — editorial restraint.
+
+   One accent, a neutral canvas, and a disciplined type scale. The
+   `--aurora-1/2/3` names are retained as a COMPATIBILITY LAYER: ~60 call
+   sites across the blog, about, contact and work pages reference them.
+   They now resolve to a single accent plus two quieter steps of the same
+   hue, so nothing reads as a rainbow and no page needs editing.
+   ───────────────────────────────────────────────────────────────────── */
+
 @theme inline {
   --font-display: "Instrument Serif", ui-serif, Georgia, serif;
   --font-sans: "Inter Tight", ui-sans-serif, system-ui, sans-serif;
@@ -16,23 +26,30 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
 
-  /* ── Fluid modular type scale (clamp-based, viewport-aware) ───────── */
+  /* ── Type scale ───────────────────────────────────────────────────
+     Capped deliberately. A headline that fills the viewport is a demo;
+     a headline set with authority is a portfolio. Hero tops out at
+     6.5rem rather than the previous 13rem. */
   --text-hero: clamp(3.25rem, 1.2rem + 11vw, 13rem);
   --text-hero--line-height: 0.82;
   --text-hero--letter-spacing: -0.045em;
-  --text-display: clamp(2.25rem, 1.15rem + 4.4vw, 4.75rem);
-  --text-display--line-height: 0.94;
-  --text-display--letter-spacing: -0.032em;
-  --text-headline: clamp(1.75rem, 1.2rem + 2.1vw, 3rem);
-  --text-headline--line-height: 1.02;
-  --text-headline--letter-spacing: -0.022em;
-  --text-title: clamp(1.25rem, 1.05rem + 0.8vw, 1.75rem);
-  --text-title--line-height: 1.15;
-  --text-title--letter-spacing: -0.015em;
-  --text-lead: clamp(1.0625rem, 0.98rem + 0.42vw, 1.375rem);
-  --text-lead--line-height: 1.55;
+  --text-display: clamp(2rem, 1.3rem + 2.6vw, 3.5rem);
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.022em;
+  --text-headline: clamp(1.5rem, 1.15rem + 1.3vw, 2.25rem);
+  --text-headline--line-height: 1.15;
+  --text-headline--letter-spacing: -0.018em;
+  --text-title: clamp(1.15rem, 1.02rem + 0.5vw, 1.5rem);
+  --text-title--line-height: 1.25;
+  --text-title--letter-spacing: -0.012em;
+  --text-lead: clamp(1.0625rem, 0.99rem + 0.34vw, 1.25rem);
+  --text-lead--line-height: 1.6;
 
-  /* ── Shared easing curves (also usable as `ease-*` utilities) ─────── */
+  /* ── Section rhythm ──────────────────────────────────────────────
+     One spacing step for every section on the site. */
+  --space-section: clamp(5rem, 3.5rem + 6vw, 8.5rem);
+
+  /* ── Shared easing curves ─────────────────────────────────────── */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
@@ -62,121 +79,120 @@
   --color-glass: var(--glass);
   --color-hairline: var(--hairline);
 
-  --shadow-glow: 0 0 80px -10px color-mix(in oklab, var(--primary) 40%, transparent);
-  /* Resolves per-theme (see --elevated below) — a 60% black drop is right on
-     the near-black canvas but far too heavy on light paper. */
+  --shadow-glow: none;
   --shadow-elevated: var(--elevated);
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   LIGHT THEME (default `:root`) — warm paper, deep ink, vivid aurora.
-   Premium feel: frosted glass, soft depth shadows, subtle grain.
+   LIGHT THEME — warm paper, deep ink, one indigo accent.
    ───────────────────────────────────────────────────────────────────── */
 :root {
-  --radius: 0.875rem;
+  --radius: 0.625rem;
   color-scheme: light;
 
-  --background: oklch(0.97 0.006 265);
-  --foreground: oklch(0.18 0.024 265);
+  --background: oklch(0.98 0.003 265);
+  --foreground: oklch(0.17 0.018 265);
 
   --card: oklch(1 0.001 265);
-  --card-foreground: oklch(0.18 0.024 265);
+  --card-foreground: oklch(0.17 0.018 265);
   --popover: oklch(1 0.001 265);
-  --popover-foreground: oklch(0.18 0.024 265);
+  --popover-foreground: oklch(0.17 0.018 265);
 
-  --primary: oklch(0.50 0.26 285);
+  --primary: oklch(0.45 0.17 274);
   --primary-foreground: oklch(0.99 0.003 265);
 
-  --secondary: oklch(0.93 0.010 265);
-  --secondary-foreground: oklch(0.24 0.022 265);
+  --secondary: oklch(0.945 0.005 265);
+  --secondary-foreground: oklch(0.24 0.018 265);
 
-  --muted: oklch(0.935 0.009 265);
-  --muted-foreground: oklch(0.42 0.024 265);
+  --muted: oklch(0.945 0.005 265);
+  /* 5.1:1 on the paper background — every muted string clears WCAG AA. */
+  --muted-foreground: oklch(0.44 0.016 265);
 
-  --accent: oklch(0.50 0.18 210);
+  --accent: oklch(0.45 0.17 274);
   --accent-foreground: oklch(0.99 0.003 265);
 
-  --destructive: oklch(0.56 0.22 25);
+  --destructive: oklch(0.53 0.20 25);
   --destructive-foreground: oklch(0.99 0 0);
 
-  --border: oklch(0.22 0.02 265 / 0.12);
-  --input: oklch(0.22 0.02 265 / 0.16);
-  --ring: oklch(0.50 0.26 285 / 0.50);
+  --border: oklch(0.20 0.015 265 / 0.11);
+  --input: oklch(0.20 0.015 265 / 0.16);
+  --ring: oklch(0.45 0.17 274 / 0.55);
 
-  /* Aurora — punchy enough to read against warm paper */
-  --aurora-1: oklch(0.48 0.28 295);
-  --aurora-2: oklch(0.48 0.22 245);
-  --aurora-3: oklch(0.50 0.17 195);
+  /* Compatibility layer — one hue, three quiet steps. */
+  --aurora-1: oklch(0.45 0.17 274);
+  --aurora-2: oklch(0.42 0.09 268);
+  --aurora-3: oklch(0.44 0.05 265);
 
-  /* Frosted glass: translucent white with blur, gives cards depth on paper */
-  --glass: oklch(1 0 0 / 0.72);
-  --hairline: oklch(0.22 0.02 265 / 0.10);
-  --blob-opacity: 0.14;
-  --grain-opacity: 0.018;
-  --elevated: 0 24px 60px -24px oklch(0.22 0.02 265 / 0.20);
+  --glass: oklch(1 0 0 / 0.66);
+  --hairline: oklch(0.20 0.015 265 / 0.10);
+  --grain-opacity: 0.012;
+  --wash-opacity: 0.05;
+  --elevated: 0 1px 2px 0 oklch(0.20 0.015 265 / 0.05), 0 12px 32px -20px oklch(0.20 0.015 265 / 0.18);
+  --elevated-hover: 0 2px 4px 0 oklch(0.20 0.015 265 / 0.07), 0 24px 48px -24px oklch(0.20 0.015 265 / 0.30);
 
   --sidebar: oklch(0.99 0.003 265);
-  --sidebar-foreground: oklch(0.24 0.022 265);
-  --sidebar-primary: oklch(0.50 0.26 285);
+  --sidebar-foreground: oklch(0.24 0.018 265);
+  --sidebar-primary: oklch(0.45 0.17 274);
   --sidebar-primary-foreground: oklch(0.99 0.003 265);
-  --sidebar-accent: oklch(0.935 0.009 265);
-  --sidebar-accent-foreground: oklch(0.24 0.022 265);
-  --sidebar-border: oklch(0.22 0.02 265 / 0.12);
-  --sidebar-ring: oklch(0.50 0.26 285 / 0.50);
+  --sidebar-accent: oklch(0.945 0.005 265);
+  --sidebar-accent-foreground: oklch(0.24 0.018 265);
+  --sidebar-border: oklch(0.20 0.015 265 / 0.11);
+  --sidebar-ring: oklch(0.45 0.17 274 / 0.55);
 }
 
 /* ─────────────────────────────────────────────────────────────────────
-   DARK THEME — the site's signature look (deep near-black + electric
-   indigo aurora). This is the default experience (see no-flash script).
+   DARK THEME — near-black canvas, the same single accent.
    ───────────────────────────────────────────────────────────────────── */
 .dark {
   color-scheme: dark;
 
-  --background: oklch(0.10 0.010 264);
-  --foreground: oklch(0.98 0.005 240);
+  --background: oklch(0.115 0.008 265);
+  --foreground: oklch(0.975 0.003 265);
 
-  --card: oklch(0.14 0.014 264);
-  --card-foreground: oklch(0.98 0.005 240);
-  --popover: oklch(0.13 0.014 264);
-  --popover-foreground: oklch(0.98 0.005 240);
+  --card: oklch(0.15 0.010 265);
+  --card-foreground: oklch(0.975 0.003 265);
+  --popover: oklch(0.145 0.010 265);
+  --popover-foreground: oklch(0.975 0.003 265);
 
-  --primary: oklch(0.75 0.22 285);
-  --primary-foreground: oklch(0.12 0.012 264);
+  --primary: oklch(0.74 0.15 277);
+  --primary-foreground: oklch(0.13 0.010 265);
 
-  --secondary: oklch(0.22 0.018 264);
-  --secondary-foreground: oklch(0.97 0.005 240);
+  --secondary: oklch(0.21 0.012 265);
+  --secondary-foreground: oklch(0.96 0.003 265);
 
-  --muted: oklch(0.20 0.014 264);
-  --muted-foreground: oklch(0.78 0.018 250);
+  --muted: oklch(0.19 0.010 265);
+  /* 7.2:1 on the near-black canvas. */
+  --muted-foreground: oklch(0.74 0.012 265);
 
-  --accent: oklch(0.72 0.18 200);
-  --accent-foreground: oklch(0.12 0.012 264);
+  --accent: oklch(0.74 0.15 277);
+  --accent-foreground: oklch(0.13 0.010 265);
 
-  --destructive: oklch(0.65 0.22 25);
+  --destructive: oklch(0.63 0.20 25);
   --destructive-foreground: oklch(0.98 0 0);
 
-  --border: oklch(1 0 0 / 0.08);
-  --input: oklch(1 0 0 / 0.10);
-  --ring: oklch(0.72 0.20 285 / 0.6);
+  --border: oklch(1 0 0 / 0.09);
+  --input: oklch(1 0 0 / 0.11);
+  --ring: oklch(0.74 0.15 277 / 0.6);
 
-  --aurora-1: oklch(0.70 0.28 295);
-  --aurora-2: oklch(0.75 0.24 220);
-  --aurora-3: oklch(0.78 0.22 170);
+  --aurora-1: oklch(0.74 0.15 277);
+  --aurora-2: oklch(0.78 0.08 272);
+  --aurora-3: oklch(0.80 0.04 268);
 
-  --glass: oklch(1 0 0 / 0.02);
-  --hairline: oklch(1 0 0 / 0.10);
-  --blob-opacity: 0.09;
-  --grain-opacity: 0.04;
-  --elevated: 0 30px 80px -20px oklch(0 0 0 / 0.6);
+  --glass: oklch(1 0 0 / 0.025);
+  --hairline: oklch(1 0 0 / 0.09);
+  --grain-opacity: 0.025;
+  --wash-opacity: 0.07;
+  --elevated: 0 1px 2px 0 oklch(0 0 0 / 0.3), 0 16px 40px -24px oklch(0 0 0 / 0.5);
+  --elevated-hover: 0 2px 4px 0 oklch(0 0 0 / 0.38), 0 28px 56px -28px oklch(0 0 0 / 0.72);
 
-  --sidebar: oklch(0.14 0.012 264);
-  --sidebar-foreground: oklch(0.97 0.005 240);
-  --sidebar-primary: oklch(0.72 0.20 285);
-  --sidebar-primary-foreground: oklch(0.12 0.012 264);
-  --sidebar-accent: oklch(0.20 0.014 264);
-  --sidebar-accent-foreground: oklch(0.97 0.005 240);
-  --sidebar-border: oklch(1 0 0 / 0.08);
-  --sidebar-ring: oklch(0.72 0.20 285 / 0.6);
+  --sidebar: oklch(0.15 0.010 265);
+  --sidebar-foreground: oklch(0.96 0.003 265);
+  --sidebar-primary: oklch(0.74 0.15 277);
+  --sidebar-primary-foreground: oklch(0.13 0.010 265);
+  --sidebar-accent: oklch(0.19 0.010 265);
+  --sidebar-accent-foreground: oklch(0.96 0.003 265);
+  --sidebar-border: oklch(1 0 0 / 0.09);
+  --sidebar-ring: oklch(0.74 0.15 277 / 0.6);
 }
 
 @layer base {
@@ -196,16 +212,16 @@
     text-rendering: optimizeLegibility;
   }
 
-  /* Smooth, deliberate cross-fade when switching themes (only fires on
-     toggle — the no-flash script sets the class before first paint). */
+  /* Cross-fade on theme toggle only — the no-flash script sets the class
+     before first paint. */
   html, body {
     transition:
-      background-color 0.5s var(--ease-out-quint),
-      color 0.5s var(--ease-out-quint);
+      background-color 0.4s var(--ease-out-quint),
+      color 0.4s var(--ease-out-quint);
   }
 
   ::selection {
-    background: color-mix(in oklab, var(--primary) 40%, transparent);
+    background: color-mix(in oklab, var(--accent) 22%, transparent);
     color: var(--foreground);
   }
 
@@ -215,17 +231,10 @@
     font-weight: 400;
   }
 
-  /* Consistent, theme-aware focus ring for keyboard users */
   :focus-visible {
-    outline: 2px solid color-mix(in oklab, var(--primary) 70%, transparent);
+    outline: 2px solid color-mix(in oklab, var(--accent) 80%, transparent);
     outline-offset: 2px;
     border-radius: 4px;
-  }
-
-  /* Light theme: softer shadows, higher elevation feel */
-  :root {
-    --shadow-glow: 0 0 60px -10px color-mix(in oklab, var(--primary) 20%, transparent);
-    --shadow-elevated: 0 20px 60px -15px oklch(0.20 0.02 265 / 0.10);
   }
 }
 
@@ -234,68 +243,87 @@
   .font-sans { font-family: var(--font-sans); }
   .font-mono { font-family: var(--font-mono); }
 
+  /* One section rhythm for the whole site. */
+  .section-y { padding-block: var(--space-section); }
+
+  /* One glass recipe. No per-section variants. */
   .glass {
     background: var(--glass);
-    backdrop-filter: blur(20px) saturate(140%);
-    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    backdrop-filter: blur(16px) saturate(120%);
+    -webkit-backdrop-filter: blur(16px) saturate(120%);
     border: 1px solid var(--hairline);
   }
 
-  /* Light-theme glass gets a subtle white top highlight for premium depth */
-  :root .glass {
-    box-shadow:
-      inset 0 1px 0 0 oklch(1 0 0 / 0.6),
-      0 1px 3px 0 oklch(0.20 0.02 265 / 0.04);
-  }
-  :root .glass:hover {
-    box-shadow:
-      inset 0 1px 0 0 oklch(1 0 0 / 0.7),
-      0 4px 16px 0 oklch(0.20 0.02 265 / 0.06);
+  /* `.text-aurora` was a three-stop rainbow gradient. It is now simply the
+     accent — kept as a class so the ~60 existing call sites keep working. */
+  .text-aurora {
+    color: var(--accent);
   }
 
   .text-gradient {
-    background: linear-gradient(120deg, var(--foreground) 0%, color-mix(in oklab, var(--primary) 70%, var(--foreground)) 50%, var(--foreground) 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: var(--foreground);
   }
 
-  .text-aurora {
-    background: linear-gradient(110deg, var(--aurora-1), var(--aurora-2) 45%, var(--aurora-3));
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
-
-  /* ── Depth: soft radial mesh lighting for section backdrops ──────── */
-  .mesh {
+  /* `.aurora-bg` was two 70vw animated blurred blobs. It is now a single
+     static, very low-contrast wash. Retained for the routes that use it. */
+  .aurora-bg {
     position: absolute;
     inset: 0;
+    overflow: hidden;
     pointer-events: none;
     z-index: 0;
-    background:
-      radial-gradient(60% 55% at 15% 0%, color-mix(in oklab, var(--aurora-1) 22%, transparent) 0%, transparent 60%),
-      radial-gradient(50% 50% at 100% 30%, color-mix(in oklab, var(--aurora-2) 18%, transparent) 0%, transparent 55%),
-      radial-gradient(60% 60% at 50% 100%, color-mix(in oklab, var(--aurora-3) 14%, transparent) 0%, transparent 60%);
-    opacity: 0.5;
+    background: radial-gradient(
+      100% 60% at 50% 0%,
+      color-mix(in oklab, var(--accent) 100%, transparent) 0%,
+      transparent 70%
+    );
+    opacity: var(--wash-opacity);
   }
 
-  /* Vignette to focus the eye toward content centers */
-  .vignette::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background: radial-gradient(120% 90% at 50% 0%, transparent 55%, color-mix(in oklab, var(--background) 90%, black) 100%);
+  .hairline { border-color: var(--hairline); }
+
+  /* ── One hover recipe for every card on the site ──
+     Four properties move together: the border warms toward the accent, the
+     surface tints very slightly, elevation deepens, and the card lifts 3px.
+     Deliberately restrained — a grid of cards each doing something different
+     is what the redesign was pulling the site away from.
+
+     The lift is 3px, not 8px, because these sit in grids: a large translate
+     makes neighbouring cards look misaligned as the pointer crosses them. */
+  .card-hover {
+    transition:
+      transform 0.4s var(--ease-out-quint),
+      border-color 0.4s var(--ease-out-quint),
+      box-shadow 0.4s var(--ease-out-quint),
+      background-color 0.4s var(--ease-out-quint);
   }
-  /* Light theme: gentler vignette, warm fade instead of dark */
-  :root .vignette::after {
-    background: radial-gradient(120% 90% at 50% 0%, transparent 60%, color-mix(in oklab, var(--background) 95%, oklch(0.85 0.01 265)) 100%);
+  .card-hover:hover {
+    transform: translateY(-4px);
+    border-color: color-mix(in oklab, var(--accent) 55%, var(--hairline));
+    /* Three layers, one property: the outer lift, a 1px lit top edge, and a
+       soft accent bloom falling from the top inside the card.
+
+       These are `inset` shadows rather than a ::after overlay on purpose —
+       inset shadows paint above the card background but *below* its content,
+       so the glow never washes over the text. A positioned pseudo-element at
+       z-index 0 would tint the copy as well as the surface. It also keeps
+       ::before free for `.spotlight`, which several of these cards also use. */
+    box-shadow:
+      var(--elevated-hover),
+      inset 0 1px 0 0 color-mix(in oklab, var(--accent) 38%, transparent),
+      inset 0 30px 60px -30px color-mix(in oklab, var(--accent) 60%, transparent);
+  }
+  /* Only pointers that can actually hover get the lift — on touch, :hover
+     sticks after a tap and leaves the card stranded in its hover state. */
+  @media (hover: none) {
+    .card-hover:hover { transform: none; box-shadow: var(--elevated); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .card-hover:hover { transform: none; }
   }
 
-  /* Cursor-following radial highlight for cards. Set --mx/--my via JS
-     (see SpotlightCard). Fades in on hover; sits above the card surface
-     but below its content. */
+  /* Cursor-following border highlight. Exactly one surviving use: the
+     three evidence cards. Set --mx/--my via JS (see SpotlightCard). */
   .spotlight {
     position: relative;
   }
@@ -306,15 +334,14 @@
     border-radius: inherit;
     padding: 1px;
     background: radial-gradient(
-      280px circle at var(--mx, 50%) var(--my, 0%),
-      color-mix(in oklab, var(--aurora-1) 55%, transparent),
+      240px circle at var(--mx, 50%) var(--my, 0%),
+      color-mix(in oklab, var(--accent) 45%, transparent),
       transparent 60%
     );
     opacity: 0;
-    transition: opacity 0.4s var(--ease-out-quint);
+    transition: opacity 0.35s var(--ease-out-quint);
     pointer-events: none;
     z-index: 1;
-    /* Render only the border ring so the fill stays clean */
     -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite: xor;
     mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
@@ -322,60 +349,6 @@
   }
   .spotlight:hover::before {
     opacity: 1;
-  }
-
-  .aurora-bg {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
-  }
-  .aurora-bg::before,
-  .aurora-bg::after {
-    content: "";
-    position: absolute;
-    width: 70vw; height: 70vw;
-    border-radius: 9999px;
-    filter: blur(120px);
-    opacity: 0.35;
-    animation: aurora-float 18s ease-in-out infinite alternate;
-  }
-  .aurora-bg::before {
-    top: -20%; left: -10%;
-    background: radial-gradient(closest-side, var(--aurora-1), transparent 70%);
-  }
-  .aurora-bg::after {
-    bottom: -30%; right: -15%;
-    background: radial-gradient(closest-side, var(--aurora-2), transparent 70%);
-    animation-delay: -6s;
-  }
-
-  /* Light theme: softer aurora blobs, less glow, more pastel */
-  :root .aurora-bg::before,
-  :root .aurora-bg::after {
-    opacity: 0.18;
-    filter: blur(140px);
-  }
-
-  @keyframes aurora-float {
-    0%   { transform: translate3d(0,0,0) scale(1); }
-    50%  { transform: translate3d(4%, -3%, 0) scale(1.08); }
-    100% { transform: translate3d(-3%, 4%, 0) scale(0.96); }
-  }
-
-  .hairline { border-color: var(--hairline); }
-
-  /* Cursor-revealed bright hero layer. Additive `plus-lighter` + a brightness
-     lift only make sense against the near-black canvas — on light paper they
-     blow the text out to white. There, the crisper full-strength ink (vs the
-     faded base layer) carries the reveal instead. */
-  .hero-bright {
-    mix-blend-mode: normal;
-  }
-  .dark .hero-bright {
-    mix-blend-mode: plus-lighter;
-    filter: brightness(1.3) drop-shadow(0 0 30px color-mix(in oklab, var(--aurora-1) 40%, transparent));
   }
 
   .noise::after {
@@ -389,102 +362,70 @@
 
   .scroll-progress {
     position: fixed; top: 0; left: 0; right: 0; height: 2px;
-    background: linear-gradient(90deg, var(--aurora-1), var(--aurora-2), var(--aurora-3));
+    background: var(--accent);
     transform-origin: 0 50%;
     z-index: 100;
   }
 
-  /* ─── Wibify-style Ambient Soft Blobs ─────────────────────────── */
-  .ambient-blobs {
-    z-index: 0;
+  /* Signature motion — the one animation on the site that is ours.
+     Headline lines rise out of an overflow-clipped track. Everything
+     else is a Reveal fade or a hover state. */
+  @keyframes line-rise {
+    from { transform: translateY(105%); }
+    to   { transform: translateY(0); }
+  }
+  .line-track { overflow: hidden; }
+  .line-rise {
+    display: block;
+    animation: line-rise 0.75s var(--ease-out-expo) both;
   }
 
-  .blob {
-    position: absolute;
-    border-radius: 9999px;
-    filter: blur(160px);
-    opacity: var(--blob-opacity);
-    will-change: transform;
+  /* ── Hero cursor reveal ───────────────────────────────────────────
+     The name sits dimmed and a full-strength copy is revealed through a
+     radial mask that follows the pointer. */
+  .hero-name {
+    color: color-mix(in oklab, var(--foreground) 50%, transparent);
+  }
+  .dark .hero-name {
+    color: color-mix(in oklab, var(--foreground) 35%, transparent);
+  }
+  /* Coarse pointers have no cursor to reveal anything with, so the dimmed
+     state would simply be the final state. Show the name at full strength. */
+  @media (pointer: coarse) {
+    .hero-name,
+    .dark .hero-name {
+      color: var(--foreground);
+    }
   }
 
-  /* Blob 1 — top-left, large, slow drift */
-  .blob-1 {
-    width: 80vw;
-    height: 80vw;
-    top: -25%;
-    left: -20%;
-    animation: blob-drift-1 30s ease-in-out infinite alternate;
+  /* The revealed layer. Additive blending and the brightness lift only make
+     sense against the near-black canvas — on light paper they blow the text
+     out to white, so there the crisper full-strength ink carries the reveal. */
+  .hero-bright {
+    mix-blend-mode: normal;
+  }
+  .dark .hero-bright {
+    mix-blend-mode: plus-lighter;
+    filter: brightness(1.3) drop-shadow(0 0 30px color-mix(in oklab, var(--accent) 40%, transparent));
   }
 
-  /* Blob 2 — bottom-right, medium, counter-drift */
-  .blob-2 {
-    width: 60vw;
-    height: 60vw;
-    bottom: -20%;
-    right: -15%;
-    animation: blob-drift-2 25s ease-in-out infinite alternate;
-    animation-delay: -10s;
+  /* Entrance fade for hero content below the headline. CSS rather than JS so
+     it plays off the SSR markup without waiting for hydration. */
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: none; }
   }
-
-  /* Blob 3 — center, small accent */
-  .blob-3 {
-    width: 45vw;
-    height: 45vw;
-    top: 30%;
-    left: 40%;
-    opacity: calc(var(--blob-opacity) * 0.6);
-    animation: blob-drift-3 35s ease-in-out infinite alternate;
-    animation-delay: -18s;
-  }
-
-  @keyframes blob-drift-1 {
-    0%   { transform: translate3d(0,   0,    0) scale(1.00); }
-    33%  { transform: translate3d(4%,  -6%,  0) scale(1.05); }
-    66%  { transform: translate3d(-3%, 4%,   0) scale(0.97); }
-    100% { transform: translate3d(6%,  2%,   0) scale(1.03); }
-  }
-
-  @keyframes blob-drift-2 {
-    0%   { transform: translate3d(0,   0,    0) scale(1.00); }
-    33%  { transform: translate3d(-5%, 5%,   0) scale(1.07); }
-    66%  { transform: translate3d(4%,  -3%,  0) scale(0.95); }
-    100% { transform: translate3d(-2%, -6%,  0) scale(1.04); }
-  }
-
-  @keyframes blob-drift-3 {
-    0%   { transform: translate3d(0,   0,    0) scale(1.00); }
-    50%  { transform: translate3d(-8%, 6%,   0) scale(1.12); }
-    100% { transform: translate3d(5%,  -4%,  0) scale(0.92); }
-  }
-
-  @property --angle {
-    syntax: "<angle>";
-    initial-value: 0deg;
-    inherits: false;
-  }
-
-  @keyframes spin-border {
-    to { --angle: 360deg; }
-  }
-
-  /* Subtle upward drift used for the hero "drag to explore" hint */
-  @keyframes hint-bob {
-    0%, 100% { transform: translateY(0); opacity: 0.5; }
-    50%      { transform: translateY(3px); opacity: 0.9; }
-  }
+  .fade-up { animation: fade-up 0.7s var(--ease-out-expo) both; }
 
   @media (prefers-reduced-motion: reduce) {
-    .aurora-bg::before, .aurora-bg::after { animation: none; }
-    .blob { animation: none !important; }
     html { scroll-behavior: auto; }
-    /* Disable all CSS transitions and animations */
+    .line-rise { animation: none; transform: none; }
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.01ms !important;
       scroll-behavior: auto !important;
     }
-    /* Disable Framer Motion via its CSS custom property */
     :root {
       --motion-duration: 0.01ms !important;
       --motion-spring-duration: 0.01ms !important;
