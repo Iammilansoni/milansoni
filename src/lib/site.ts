@@ -312,18 +312,16 @@ export const EXPERIENCE = [
   {
     company: "CodeFiesta",
     role: "Organising Team & Sponsorship Head",
-    period: "2023 – 2025",
+    period: "2024 – 2025",
     location: "GIT Jaipur",
-    // The institute's own record of the event. It verifies the hackathon,
-    // its national scale, the 24-hour format and the editions — it does not
-    // publish sponsor or team-selection figures, so those stay attributed to
-    // the role rather than to this page.
-    href: "https://gitjaipur.com/national-level-hackathons/",
-    linkLabel: "Event record",
+    // The institute's own report on CodeFiesta 4.0: the participants list
+    // runs to 200 teams, with 13 named in the final round.
+    href: "https://gitjaipur.com/wp-content/uploads/2026/01/hackathon-Report_4.0.pdf",
+    linkLabel: "Official event report",
     highlights: [
-      "Secured 18+ sponsorships as Sponsorship Head, owning company outreach, partnership negotiation and the sponsor relationship end to end",
-      "Ran the event alongside faculty and students: 400+ teams registered from across India, shortlisted to 60+ competing in the 24-hour onsite final",
-      "Handled logistics, scaling and technical operations across three editions of the event",
+      "Sponsors: 18+ — outreach, partnership negotiation and sponsor relationships across editions 3.0 and 4.0",
+      "2025 edition: 200 teams from 30+ colleges, 24-hour onsite build, 13 in the final round",
+      "Logistics, scaling and technical operations onsite",
     ],
   },
 ] as const;

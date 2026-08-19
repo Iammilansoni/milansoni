@@ -243,11 +243,12 @@ Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP
 - Designed and integrated RESTful APIs (Node.js) to automate logistics workflows
 - Improved retrieval accuracy by 40% and eliminated 20% of manual data-entry tasks
 
-### CodeFiesta — Organising Team & Sponsorship Head (2023 – 2025)
+### CodeFiesta — Organising Team & Sponsorship Head (2024 – 2025)
 
-- Secured 18+ sponsorships as Sponsorship Head, owning company outreach, partnership negotiation and the sponsor relationship end to end
-- Ran the national-level hackathon alongside faculty and students: 400+ teams registered from across India, shortlisted to 60+ competing in the 24-hour onsite final
-- Handled logistics, scaling and technical operations across three editions
+- Sponsors: 18+ — outreach, partnership negotiation, sponsor relationships across editions 3.0 and 4.0
+- 2025 edition: 200 teams from 30+ colleges, 24-hour onsite build, 13 in the final round
+- Logistics, scaling and technical operations onsite
+- Source: https://gitjaipur.com/wp-content/uploads/2026/01/hackathon-Report_4.0.pdf
 
 ---
 
