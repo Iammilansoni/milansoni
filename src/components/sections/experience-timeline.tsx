@@ -51,6 +51,17 @@ export function ExperienceTimeline() {
                   {"location" in e && (
                     <p className="mt-0.5 font-mono text-xs text-muted-foreground">{e.location}</p>
                   )}
+                  {"href" in e && (
+                    <a
+                      href={e.href}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="group mt-2.5 inline-flex items-center gap-1 font-mono text-xs text-muted-foreground transition-colors hover:text-accent"
+                    >
+                      {e.linkLabel}
+                      <ArrowUpRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    </a>
+                  )}
                 </div>
 
                 <ul className="space-y-3 md:col-span-8">

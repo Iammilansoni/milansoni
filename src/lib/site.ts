@@ -314,6 +314,12 @@ export const EXPERIENCE = [
     role: "Organising Team & Sponsorship Head",
     period: "2023 – 2025",
     location: "GIT Jaipur",
+    // The institute's own record of the event. It verifies the hackathon,
+    // its national scale, the 24-hour format and the editions — it does not
+    // publish sponsor or team-selection figures, so those stay attributed to
+    // the role rather than to this page.
+    href: "https://gitjaipur.com/national-level-hackathons/",
+    linkLabel: "Event record",
     highlights: [
       "Secured 18+ sponsorships as Sponsorship Head, owning company outreach, partnership negotiation and the sponsor relationship end to end",
       "Ran the event alongside faculty and students: 400+ teams registered from across India, shortlisted to 60+ competing in the 24-hour onsite final",
