@@ -1,11 +1,8 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { NAV, SITE } from "@/lib/site";
-import { Magnetic } from "@/components/ui/magnetic";
-import { TextRoll } from "@/components/ui/text-roll";
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
-import { Volume2, VolumeX, Menu } from "lucide-react";
-import { useSoundSystem } from "@/lib/sound";
+import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from "@/components/ui/sheet";
 import { MSLogo } from "@/components/ui/ms-logo";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
@@ -15,7 +12,6 @@ export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
   const [hidden, setHidden] = useState(false);
   const { location } = useRouterState();
   const { scrollY } = useScroll();
-  const { isMuted, toggleMute } = useSoundSystem();
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -45,47 +41,33 @@ export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
             scrolled ? "shadow-elevated bg-background/60" : ""
           }`}
         >
-          <Magnetic strength={40}>
-            <Link to="/" className="flex items-center gap-2.5 pl-1 pr-3" aria-label="Milan Soni — Home">
-              <MSLogo size={34} />
-              <span className="font-display text-lg leading-none hidden sm:block">{SITE.name}</span>
-            </Link>
-          </Magnetic>
+          <Link to="/" className="flex items-center gap-2.5 pl-1 pr-3" aria-label="Milan Soni — Home">
+            <MSLogo size={30} />
+            <span className="font-display text-lg leading-none hidden sm:block">{SITE.name}</span>
+          </Link>
 
           <nav className="hidden md:flex items-center gap-1 text-sm">
             {NAV.slice(1).map((item) => {
               const active = location.pathname === item.to ||
                 (item.to !== "/" && location.pathname.startsWith(item.to));
               return (
-                <Magnetic key={item.to} strength={30}>
-                  <Link
-                    to={item.to}
-                    className={`block px-3 py-1.5 rounded-full transition-colors ${
-                      active
-                        ? "text-foreground bg-secondary"
-                        : "text-muted-foreground hover:text-foreground"
-                    }`}
-                  >
-                    <TextRoll text={item.label} />
-                  </Link>
-                </Magnetic>
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  className={`block px-3 py-1.5 rounded-full transition-colors ${
+                    active
+                      ? "text-foreground bg-secondary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {item.label}
+                </Link>
               );
             })}
           </nav>
 
           <div className="flex items-center gap-1">
-            <Magnetic strength={30}>
-              <ThemeToggle />
-            </Magnetic>
-            <Magnetic strength={30}>
-              <button
-                onClick={toggleMute}
-                className="h-9 w-9 flex items-center justify-center rounded-full text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Toggle sound"
-              >
-                {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-              </button>
-            </Magnetic>
+            <ThemeToggle />
             <button
               onClick={onOpenCommand}
               className="hidden sm:inline-flex items-center gap-2 text-xs text-muted-foreground border border-hairline rounded-full px-3 py-1.5 hover:text-foreground hover:bg-secondary transition"
@@ -93,14 +75,12 @@ export function Nav({ onOpenCommand }: { onOpenCommand: () => void }) {
               <span>Search</span>
               <kbd className="font-mono text-[10px] bg-secondary border border-hairline rounded px-1 py-0.5">⌘K</kbd>
             </button>
-            <Magnetic strength={30}>
-              <Link
-                to="/contact"
-                className="hidden md:block text-sm rounded-full bg-foreground text-background px-4 py-1.5 hover:opacity-90 transition"
-              >
-                Hire me
-              </Link>
-            </Magnetic>
+            <Link
+              to="/contact"
+              className="hidden md:block text-sm rounded-full bg-foreground text-background px-4 py-1.5 hover:opacity-90 transition"
+            >
+              Hire me
+            </Link>
 
             {/* Mobile Nav */}
             <Sheet>

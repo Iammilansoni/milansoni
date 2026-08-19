@@ -17,10 +17,7 @@ import { Footer } from "@/components/footer";
 import { CommandPalette } from "@/components/command-palette";
 import { ScrollProgress } from "@/components/scroll-progress";
 import { CustomCursor } from "@/components/ui/custom-cursor";
-import { Preloader } from "@/components/preloader";
-import { SoundProvider } from "@/lib/sound";
 import { ThemeProvider, themeInitScript, useTheme } from "@/lib/theme";
-import { AmbientBlobs } from "@/components/ambient-blobs";
 import { AiChat } from "@/components/ai-chat";
 import { SITE } from "@/lib/site";
 
@@ -85,7 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { title: SITE.title },
       { name: "description", content: SITE.description },
       { name: "author", content: SITE.name },
-      { name: "theme-color", content: "#f5f3fa" },
+      { name: "theme-color", content: "#f9f9fb" },
       { property: "og:site_name", content: SITE.name },
       { property: "og:type", content: "website" },
       { property: "og:title", content: "Milan Soni Portfolio | Software Engineer & GenAI Engineer" },
@@ -102,7 +99,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       { rel: "stylesheet", href: appCss },
-      { rel: "canonical", href: "https://milansoni.vercel.app/" },
+      // NOTE: no canonical here. A canonical in the root head is inherited by
+      // every route, so each subpage was emitting two conflicting canonicals —
+      // its own, plus this one pointing at the homepage. Google resolves that
+      // ambiguity by ignoring the signal, which suppresses the subpages.
+      // Each route declares its own canonical instead.
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
@@ -113,6 +114,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "icon", href: "/ms-favicon.png", type: "image/png", sizes: "any" },
       { rel: "apple-touch-icon", href: "/ms-favicon.png" },
       { rel: "manifest", href: "/site.webmanifest" },
+      // Feed auto-discovery: readers, aggregators and Google Alerts pick this
+      // up without anyone submitting anything.
+      { rel: "alternate", type: "application/rss+xml", href: "/rss.xml", title: "Milan Soni — AI Engineering Notes" },
       { rel: "alternate", type: "text/plain", href: "/llms.txt", title: "LLM-friendly profile" },
       { rel: "alternate", type: "text/plain", href: "/llms-full.txt", title: "LLM-friendly profile (full)" },
     ],
@@ -184,55 +188,34 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const location = useLocation();
   const [cmdOpen, setCmdOpen] = useState(false);
-  const [preloaderDone, setPreloaderDone] = useState(false);
   const reduce = useReducedMotion();
 
+  // Content paints immediately. The previous build gated first paint behind a
+  // simulated progress bar, holding the whole page at opacity:0 for ~1.2s.
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <SoundProvider>
-          {!preloaderDone && <Preloader onComplete={() => setPreloaderDone(true)} />}
-
-          {/*
-            Always render the main content so that it is included in the SSR HTML payload.
-            This allows AI bots and search engine crawlers to read the content.
-            We visually hide it until the preloader finishes using opacity and pointer-events.
-          */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: preloaderDone ? 1 : 0 }}
-            transition={{ duration: 1 }}
-            style={{
-              pointerEvents: preloaderDone ? "auto" : "none",
-              height: preloaderDone ? "auto" : "100vh",
-              overflow: preloaderDone ? "visible" : "hidden"
-            }}
-          >
-            <div className="fixed inset-0 z-50 pointer-events-none noise" aria-hidden="true" />
-            {/* Global ambient drifting blobs — visible on every page */}
-            <AmbientBlobs className="fixed z-1" opacity={0.6} />
-            <CustomCursor />
-            <ScrollProgress />
-            <Nav onOpenCommand={() => setCmdOpen(true)} />
-            <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
-            <main id="main-content" className="pt-24">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={location.pathname}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: reduce ? 0 : 0.25 }}
-                >
-                  <Outlet />
-                </motion.div>
-              </AnimatePresence>
-            </main>
-            <Footer />
-            {!location.pathname.startsWith("/blog/") && <AiChat />}
-            <ThemedToaster />
-          </motion.div>
-        </SoundProvider>
+        <div className="fixed inset-0 z-50 pointer-events-none noise" aria-hidden="true" />
+        <CustomCursor />
+        <ScrollProgress />
+        <Nav onOpenCommand={() => setCmdOpen(true)} />
+        <CommandPalette open={cmdOpen} onOpenChange={setCmdOpen} />
+        <main id="main-content" className="pt-24">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={location.pathname}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: reduce ? 0 : 0.25 }}
+            >
+              <Outlet />
+            </motion.div>
+          </AnimatePresence>
+        </main>
+        <Footer />
+        {!location.pathname.startsWith("/blog/") && <AiChat />}
+        <ThemedToaster />
       </ThemeProvider>
     </QueryClientProvider>
   );

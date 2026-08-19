@@ -1,81 +1,141 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
 import { Reveal } from "@/components/reveal";
-import { AmbientBlobs } from "@/components/ambient-blobs";
+import { SectionHeader } from "@/components/section-header";
+import { ArrowUpRight } from "lucide-react";
 import { EXPERIENCE } from "@/lib/site";
 
+/**
+ * Experience and education in one section. Previously two separate sections
+ * carrying a scroll-driven glowing line, pulsing timeline nodes, ambient
+ * blobs, a 500px watermark icon and eight tilting glass cards — a lot of
+ * apparatus around what is, in substance, a list of roles.
+ */
+
+const CREDENTIALS = [
+  {
+    title: "NASSCOM Certified Full Stack Developer",
+    detail: "IT-ITeS Sector Skills Council · 2024",
+  },
+  {
+    title: "First place — Jigyasa, GIT Jaipur",
+    detail: "Blockchain, smart contracts & decentralised systems",
+    href: "https://www.linkedin.com/in/sonimilan/overlay/1720793634608/single-media-viewer/?profileId=ACoAAD8piA8BZ-BgPuiIf8eBWQ8P0fjWXPcdZbw",
+  },
+  {
+    title: "Hackathon organiser — CodeFiesta",
+    detail: "2023–2025 · logistics, scaling, technical operations",
+  },
+  {
+    title: "Class representative, 2 years",
+    detail: "Volunteer programming tutor for junior students",
+  },
+];
+
 export function ExperienceTimeline() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start center", "end center"],
-  });
-
-  const lineHeight = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
   return (
-    <section className="relative overflow-hidden py-32" ref={containerRef}>
-      {/* Section-level ambient blobs — teal/green accent to differ from hero */}
-      <AmbientBlobs
-        colors={["oklch(0.72 0.18 200)", "oklch(0.70 0.28 295)"]}
-        opacity={0.4}
-      />
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
-        <Reveal>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Experience</p>
-          <h2 className="mt-3 font-display text-display max-w-3xl leading-[0.9]">
-            Shipping inside <br className="hidden md:block"/>
-            <span className="text-aurora">real engineering teams.</span>
-          </h2>
-        </Reveal>
+    <section className="section-y relative">
+      <div className="relative z-10 mx-auto max-w-6xl px-6">
+        <SectionHeader
+          index={5}
+          kicker="Experience"
+          title={<>Shipping inside real engineering teams.</>}
+          lead="Four teams, one open-source project, and the numbers each one moved."
+        />
 
-        <div className="mt-32 relative">
-          {/* Background track line */}
-          <div className="absolute left-[15px] md:left-1/2 top-0 bottom-0 w-px bg-hairline md:-translate-x-1/2" />
-          
-          {/* Animated glowing line */}
-          <motion.div 
-            className="absolute left-[15px] md:left-1/2 top-0 w-px md:-translate-x-1/2 bg-linear-to-b from-aurora-1 via-aurora-2 to-aurora-3 dark:shadow-[0_0_15px_rgba(255,255,255,0.8)] shadow-[0_0_10px_color-mix(in_oklab,var(--aurora-1)_40%,transparent)] z-10"
-            style={{ height: lineHeight }}
-          />
-
-          <div className="space-y-24">
-            {EXPERIENCE.map((e, i) => (
-              <Reveal key={e.company} delay={i * 0.1} className={`relative md:grid md:grid-cols-2 md:gap-16 items-center ${i % 2 ? "md:[&>div:first-child]:order-2" : ""}`}>
-                
-                {/* Timeline Node */}
-                <div className="absolute left-[15px] md:left-1/2 top-0 md:top-1/2 -translate-x-1/2 md:-translate-y-1/2 z-20 flex items-center justify-center">
-                  <div className="h-4 w-4 rounded-full bg-background border-2 border-aurora-1" />
-                  <motion.div 
-                    className="absolute inset-0 rounded-full bg-aurora-2 blur-md"
-                    animate={{ scale: [1, 1.5, 1], opacity: [0.5, 0.8, 0.5] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                </div>
-
-                <div className="pl-12 md:pl-0 md:pr-16 md:text-right">
-                  <p className="font-mono text-xs uppercase tracking-widest text-aurora-1">{e.period}</p>
-                  <h3 className="mt-3 font-display text-3xl md:text-4xl">{e.company}</h3>
-                  <p className="mt-2 text-base text-muted-foreground">{e.role}</p>
+        {/* ── Roles ── */}
+        <div className="mt-16 border-t border-hairline">
+          {EXPERIENCE.map((e, i) => (
+            <Reveal key={e.company} delay={i * 0.05}>
+              <div className="grid gap-4 border-b border-hairline py-9 md:grid-cols-12 md:gap-10">
+                <div className="md:col-span-4">
+                  <p className="font-mono text-xs uppercase tracking-wider text-accent">
+                    {e.period}
+                  </p>
+                  <h3 className="mt-2.5 font-display text-title text-foreground">{e.company}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">{e.role}</p>
                   {"location" in e && (
-                    <p className="mt-1 font-mono text-xs text-muted-foreground/60">{(e as any).location}</p>
+                    <p className="mt-0.5 font-mono text-xs text-muted-foreground">{e.location}</p>
                   )}
                 </div>
 
-                <div className="pl-12 md:pl-16 mt-6 md:mt-0">
-                  <div className="glass rounded-4xl p-8 space-y-4 hover:bg-secondary/40 transition duration-500">
-                    {e.highlights.map((h, idx) => (
-                      <div key={idx} className="flex gap-4">
-                        <span className="mt-2 h-1.5 w-1.5 rounded-full bg-aurora-2 shrink-0" />
-                        <span className="text-muted-foreground text-sm leading-relaxed">{h}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
-          </div>
+                <ul className="space-y-3 md:col-span-8">
+                  {e.highlights.map((h, idx) => (
+                    <li key={idx} className="flex gap-3.5">
+                      <span
+                        aria-hidden="true"
+                        className="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent"
+                      />
+                      <span className="text-sm leading-relaxed text-muted-foreground">{h}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
+          ))}
         </div>
+
+        {/* ── Education & credentials ── */}
+        <Reveal>
+          <div className="mt-20 grid gap-10 md:grid-cols-12 md:gap-10">
+            <div className="md:col-span-5">
+              <p className="font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                Foundation
+              </p>
+              <h3 className="mt-4 font-display text-headline text-foreground">
+                B.Tech, Computer Science &amp; Engineering
+              </h3>
+              <p className="mt-2 text-sm text-muted-foreground">
+                Global Institute of Technology, Jaipur · Oct 2022 – May 2026
+              </p>
+              <div className="mt-6 flex gap-10">
+                <div>
+                  <span className="block font-display text-3xl text-foreground">8.10</span>
+                  <span className="mt-1 block font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    Cumulative GPA
+                  </span>
+                </div>
+                <div>
+                  <span className="block font-display text-3xl text-foreground">2026</span>
+                  <span className="mt-1 block font-mono text-[10px] uppercase tracking-wider text-muted-foreground">
+                    Graduating
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <ul className="border-t border-hairline md:col-span-7">
+              {CREDENTIALS.map((c) => {
+                const body = (
+                  <>
+                    <span className="text-sm font-medium text-foreground transition-colors group-hover:text-accent">
+                      {c.title}
+                    </span>
+                    <span className="mt-1 block font-mono text-xs text-muted-foreground">
+                      {c.detail}
+                    </span>
+                  </>
+                );
+
+                return (
+                  <li key={c.title} className="border-b border-hairline py-4">
+                    {c.href ? (
+                      <a
+                        href={c.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="group -mx-3 flex items-start justify-between gap-4 rounded-md px-3 py-1 transition-colors hover:bg-accent/[0.05]"
+                      >
+                        <span>{body}</span>
+                        <ArrowUpRight className="mt-0.5 h-3.5 w-3.5 shrink-0 text-muted-foreground transition-colors group-hover:text-accent" />
+                      </a>
+                    ) : (
+                      <div className="group">{body}</div>
+                    )}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

@@ -19,12 +19,17 @@ const STATIC_ARTICLES: Article[] = [
     source: "local",
     coverImage: "/miningniti-dashboard.png",
     relatedProjectSlug: "miningniti",
+    badges: [
+      { label: "Agents", value: "5" },
+      { label: "Providers", value: "4" },
+      { label: "Infra", value: "$0/mo" },
+    ],
   },
   {
     slug: "hybrid-rag-pipeline-zero-cost",
     title: "Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month",
     description:
-      "I replaced Pinecone and Weaviate with pgvector on Supabase's free tier and built a hybrid search pipeline combining BM25 + cosine similarity with Reciprocal Rank Fusion. Here's the architecture, the code, and the gotchas nobody talks about.",
+      "I replaced Pinecone and Weaviate with pgvector on Supabase's free tier and built a hybrid search pipeline pairing lexical scoring with cosine similarity via Reciprocal Rank Fusion. Here's the architecture, the code, and the gotchas nobody talks about — including why the keyword half was eventually rewritten.",
     publishedAt: "2026-06-29T00:00:00Z",
     readingTime: "12 min read",
     categories: ["AI", "RAG", "PostgreSQL"],
@@ -34,8 +39,8 @@ const STATIC_ARTICLES: Article[] = [
     relatedProjectSlug: "miningniti",
     badges: [
       { label: "Cost", value: "$0/mo" },
-      { label: "Retrieval", value: "92% acc" },
-      { label: "Latency", value: "~120ms" },
+      { label: "Hit Rate@5", value: "1.000" },
+      { label: "Gate", value: "CI-blocking" },
     ],
   },
   {
@@ -51,9 +56,9 @@ const STATIC_ARTICLES: Article[] = [
     coverImage: "/LangGraph.png",
     relatedProjectSlug: "miningniti",
     badges: [
-      { label: "Agents", value: "6 parallel" },
-      { label: "Reliability", value: "98.7%" },
-      { label: "Speed", value: "3.2s total" },
+      { label: "Agents", value: "5" },
+      { label: "Hit Rate@5", value: "1.000" },
+      { label: "Gate", value: "CI-blocking" },
     ],
   },
   {

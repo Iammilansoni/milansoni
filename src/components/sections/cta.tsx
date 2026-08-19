@@ -1,52 +1,79 @@
-import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { Reveal } from "@/components/reveal";
 import { Magnetic } from "@/components/ui/magnetic";
+import { SITE } from "@/lib/site";
 
 export function CTASection() {
-  const containerRef = useRef<HTMLElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end end"],
-  });
-
-  const scale = useTransform(scrollYProgress, [0, 1], [0.8, 1]);
-  const y = useTransform(scrollYProgress, [0, 1], ["20%", "0%"]);
-
   return (
-    <section ref={containerRef} className="relative min-h-[90vh] flex items-center justify-center overflow-hidden py-32 bg-background">
-      <motion.div 
-        style={{ scale, y }}
-        className="w-full mx-auto max-w-7xl px-6 relative"
-      >
-        <div className="absolute inset-0 bg-gradient-to-t from-aurora-1/20 to-transparent blur-3xl opacity-50 rounded-[4rem] -z-10" />
-        
-        <div className="glass rounded-[3rem] p-12 md:p-24 text-center overflow-hidden border border-hairline/50 relative">
-          <div className="absolute inset-0 aurora-bg opacity-30 dark:mix-blend-screen" />
-          
-          <div className="relative z-10 flex flex-col items-center justify-center">
-            <p className="font-mono text-sm uppercase tracking-[0.3em] text-aurora-2 mb-8">
-              Open to Opportunities
-            </p>
-            
-            <h2 className="font-display text-hero text-gradient pb-6">
-              LET'S TALK
-            </h2>
-            
-            <p className="mt-8 max-w-xl text-lg md:text-xl text-muted-foreground leading-relaxed">
-              Looking for someone to ship product end-to-end? From foundational GenAI features to scalable full-stack applications.
-            </p>
-            
-            <div className="mt-16">
-              <Magnetic strength={30}>
-                <Link to="/contact" className="relative inline-flex items-center justify-center rounded-full bg-foreground text-background px-12 py-6 text-xl font-medium transition duration-500 hover:scale-105 hover:bg-aurora-1 hover:text-primary-foreground dark:shadow-[0_0_40px_rgba(255,255,255,0.1)] shadow-[0_0_40px_color-mix(in_oklab,var(--aurora-1)_18%,transparent)] hover:shadow-[0_0_40px_color-mix(in_oklab,var(--aurora-1)_50%,transparent)]">
-                  Start a conversation
-                </Link>
-              </Magnetic>
+    <section className="section-y relative border-t border-hairline">
+      <div className="mx-auto max-w-6xl px-6">
+        <Reveal>
+          <div className="grid gap-10 md:grid-cols-12 md:gap-16">
+            <div className="md:col-span-7">
+              <div className="inline-flex items-center gap-2.5">
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-accent" />
+                </span>
+                <span className="font-mono text-[10px] uppercase tracking-[0.2em] text-accent">
+                  Open to 2026 roles
+                </span>
+              </div>
+
+              <h2 className="mt-6 font-display text-display text-foreground">Let's talk.</h2>
+
+              <p className="mt-5 max-w-xl text-lead text-muted-foreground">
+                Looking for someone to ship product end to end — from applied GenAI features to the
+                full-stack platform around them? I'm interested in AI engineering and SDE roles.
+              </p>
+
+              <div className="mt-10 flex flex-wrap items-center gap-3">
+                <Magnetic strength={16}>
+                  <Link
+                    to="/contact"
+                    className="group inline-flex items-center gap-2.5 rounded-full bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-opacity hover:opacity-90"
+                  >
+                    Start a conversation
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </Magnetic>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="inline-flex items-center gap-2.5 rounded-full border border-hairline px-7 py-3.5 text-sm font-medium transition-colors hover:bg-secondary"
+                >
+                  {SITE.email}
+                </a>
+              </div>
             </div>
+
+            <ul className="border-t border-hairline md:col-span-5">
+              {[
+                { label: "GitHub", href: SITE.socials.github, handle: "@Iammilansoni" },
+                { label: "LinkedIn", href: SITE.socials.linkedin, handle: "in/sonimilan" },
+                { label: "Medium", href: SITE.socials.medium, handle: "@milansoni96946" },
+              ].map((s) => (
+                <li key={s.label} className="border-b border-hairline">
+                  <a
+                    href={s.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="group flex items-center justify-between gap-4 py-4"
+                  >
+                    <span className="text-sm font-medium text-foreground transition-colors group-hover:text-accent">
+                      {s.label}
+                    </span>
+                    <span className="flex items-center gap-2 font-mono text-xs text-muted-foreground">
+                      {s.handle}
+                      <ArrowUpRight className="h-3.5 w-3.5 transition-colors group-hover:text-accent" />
+                    </span>
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
-      </motion.div>
+        </Reveal>
+      </div>
     </section>
   );
 }
