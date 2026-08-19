@@ -21,11 +21,6 @@ const CREDENTIALS = [
     href: "https://www.linkedin.com/in/sonimilan/overlay/1720793634608/single-media-viewer/?profileId=ACoAAD8piA8BZ-BgPuiIf8eBWQ8P0fjWXPcdZbw",
   },
   {
-    title: "Organising team & Sponsorship Head — CodeFiesta",
-    detail:
-      "2023–2025 · National-level college hackathon · Ran the event alongside faculty and students; led sponsorships and partnerships, plus logistics, scaling and technical operations",
-  },
-  {
     title: "Class representative, 2 years",
     detail: "Volunteer programming tutor for junior students",
   },
@@ -38,8 +33,8 @@ export function ExperienceTimeline() {
         <SectionHeader
           index={5}
           kicker="Experience"
-          title={<>Shipping inside real engineering teams.</>}
-          lead="Four teams, one open-source project, and the numbers each one moved."
+          title={<>Shipping inside real teams.</>}
+          lead="Four teams, one open-source project, and a national hackathon I helped run — with the numbers each one moved."
         />
 
         {/* ── Roles ── */}

@@ -309,6 +309,17 @@ export const EXPERIENCE = [
       "Built RESTful APIs (Node.js) to automate logistics workflows, eliminating 20% of manual data-entry tasks",
     ],
   },
+  {
+    company: "CodeFiesta",
+    role: "Organising Team & Sponsorship Head",
+    period: "2023 – 2025",
+    location: "GIT Jaipur",
+    highlights: [
+      "Secured 18+ sponsorships as Sponsorship Head, owning company outreach, partnership negotiation and the sponsor relationship end to end",
+      "Ran the event alongside faculty and students: 400+ teams registered from across India, shortlisted to 60+ competing in the 24-hour onsite final",
+      "Handled logistics, scaling and technical operations across three editions of the event",
+    ],
+  },
 ] as const;
 
 export const STATS = [

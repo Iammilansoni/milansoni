@@ -100,6 +100,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
 | Software Developer Intern | Om Logistics | Jun – Aug 2024 | LangChain + FAISS: 70% latency reduction across 10K+ docs |
+| Organising Team & Sponsorship Head | CodeFiesta (national hackathon) | 2023 – 2025 | 18+ sponsorships secured; 400+ teams registered nationally, 60+ selected for the 24-hour onsite final |
 
 ## Tech Stack
 
