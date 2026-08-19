@@ -56,6 +56,11 @@ WORK EXPERIENCE:
    - LangChain + FAISS vector embeddings: 70% latency reduction across 10,000+ documents, 40% accuracy improvement
    - RESTful APIs eliminating 20% manual data-entry tasks
 
+6. CodeFiesta — Organising Team & Sponsorship Head (2023–2025, GIT Jaipur)
+   - Secured 18+ sponsorships as Sponsorship Head: company outreach, partnership negotiation, sponsor relationships end to end
+   - National-level hackathon run with faculty and students: 400+ teams registered from across India, 60+ selected for the 24-hour onsite final
+   - Logistics, scaling and technical operations across three editions
+
 KEY PROJECTS:
 
 1. MiningNiti (SIH 2023 National Winner)
