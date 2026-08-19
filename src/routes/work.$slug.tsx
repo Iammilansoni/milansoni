@@ -112,6 +112,11 @@ function CaseStudy() {
             </div>
           )}
 
+          {/* A cold start should not read as a broken deployment. */}
+          {p.demoNote && (
+            <p className="mt-3 font-mono text-xs text-muted-foreground">{p.demoNote}</p>
+          )}
+
           {/* The publication this project implements, with the honest caveat
               about how the shipped numbers relate to the published ones. */}
           {p.research && (
@@ -197,8 +202,36 @@ function CaseStudy() {
                 </div>
               )}
             </Reveal>
-            
+
             <Section title="Impact & Results">{p.results}</Section>
+
+            {p.limits && p.limits.length > 0 && (
+              <Reveal>
+                <h2 className="font-display text-3xl mb-4 flex items-center gap-4">
+                  <span className="h-px flex-1 bg-hairline" />
+                  Known Limits
+                  <span className="h-px flex-1 bg-hairline" />
+                </h2>
+                <p className="mb-8 text-sm text-muted-foreground">
+                  What this system does not do yet, stated plainly. All of it is tracked as next work.
+                </p>
+                <ul className="space-y-3">
+                  {p.limits.map((l, i) => (
+                    /* Static content — border warm only. A lift here would
+                       imply the card is clickable when it isn't. */
+                    <li
+                      key={i}
+                      className="flex gap-4 rounded-2xl border border-hairline p-5 transition-colors duration-300 hover:border-accent/30"
+                    >
+                      <span className="font-mono text-xs text-muted-foreground pt-0.5">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-muted-foreground leading-relaxed">{l}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Reveal>
+            )}
           </div>
 
           <div className="lg:col-span-4">

@@ -32,7 +32,7 @@ AWARDS & RECOGNITION:
 
 WORK EXPERIENCE:
 
-1. OmniRoute (46.9k★) — Open Source Contributor (Jul 2026, Remote)
+1. OmniRoute (50k★) — Open Source Contributor (Jul 2026, Remote)
    - Diagnosed HTTP 400 regression in memory-injection pipeline for strict LLM providers; proposed declarative Zod schema flag adopted by maintainer (PR #6225, 25/25 Vitest + 30/30 Node coverage)
    - Built accessible "Configured Only" filter toggle mapping live connection state to filterable data grid (PR #6245, 168 additions, 9/9 tests, v3.8.45)
    - Integrated Claude 5 Sonnet into provider registry with regression test (PR #6209, v3.8.45)
@@ -60,16 +60,20 @@ KEY PROJECTS:
 
 1. MiningNiti (SIH 2023 National Winner)
    - AI Document Intelligence for India's coal mining industry
-   - 6 specialized agents running concurrently via asyncio across 4 AI providers:
-     * Classifier (Groq/Llama 3.3-70b-versatile)
-     * Safety Analyzer (Mistral/Magistral)
-     * Entity Extractor (Cerebras/GPT-OSS-120B)
-     * Summarizer (Cerebras)
-     * Compliance Auditor (Gemini 2.0 Flash)
-     * Orchestrator (FastAPI)
-   - RAG Pipeline: Hybrid search (pgvector cosine + pg_trgm BM25) → Reciprocal Rank Fusion → ms-marco-MiniLM-L-6-v2 cross-encoder reranking → Top-5 chunks → LLM generation
+   - 5 specialized agents across 4 AI providers (an Orchestrator coordinates them but is not itself an agent):
+     * Classifier (Groq gpt-oss-120b) — runs first; its category feeds the rest
+     * Safety Analyzer (Mistral magistral-small) — skipped for non-safety categories
+     * Entity Extractor (Cerebras gpt-oss-120b)
+     * Summarizer (Cerebras gpt-oss-120b)
+     * Compliance Auditor (Groq gpt-oss-120b) — runs on demand, not on upload
+     The middle three run concurrently under asyncio.gather() after the classifier.
+   - RAG Pipeline: 23 prompt-injection guard patterns + 1,500-char query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd (GIN tsvector) via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations
+   - NOTE: the lexical arm is PostgreSQL full-text search, NOT true BM25. Be precise about this if asked — real BM25 needs an extension like pg_search.
    - Stack: Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Docker
-   - Results: $0/month infra cost, 98.7% pipeline completion, 3.2s latency (down from 14s), 90% reduction in manual compliance review
+   - Quality gate: retrieval scored on every CI run against a labelled golden set (12 queries, 130-chunk corpus) — Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75). The gate blocks the build.
+   - Scale: 262 tests collected, 26.2K lines across two apps, 11 API routers, 15 app routes, $0/month infrastructure
+   - Known limits (state these honestly if asked): sync DB access inside async endpoints bounds throughput; the background queue is an in-process asyncio.Queue that does not survive restarts; analysis agents see ~15K chars of head and tail, not the whole document (retrieval indexes the full text)
+   - Demo caveat: the backend runs on a free HuggingFace Space that sleeps when idle, so a cold first request can take up to a minute
    - GitHub: https://github.com/Iammilansoni/MiningNiti
    - Demo: https://miningniti.vercel.app/
 
@@ -109,7 +113,7 @@ KEY PROJECTS:
 
 BLOG ARTICLES (on portfolio + Medium):
 1. "RSC + Streaming LLMs: Zero-Latency AI Dashboard with Next.js" — TTFB 3.2s→120ms, 40% less client JS
-2. "LangGraph Multi-Agent State Machine Workflows" — Pipeline completion 72%→98.7%, latency 14s→3.2s
+2. "LangGraph Multi-Agent State Machine Workflows" — migrating MiningNiti's five-agent pipeline off LangChain SequentialChain; per-agent error isolation, conditional branching, provider fallback routed by token budget
 3. "Hybrid RAG Pipeline for $0/Month" — Replaced Pinecone ($400/mo) with pgvector, 92% relevant chunks in top-5
 4. "Building a Production-Grade Multi-Agent AI System" — Deep architecture dive, 90% faster compliance review
 
@@ -126,8 +130,8 @@ TECHNICAL SKILLS:
 - Languages: JavaScript (ES6+), TypeScript, Python, C++
 - Frontend: React 19, Next.js 16, TanStack Start/Router/Query, Tailwind CSS v4, Framer Motion, Recharts, Radix UI/shadcn, Three.js
 - Backend: FastAPI 0.128, Node.js, Express.js, SQLAlchemy 2.0, Pydantic v2, JWT, Clerk Auth, RBAC, Microservices
-- AI/ML: LangChain, LangGraph, RAG Pipelines, Hybrid Search (Vector + BM25), Cross-Encoder Reranking, FlashRank, Ollama, AI Agents, pgvector
-- LLM Providers: Groq (Llama 3.3), Cerebras (GPT-OSS-120B), Mistral (Magistral), Google Gemini, OpenAI, Anthropic, DeepSeek, HuggingFace
+- AI/ML: LangChain, LangGraph, RAG Pipelines, Hybrid Search (Vector + Full-Text), Reciprocal Rank Fusion, Cross-Encoder Reranking, FlashRank, Ollama, AI Agents, Retrieval Evaluation (Hit Rate / MRR / nDCG), pgvector
+- LLM Providers: Groq (gpt-oss-120b), Cerebras (gpt-oss-120b), Mistral (magistral-small), Google Gemini, OpenAI, Anthropic, DeepSeek, HuggingFace
 - Databases: PostgreSQL + pgvector, Supabase, MongoDB, Redis Stack 7.2 (HNSW), Upstash Redis, Prisma ORM
 - Cloud/DevOps: Vercel, Nitro, HuggingFace Spaces, Docker Compose, GitHub Actions CI/CD, Linux, Git
 
@@ -142,7 +146,7 @@ PERSONALITY / HOW TO DESCRIBE MILAN:
 - Builds production-grade systems, not just class projects
 - Deeply passionate about AI/GenAI and applying it to real-world problems
 - Won SIH 2023 National Finale (Ministry of Coal) as a student — top 1% of 44,000+ teams
-- Active open source contributor to 46.9k★ OmniRoute repo
+- Active open source contributor to 50k★ OmniRoute repo
 - Writes technical blog posts sharing deep AI engineering knowledge
 - $0/month infrastructure philosophy — maximizes free tiers across 4 AI providers
 - Fast learner who ships code that other engineers depend on
