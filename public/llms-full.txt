@@ -35,7 +35,7 @@ Milan Soni is an AI Engineer and Full Stack Developer specializing in transformi
 
 | Area | What I Do |
 |------|-----------|
-| AI / LLM Engineering | Production RAG pipelines with hybrid search, multi-agent orchestration (6 agents), cross-encoder reranking, evaluation harnesses |
+| AI / LLM Engineering | Production RAG pipelines with hybrid search, multi-agent orchestration (5 agents), cross-encoder reranking, evaluation harnesses |
 | Full Stack | React 19 + TanStack Start frontends, FastAPI async backends, Clerk auth, enterprise RBAC |
 | Data & Infrastructure | PostgreSQL + pgvector, Redis HNSW indexes, Docker orchestration, $0/month free-tier deployments |
 | Systems Thinking | Algorithm design, scalable backend architecture, multi-provider AI orchestration |
@@ -48,26 +48,48 @@ Milan Soni is an AI Engineer and Full Stack Developer specializing in transformi
 
 > SIH 2023 National Winner | Recognized by Coal India Limited & CMPDI
 
-A full-stack AI platform combining a multi-agent AI pipeline (6 specialized agents across 4 AI providers) with production-grade RAG (hybrid search + cross-encoder reranking) and real-time compliance auditing. Built for the Ministry of Coal to manage safety documentation, regulatory compliance, and institutional knowledge across coal mining operations.
+A document-intelligence platform for coal mining: five specialized AI agents analyze every uploaded regulation, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Built for the Ministry of Coal.
 
-**Problem**: Coal mining operations generate thousands of critical documents — MSHA regulations, equipment manuals, safety protocols, environmental impact assessments, and incident investigations. Information is fragmented across PDFs and siloated databases. Compliance risk is high: missing a regulation update can mean violations, fines, or lives. Finding a specific clause across 500 pages takes hours.
+**Problem**: Coal mining generates thousands of critical documents — MSHA regulations, equipment manuals, safety protocols, environmental impact assessments, incident investigations — scattered across PDFs and siloed systems. Finding a specific clause across 500 pages takes hours, and a missed regulation update means violations, fines, or lives.
 
-**Solution**: Deployed 6 specialized AI agents that run concurrently via asyncio: Classifier (Groq/Llama 3.3), Safety Analyzer (Mistral/Magistral), Entity Extractor (Cerebras/GPT-OSS-120B), Summarizer (Cerebras), Compliance Auditor (Gemini), orchestrated by a FastAPI backend. The RAG pipeline uses hybrid search (pgvector cosine + pg_trgm BM25) combined via Reciprocal Rank Fusion, followed by ms-marco-MiniLM-L-6-v2 cross-encoder reranking for precise Top-5 chunk retrieval.
+**Solution**: Four agents run on every upload — a classifier whose category feeds a safety analyzer, entity extractor and summarizer running concurrently under asyncio.gather() — while a fifth audits compliance on demand, cross-referencing operational documents against regulations into a per-clause Pass / Fail / Not Addressed matrix. The safety analyzer is skipped entirely for non-safety categories, so an equipment manual never pays for a hazard screen it does not need.
+
+**Agents (5, across 4 providers)**:
+- Classifier — Groq gpt-oss-120b — runs first; outputs safety / equipment / regulatory / geological
+- Safety Analyzer — Mistral magistral-small — hazards, MSHA/OSHA violations (skipped for non-safety docs)
+- Entity Extractor — Cerebras gpt-oss-120b — equipment, chemicals, regulations, personnel
+- Summarizer — Cerebras gpt-oss-120b — key points and actionable items
+- Compliance Auditor — Groq gpt-oss-120b — on demand; per-clause Pass / Fail / Not Addressed matrix
+- (An Orchestrator coordinates these; it is a coordinator, not a sixth agent.)
 
 **Architecture**:
-- Frontend: Next.js 16 + React 19 dashboard with Clerk auth, Framer Motion animations, Recharts analytics, and react-pdf viewer
-- API Gateway: FastAPI 0.128 with Clerk JWT verification, slowapi rate limiting, and Pydantic v2 validation
-- AI Agent Layer: 6 parallel agents (Classifier, Safety Analyzer, Entity Extractor, Summarizer, Compliance Auditor, Orchestrator) across Groq, Mistral, Cerebras, and Gemini
-- RAG Pipeline: Hybrid search (pgvector + pg_trgm BM25) → Reciprocal Rank Fusion → ms-marco-MiniLM-L-6-v2 cross-encoder reranking → Top-5 chunks → LLM generation
-- Database: Supabase PostgreSQL + pgvector (HNSW index) for embeddings + pg_trgm for keyword matching
-- Cache: Upstash Redis for session caching and background job queuing
+- Frontend: Next.js 16 App Router (Turbopack) + React 19 across 15 routes — Clerk auth, TanStack Query, Recharts, react-pdf viewer
+- API: FastAPI 0.128, 11 routers under /api/v1, Clerk JWT verification via JWKS (PyJWT), slowapi at 120 req/min per IP, Pydantic v2
+- Ingestion: pdfplumber for layout and tables with Tesseract OCR fallback (capped 50 pages/doc at 200 DPI); ~1000-word chunks with 200 overlap under a hard 4,000-character ceiling; embedded 100 at a time
+- Retrieval: 23 prompt-injection guard patterns + 1,500-char query cap -> Gemini gemini-embedding-001 (768-dim) -> pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a GIN tsvector via Reciprocal Rank Fusion (k=60) -> over-fetch 20 -> ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 -> generation streamed over SSE with inline [Document, Page X] citations
+- Data: Supabase PostgreSQL 16 + pgvector HNSW, Supabase Storage for uploads, Upstash Redis caching completed analyses keyed by SHA-256(extracted text) + PIPELINE_VERSION (failed runs are never cached)
+- CI: five jobs — backend lint, bandit security scan, pytest with coverage against real PostgreSQL and Redis, the retrieval quality gate, frontend lint-and-build. Alembic migrations run before the server binds.
+
+**Note on the lexical arm**: it is PostgreSQL full-text search (ts_rank_cd over a GIN tsvector), NOT true BM25. "Hybrid BM25 + vector" is the claim everyone makes; real BM25 needs an extension like pg_search. Stated precisely rather than rounded up.
 
 **Tradeoffs**:
-- Supabase pgvector over Pinecone/Weaviate: Chose Supabase for free-tier PostgreSQL + pgvector to maintain ACID compliance with relational document metadata and eliminate vendor lock-in
-- 4 AI Providers over Single Provider: Distributed agents across Groq, Cerebras, Mistral, and Gemini to maximize free-tier quotas (14,400+ requests/day combined) and enable automatic fallback
-- Hybrid Search over Pure Vector: Added BM25 keyword matching alongside cosine similarity via Reciprocal Rank Fusion — crucial for mining domain where exact regulation numbers matter
+- Chose the weaker PDF library on purpose: PyMuPDF extracts more reliably but is AGPL-3.0 and this project ships MIT, so pdfplumber was used — and it turned out to recover tables PyMuPDF flattens, which matters because mining regulations are largely tabular
+- A 400-row table became one 14,703-character chunk: chunking grouped by sentence, but Markdown tables contain no sentence-ending punctuation, and gemini-embedding-001 truncates silently past ~2,048 tokens, so most of the table was never indexed with no error raised. Fixed with a hard MAX_CHUNK_CHARS = 4000
+- Aggregate metrics could not prove the lexical arm was alive: disabling keyword search left every aggregate retrieval metric unchanged at a 130-chunk corpus size, so the suite now carries direct guards that the lexical index returns rows and can distinguish 30 CFR 75.323 from 75.400
+- Two retry layers multiplied instead of adding: backoff in both the orchestrator and the agent base class composed to nine attempts and minutes of sleep per agent; retry and provider fallback now live in BaseAgent._generate_json alone
+- Fallback routed by token budget, not preference: Groq's free tier allows 8K tokens/min, Cerebras serves the identical gpt-oss-120b at 30K/min, so agents fall back to Cerebras on a Groq rate limit — same model, four times the headroom
 
-**Results**: Won Smart India Hackathon 2023 National Finale for the Ministry of Coal. Recognized by Coal India Limited & CMPDI. Pipeline completion: 98.7%. End-to-end latency: 3.2s (down from 14s sequential). Manual compliance analysis reduced by 90%. $0/month infrastructure cost.
+**Quality gate**: retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus, using a local sentence-transformers model so it needs no API keys and stays deterministic. Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75). Generation quality (faithfulness, answer relevancy) is Gemini-judged and run on demand rather than in CI.
+
+**Scale**: 262 tests collected (203 unit, 27 integration, 32 eval), 10,192 lines of backend Python across 61 modules, 15,995 lines of frontend TS/TSX across 128 files, 11 API routers, 15 app routes, 99 commits since 18 Jun 2025.
+
+**Known limits** (tracked as next work):
+- Synchronous database access inside async endpoints blocks the event loop, bounding throughput per worker
+- The background queue is an in-process asyncio.Queue: queued work does not survive a restart and does not scale across replicas
+- Analysis agents see roughly 15K characters of head and tail, not the whole document — retrieval still indexes the full text
+- The backend runs on a free HuggingFace Space that sleeps when idle, so a cold first request can take up to a minute
+
+**Results**: Won Smart India Hackathon 2023 National Finale for the Ministry of Coal. Recognized by Coal India Limited & CMPDI. Retrieval quality gated in CI at the figures above, on $0/month infrastructure.
 
 **Links**: [GitHub](https://github.com/Iammilansoni/MiningNiti) | [Live Demo](https://miningniti.vercel.app/)
 
@@ -173,7 +195,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 ### OmniRoute — Open Source Contributor (Jul 2026)
 
-> OmniRoute · 46.9k★ · 230+ LLM providers · Open-source universal AI gateway
+> OmniRoute · 50k★ · 230+ LLM providers · Open-source universal AI gateway
 
 Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
 
@@ -243,13 +265,13 @@ React Server Components + chunked streaming for AI dashboards. Instead of the us
 
 ### The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows
 
-Migration from LangChain SequentialChain to LangGraph's graph-based orchestration for MiningNiti's 6-agent document pipeline.
+Migration from LangChain SequentialChain to LangGraph's graph-based orchestration for MiningNiti's five-agent document pipeline.
 
 **Problems with linear chains**: No conditional branching, no shared mutable state, zero resilience when one agent hits a rate limit.
 
 **LangGraph solution**: MiningState TypedDict flowing through nodes (Classifier, Safety Analyzer, Entity Extractor, Summarizer, Compliance Auditor, Assembler). After classification, three nodes fan out in parallel. Compliance Auditor gated behind conditional edge for regulatory documents only. Each node wraps LLM calls in try/except with error state writing.
 
-**Results**: Pipeline completion: 72% → 98.7%. Latency: 14s → 3.2s via asyncio. Cost: $0/month. Extending with new agents requires only one additional node and one edge.
+**Results**: Per-agent error isolation (one failure no longer kills the run), concurrent execution under asyncio.gather() after the classifier, and $0/month on free-tier providers. Extending with new agents requires only one additional node and one edge. NOTE: an earlier version of this article quoted 72% → 98.7% completion and 14s → 3.2s latency; those were ad-hoc measurements that could not be reproduced under controlled conditions and have been withdrawn. The measured figure is retrieval quality, gated in CI — see MiningNiti.
 
 **Gotchas**: List-appended state merging, scalar last-writer-wins collisions, token-budget discipline (3K char truncation), checkpointing for human-in-the-loop.
 
@@ -259,15 +281,15 @@ Migration from LangChain SequentialChain to LangGraph's graph-based orchestratio
 
 Replaced Pinecone ($400/mo) with pgvector on Supabase free tier.
 
-**Architecture**: User Query → BM25 Keyword Search (pg_trgm) + Vector Search (pgvector cosine) → Reciprocal Rank Fusion → FlashRank Cross-Encoder Reranking → Top-5 chunks → LLM generation.
+**Architecture**: User Query → PostgreSQL full-text search (ts_rank_cd over GIN tsvector) + Vector Search (pgvector cosine, HNSW) → Reciprocal Rank Fusion (k=60) → over-fetch 20 → cross-encoder reranking (ms-marco-MiniLM-L-6-v2) → Top-5 chunks → LLM generation.
 
 **Key insight**: Reciprocal Rank Fusion (RRF) works on rank positions, not scores. Formula: RRF_score = Σ (weight_i / (k + rank_i)) where k=60. Score-agnostic — doesn't matter if systems return different score ranges.
 
-**Schema**: PostgreSQL with pgvector extension (HNSW index, m=16, ef_construction=200) + pg_trgm GIN index for trigram similarity.
+**Schema**: PostgreSQL with pgvector extension (HNSW index) + a GIN tsvector index for full-text search. The original build used a pg_trgm trigram index and was migrated: trigram similarity scored short queries (e.g. "methane limits?") too low to contribute.
 
-**Results**: $0/month cost. 92% relevant chunks in top-5. ~120ms end-to-end latency. 10,000+ document chunks indexed, <10ms query time.
+**Results**: $0/month cost. Retrieval scored in CI against a labelled golden set (12 queries, 130-chunk corpus): Hit Rate@5 1.000, MRR 1.000, Recall@5 0.958, nDCG@5 0.968, against floors of 0.90 / 0.75 / 0.85 / 0.75. NOTE: an earlier version of this article reported 92% top-5 accuracy and ~120ms end-to-end latency; those were one-off measurements that could not be reproduced and have been withdrawn.
 
-**Gotchas**: pg_trgm ≠ true BM25, embedding dimension affects HNSW build time, Supabase free tier has 50 connection limit, RRF k=60 may need tuning per domain.
+**Gotchas**: pg_trgm is not BM25 and neither is Postgres full-text search (real BM25 needs an extension like pg_search); trigram similarity collapses on short queries; embedding dimension affects HNSW build time; Supabase free tier has a 50-connection limit; RRF k=60 may need tuning per domain; cross-encoder reranking can fully mask a dead lexical arm, so test retrieval components directly rather than trusting aggregate scores.
 
 ---
 
@@ -329,8 +351,8 @@ State machines over prompt engineering for production agents.
 Languages       : JavaScript (ES6+) · TypeScript · Python · C++
 Frontend        : React 19 · Next.js 16 · TanStack Start/Router/Query · Tailwind CSS v4 · Framer Motion · Recharts · Radix UI / shadcn · Three.js
 Backend         : FastAPI 0.128 · Node.js · Express.js · SQLAlchemy 2.0 · Pydantic v2 · JWT · Clerk Auth · RBAC · Microservices
-AI / ML         : LangChain · LangGraph · RAG Pipelines · Hybrid Search (Vector + BM25) · Cross-Encoder Reranking · FlashRank · Ollama · AI Agents · pgvector
-LLM Providers   : Groq (Llama 3.3) · Cerebras (GPT-OSS-120B) · Mistral (Magistral) · Google Gemini · OpenAI · Anthropic · DeepSeek · HuggingFace
+AI / ML         : LangChain · LangGraph · RAG Pipelines · Hybrid Search (Vector + Full-Text) · Cross-Encoder Reranking · FlashRank · Ollama · AI Agents · pgvector
+LLM Providers   : Groq (gpt-oss-120b) · Cerebras (gpt-oss-120b) · Mistral (magistral-small) · Google Gemini · OpenAI · Anthropic · DeepSeek · HuggingFace
 Databases       : PostgreSQL + pgvector · Supabase · MongoDB · Redis Stack 7.2 (HNSW) · Upstash Redis · Prisma ORM
 Cloud / DevOps  : Vercel · Nitro · HuggingFace Spaces · Docker Compose · GitHub Actions CI/CD · Linux · Git
 ```

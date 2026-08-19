@@ -28,7 +28,7 @@
 I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure.
 
 - **SIH 2023 National Winner** — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
-- **Open Source Contributor** — 3 PRs merged to OmniRoute (10.8k★), 21,000+ tests, across 4 releases
+- **Open Source Contributor** — 5+ PRs merged to OmniRoute (50k★), 21,000+ tests, across 4 releases
 - **Scopus-Indexed Researcher** — Peer-reviewed paper on hybrid attention-based temporal modeling (PICET-2026, IET Conference Proceedings)
 - **CS Graduate (2026)** — B.Tech CSE from Global Institute of Technology, Jaipur (CGPA: 8.10)
 
@@ -38,7 +38,7 @@ I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production R
 
 | Area | What I Do |
 |------|-----------|
-| **AI / LLM Engineering** | Production RAG pipelines with hybrid search, multi-agent orchestration (6 agents), cross-encoder reranking, evaluation harnesses |
+| **AI / LLM Engineering** | Production RAG pipelines with hybrid search, multi-agent orchestration (5 agents), cross-encoder reranking, evaluation harnesses |
 | **Full Stack** | React 19 + TanStack Start frontends, FastAPI async backends, Clerk auth, enterprise RBAC |
 | **Data & Infrastructure** | PostgreSQL + pgvector, Redis HNSW indexes, Docker orchestration, $0/month free-tier deployments |
 | **Systems Thinking** | Algorithm design, scalable backend architecture, multi-provider AI orchestration |
@@ -51,31 +51,40 @@ I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production R
 
 > **SIH 2023 National Winner** | Recognized by Coal India Limited & CMPDI
 
-A full-stack AI platform combining a multi-agent AI pipeline (6 specialized agents across 4 AI providers) with production-grade RAG (hybrid search + cross-encoder reranking) and real-time compliance auditing.
+A document-intelligence platform for coal mining: five specialized AI agents analyze every uploaded regulation, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored in CI and the score blocks the build.
 
 ```
     Document Upload
            │
            ▼
-    ┌─────────────┐
-    │ Orchestrator │──── Runs 6 agents concurrently via asyncio
-    └──────┬──────┘
+    ┌──────────────┐
+    │  Classifier  │  Groq gpt-oss-120b — runs FIRST
+    └──────┬───────┘  its category feeds the rest
            │
-     ┌─────┼─────┬──────────┬──────────┬────────────┐
-     ▼     ▼     ▼          ▼          ▼            ▼
-Classifier Safety  Entity    Summarizer  Compliance
-  Agent   Analyzer Extractor   Agent      Auditor
-(Groq)  (Mistral) (Cerebras) (Cerebras) (Gemini)
-     │     │     │          │          │            │
-     └─────┴─────┴──────────┴──────────┴────────────┘
+     ┌─────┴──────────┬─────────────────┐   asyncio.gather()
+     ▼                ▼                 ▼
+ Safety Analyzer  Entity Extractor  Summarizer
+ (Mistral)        (Cerebras)        (Cerebras)
+ skipped for
+ non-safety docs
            │
            ▼
-    Chunks + Embeddings → pgvector (HNSW index)
+    Chunks + Embeddings → pgvector (HNSW)
+
+    ┌────────────────────┐
+    │ Compliance Auditor │  Groq — ON DEMAND, not on upload
+    └────────────────────┘  per-clause Pass / Fail / Not Addressed
 ```
+
+An Orchestrator coordinates these five; it is a coordinator, not a sixth agent.
+
+**Retrieval:** 23 injection-guard patterns + 1,500-char cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text `ts_rank_cd` via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder → top 5 → streamed over SSE with inline `[Document, Page X]` citations. *(The lexical arm is Postgres full-text search, not true BM25.)*
 
 **Tech:** Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Groq, Cerebras, Mistral, Gemini, Docker
 
-**Results:** Won SIH 2023 National Finale. 6 AI agents, 4 providers, $0/month infrastructure cost.
+**Quality gate (CI):** Hit Rate@5 1.000 · MRR 1.000 · Recall@5 0.958 · nDCG@5 0.968 — against floors of 0.90 / 0.75 / 0.85 / 0.75 on 12 labelled queries over a 130-chunk corpus.
+
+**Results:** Won SIH 2023 National Finale. 5 AI agents, 4 providers, 262 tests, 26.2K lines, $0/month infrastructure.
 
 **Links:** [GitHub](https://github.com/Iammilansoni/MiningNiti) | [Live Demo](https://miningniti.vercel.app/)
 
@@ -139,7 +148,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
-| Open Source Contributor | [OmniRoute](https://github.com/diegosouzapw/OmniRoute) (10.8k★) | Jul 2026 | 3 PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
+| Open Source Contributor | [OmniRoute](https://github.com/diegosouzapw/OmniRoute) (50k★) | Jul 2026 | 5+ PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
 | Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval pipeline: 40% accuracy improvement, 60% QA reduction |
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
@@ -149,7 +158,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 ## Open Source — OmniRoute
 
-> [OmniRoute](https://github.com/diegosouzapw/OmniRoute) · 10.8k★ · 230+ LLM providers · Open-source universal AI gateway
+> [OmniRoute](https://github.com/diegosouzapw/OmniRoute) · 50k★ · 230+ LLM providers · Open-source universal AI gateway
 
 Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
 

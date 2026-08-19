@@ -1,6 +1,6 @@
 # Milan Soni — AI Engineer & Full Stack Developer
 
-> AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 46.9k★ open-source AI gateway (3 PRs merged, 21,000+ tests), built a 6-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams), and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.
+> AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 50k★ open-source AI gateway (5+ PRs merged, 21,000+ tests), built a 5-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams) with retrieval quality gated in CI, and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.
 
 ## Profile
 
@@ -16,7 +16,7 @@
 
 ## Core Expertise
 
-- **AI / LLM Engineering**: Production RAG pipelines with hybrid search (vector + BM25), multi-agent orchestration (6 agents), cross-encoder reranking, evaluation harnesses
+- **AI / LLM Engineering**: Production RAG pipelines with hybrid search (vector + full-text), multi-agent orchestration (5 agents), cross-encoder reranking, evaluation harnesses
 - **Full Stack**: React 19, Next.js 16, TanStack Start, FastAPI, Clerk auth, enterprise RBAC
 - **Data & Infrastructure**: PostgreSQL + pgvector, Redis HNSW indexes, Docker, $0/month free-tier deployments
 - **Systems Thinking**: Algorithm design, scalable backend architecture, multi-provider AI orchestration
@@ -32,13 +32,15 @@
 
 > SIH 2023 National Winner | Recognized by Coal India Limited & CMPDI
 
-A full-stack AI platform combining a multi-agent AI pipeline (6 specialized agents across 4 AI providers) with production-grade RAG (hybrid search + cross-encoder reranking) and real-time compliance auditing. Built for the Ministry of Coal.
+A document-intelligence platform for coal mining: five specialized AI agents analyze every uploaded regulation, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Built for the Ministry of Coal.
 
-- **Agents**: Classifier (Groq/Llama 3.3), Safety Analyzer (Mistral/Magistral), Entity Extractor (Cerebras/GPT-OSS-120B), Summarizer (Cerebras), Compliance Auditor (Gemini), Orchestrator
-- **RAG Pipeline**: Hybrid search (pgvector cosine + pg_trgm BM25) → Reciprocal Rank Fusion → ms-marco-MiniLM-L-6-v2 cross-encoder reranking → Top-5 chunks → LLM generation
+- **Agents (5)**: Classifier (Groq gpt-oss-120b, runs first — its category feeds the rest), Safety Analyzer (Mistral magistral-small, skipped for non-safety categories), Entity Extractor (Cerebras gpt-oss-120b), Summarizer (Cerebras gpt-oss-120b) — these three run concurrently under asyncio.gather() — plus Compliance Auditor (Groq gpt-oss-120b) on demand. An Orchestrator coordinates them but is not itself an agent.
+- **RAG Pipeline**: 23 prompt-injection guard patterns + 1,500-char query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a GIN tsvector via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations. The lexical arm is PostgreSQL full-text search, not true BM25.
 - **Tech**: Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Groq, Cerebras, Mistral, Gemini, Docker
-- **Metrics**: 6 AI agents, 4 providers, $0/month infrastructure cost
-- **Impact**: Won SIH 2023 National Finale. Reduced manual compliance analysis by 90%. Pipeline completion rate: 98.7%. End-to-end latency: 3.2s (down from 14s sequential).
+- **Metrics**: 5 AI agents, 4 providers, 262 tests, 26.2K lines across two apps, $0/month infrastructure cost
+- **Quality gate**: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — 12 labelled queries over a 130-chunk corpus, run in CI.
+- **Known limits**: synchronous DB access inside async endpoints bounds per-worker throughput; the background queue is an in-process asyncio.Queue that does not survive restarts; analysis agents see ~15K chars of head and tail rather than the full document (retrieval indexes the full text).
+- **Impact**: Won SIH 2023 National Finale for the Ministry of Coal; recognized by Coal India Limited & CMPDI.
 - **GitHub**: https://github.com/Iammilansoni/MiningNiti
 - **Demo**: https://miningniti.vercel.app/
 
@@ -93,7 +95,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
-| Open Source Contributor | OmniRoute (46.9k★) | Jul 2026 | 3 PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
+| Open Source Contributor | OmniRoute (50k★) | Jul 2026 | 5+ PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
 | Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval pipeline: 40% accuracy improvement, 60% QA reduction |
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
@@ -104,8 +106,8 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 - **Languages**: JavaScript (ES6+), TypeScript, Python, C++
 - **Frontend**: React 19, Next.js 16, TanStack Start/Router/Query, Tailwind CSS v4, Framer Motion, Recharts, Radix UI / shadcn, Three.js
 - **Backend**: FastAPI 0.128, Node.js, Express.js, SQLAlchemy 2.0, Pydantic v2, JWT, Clerk Auth, RBAC, Microservices
-- **AI / ML**: LangChain, LangGraph, RAG Pipelines, Hybrid Search (Vector + BM25), Cross-Encoder Reranking, FlashRank, Ollama, AI Agents, pgvector
-- **LLM Providers**: Groq (Llama 3.3), Cerebras (GPT-OSS-120B), Mistral (Magistral), Google Gemini, OpenAI, Anthropic, DeepSeek, HuggingFace
+- **AI / ML**: LangChain, LangGraph, RAG Pipelines, Hybrid Search (Vector + Full-Text), Cross-Encoder Reranking, FlashRank, Ollama, AI Agents, pgvector
+- **LLM Providers**: Groq (gpt-oss-120b), Cerebras (gpt-oss-120b), Mistral (magistral-small), Google Gemini, OpenAI, Anthropic, DeepSeek, HuggingFace
 - **Databases**: PostgreSQL + pgvector, Supabase, MongoDB, Redis Stack 7.2 (HNSW), Upstash Redis, Prisma ORM
 - **Cloud / DevOps**: Vercel, Nitro, HuggingFace Spaces, Docker Compose, GitHub Actions CI/CD, Linux, Git
 
@@ -115,10 +117,10 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 React Server Components + chunked streaming for AI dashboards. TTFB dropped from 3.2s to 120ms. Client JS reduced by 40%. Covers Server Actions, Vercel AI SDK, progressive rendering with Framer Motion.
 
 ### The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows
-Migration from LangChain SequentialChain to LangGraph for MiningNiti's 6-agent pipeline. Pipeline completion: 72% → 98.7%. Latency: 14s → 3.2s via asyncio. Covers state management, conditional edges, error resilience.
+Migration from LangChain SequentialChain to LangGraph for MiningNiti's five-agent pipeline. Covers state management, conditional edges, per-agent error isolation, and routing provider fallback by token budget.
 
 ### Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month
-Replaced Pinecone ($400/mo) with pgvector on Supabase free tier. Hybrid search (BM25 + cosine) with Reciprocal Rank Fusion. Cross-encoder reranking with FlashRank. <10ms queries on 100K vectors.
+Replaced Pinecone ($400/mo) with pgvector on Supabase free tier. Hybrid retrieval (PostgreSQL full-text + cosine) fused with Reciprocal Rank Fusion, then cross-encoder reranking. Documents why the keyword arm was rewritten from pg_trgm trigram similarity to full-text search, and why neither should be called BM25.
 
 ### How I Built a Production-Grade Multi-Agent AI System That Won a National Hackathon
 Deep dive into MiningNiti's architecture: 4 agent specialists (Classifier, Safety Analyzer, Entity Extractor, Summarizer), async background processing, RAG-powered chat, Celery task queue.

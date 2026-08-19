@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 46.9k★ open-source AI gateway (3 PRs merged, 21,000+ tests), built a 6-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams), and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
+    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 50k★ open-source AI gateway (5+ PRs merged, 21,000+ tests), built a 5-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams) with retrieval quality gated in CI, and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -37,7 +37,11 @@ export type Project = {
   results: string;
   githubUrl?: string;
   demoUrl?: string;
+  /** Caveat shown beside the demo link (e.g. cold-start latency). */
+  demoNote?: string;
   heroImage?: string;
+  /** Known constraints, stated plainly. Reads as maturity, not weakness. */
+  limits?: string[];
   /** Present when the project implements a peer-reviewed publication. */
   research?: {
     title: string;
@@ -60,34 +64,45 @@ export const PROJECTS: Project[] = [
     blurb:
       "AI-Powered Document Intelligence for the Mining Industry — transforming thousands of fragmented PDFs into an instantly queryable, citation-backed source of truth.",
     description:
-      "A full-stack AI platform that combines a multi-agent AI pipeline (6 specialized agents across 4 AI providers) with production-grade RAG (hybrid search + cross-encoder reranking) and real-time compliance auditing. Built for the Ministry of Coal to manage safety documentation, regulatory compliance, and institutional knowledge across coal mining operations.",
+      "A document-intelligence platform for coal mining: five specialised AI agents analyse every uploaded regulation, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build.",
     metrics: [
-      { value: "6", label: "Specialized AI Agents" },
-      { value: "4", label: "AI Providers (Free Tiers)" },
+      { value: "5", label: "Specialized AI Agents" },
+      { value: "1.000", label: "Hit Rate@5 (CI-gated)" },
       { value: "$0/mo", label: "Infrastructure Cost" },
     ],
     tech: ["Next.js 16", "React 19", "FastAPI", "PostgreSQL + pgvector", "Supabase", "Upstash Redis", "Clerk Auth", "Groq", "Cerebras", "Mistral", "Gemini", "Docker"],
     problem:
-      "Coal mining operations generate thousands of critical documents — MSHA regulations, equipment manuals, safety protocols, environmental impact assessments, and incident investigations. Information is fragmented across PDFs and siloated databases. Compliance risk is high: missing a regulation update can mean violations, fines, or lives. Finding a specific clause across 500 pages takes hours.",
+      "Coal mining generates thousands of critical documents — MSHA regulations, equipment manuals, safety protocols, environmental impact assessments, incident investigations — scattered across PDFs and siloed systems. Finding a specific clause across 500 pages takes hours, and a missed regulation update means violations, fines, or lives.",
     solution:
-      "Deployed 6 specialized AI agents that run concurrently via asyncio: Classifier (Groq/Llama 3.3), Safety Analyzer (Mistral/Magistral), Entity Extractor (Cerebras/GPT-OSS-120B), Summarizer (Cerebras), Compliance Auditor (Gemini), orchestrated by a FastAPI backend. The RAG pipeline uses hybrid search (pgvector cosine + pg_trgm BM25) combined via Reciprocal Rank Fusion, followed by ms-marco-MiniLM-L-6-v2 cross-encoder reranking for precise Top-5 chunk retrieval.",
+      "Four agents run on every upload: a classifier whose category feeds a safety analyzer, entity extractor and summarizer running concurrently under asyncio.gather(). A fifth audits compliance on demand, cross-referencing operational documents against regulations into a per-clause Pass / Fail / Not Addressed matrix. The safety analyzer is skipped entirely for non-safety categories, so an equipment manual never pays for a hazard screen it does not need. Questions go through a measured retrieval pipeline and every answer cites its document and page.",
     architecture: [
-      "Frontend: Next.js 16 + React 19 dashboard with Clerk auth, Framer Motion animations, Recharts analytics, and react-pdf viewer.",
-      "API Gateway: FastAPI 0.128 with Clerk JWT verification, slowapi rate limiting, and Pydantic v2 validation.",
-      "AI Agent Layer: 6 parallel agents (Classifier, Safety Analyzer, Entity Extractor, Summarizer, Compliance Auditor, Orchestrator) across Groq, Mistral, Cerebras, and Gemini.",
-      "RAG Pipeline: Hybrid search (pgvector + pg_trgm BM25) → Reciprocal Rank Fusion → ms-marco-MiniLM-L-6-v2 cross-encoder reranking → Top-5 chunks → LLM generation.",
-      "Database: Supabase PostgreSQL + pgvector (HNSW index) for embeddings + pg_trgm for keyword matching.",
-      "Cache: Upstash Redis for session caching and background job queuing.",
+      "Frontend: Next.js 16 App Router (Turbopack) + React 19 across 15 routes — Clerk auth, TanStack Query, Recharts analytics, react-pdf viewer.",
+      "API: FastAPI 0.128 with 11 routers under /api/v1, Clerk JWT verification via JWKS (PyJWT), slowapi rate limiting at 120 req/min per IP, Pydantic v2 validation.",
+      "Agents: Classifier (Groq gpt-oss-120b) runs first because its category feeds the rest; Safety Analyzer (Mistral magistral-small), Entity Extractor and Summarizer (Cerebras gpt-oss-120b) run concurrently; Compliance Auditor (Groq) runs on demand.",
+      "Ingestion: pdfplumber for layout and tables with a Tesseract OCR fallback for pages yielding almost no extractable text (capped at 50 pages/doc at 200 DPI); chunks of ~1000 words with 200 overlap under a hard 4,000-character ceiling, embedded 100 at a time.",
+      "Retrieval: 23 prompt-injection guard patterns and a 1,500-character query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a GIN tsvector via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations.",
+      "Data: Supabase PostgreSQL 16 with pgvector HNSW, Supabase Storage for uploads, Upstash Redis caching completed analyses keyed by SHA-256(extracted text) + PIPELINE_VERSION — failed runs are never cached.",
+      "CI: five jobs — backend lint, a bandit security scan, pytest with coverage against real PostgreSQL and Redis services, the retrieval quality gate, and a frontend lint-and-build. Alembic migrations run before the server binds, so a failed migration stops the deploy rather than serving a half-built schema.",
     ],
     tradeoffs: [
-      "Supabase pgvector over Pinecone/Weaviate: Chose Supabase for free-tier PostgreSQL + pgvector to maintain ACID compliance with relational document metadata and eliminate vendor lock-in.",
-      "4 AI Providers over Single Provider: Distributed agents across Groq, Cerebras, Mistral, and Gemini to maximize free-tier quotas (14,400+ requests/day combined) and enable automatic fallback.",
-      "Hybrid Search over Pure Vector: Added BM25 keyword matching alongside cosine similarity via Reciprocal Rank Fusion — crucial for mining domain where exact regulation numbers matter.",
+      "Chose the weaker PDF library on purpose: PyMuPDF extracts more reliably but is AGPL-3.0, and this project ships MIT — so pdfplumber it was. It then turned out to recover tables that PyMuPDF flattens, and mining regulations are largely tabular, which made the licence-driven choice the better technical one too.",
+      "A 400-row table became a single 14,703-character chunk. Chunk size was configured in words and grouped by sentence, but a Markdown table contains no sentence-ending punctuation, so the whole table emitted as one chunk. gemini-embedding-001 truncates silently past ~2,048 tokens, so most of that table was never indexed and nothing anywhere raised an error. Fix: a hard MAX_CHUNK_CHARS = 4000 applied after sentence grouping.",
+      "Aggregate metrics could not prove the lexical arm was alive. Making the keyword search return nothing left every aggregate retrieval metric unchanged — at a 130-chunk corpus the cross-encoder fully compensated, so a green dashboard could not distinguish working hybrid search from half-dead hybrid search. The suite now carries direct guards that the lexical index returns rows and can tell 30 CFR 75.323 from 75.400.",
+      "Two retry layers multiplied instead of adding. Backoff existed in both the orchestrator and the agent base class; composed, they reached up to nine attempts and minutes of sleep per agent on a single failure. Retry and provider fallback now live in BaseAgent._generate_json and nowhere else.",
+      "Fallback routed by token budget, not preference: Groq's free tier allows 8K tokens/minute — the tightest constraint in the system — while Cerebras serves the identical gpt-oss-120b at 30K/minute. So agents fall back to Cerebras on a Groq rate limit: same model, same output, four times the headroom.",
     ],
     results:
-      "Won Smart India Hackathon 2023 National Finale for the Ministry of Coal. Recognized by Coal India Limited & CMPDI. Enterprise-ready platform that auto-classifies documents, detects hazards, extracts entities, and provides citation-backed RAG chat — all on $0/month infrastructure using free tiers.",
+      "Won Smart India Hackathon 2023 National Finale for the Ministry of Coal; recognised by Coal India Limited & CMPDI. Retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — the gate blocks the build. 262 tests collected across 26.2K lines in two apps, all on $0/month infrastructure.",
+    limits: [
+      "Database access is synchronous inside async endpoints, so a query blocks the event loop and throughput per worker is bounded.",
+      "The background queue is an in-process asyncio.Queue: queued work does not survive a restart and does not scale across replicas.",
+      "Analysis agents see roughly 15K characters of head and tail rather than the whole document. Retrieval still indexes the full text — the limit applies to the agents only.",
+      "The lexical arm is PostgreSQL full-text search, not true BM25. Everyone claims 'hybrid BM25 + vector'; real BM25 needs an extension like pg_search. Worth being precise about rather than rounding up.",
+    ],
     githubUrl: "https://github.com/Iammilansoni/MiningNiti",
     demoUrl: "https://miningniti.vercel.app/",
+    demoNote:
+      "The backend runs on a free HuggingFace Space that sleeps when idle — a cold first request can take up to a minute.",
     heroImage: "/miningniti-dashboard.png",
   },
   {
@@ -297,10 +312,10 @@ export const EXPERIENCE = [
 ] as const;
 
 export const STATS = [
-  { value: "6", label: "AI Agents in MiningNiti" },
+  { value: "5", label: "AI Agents in MiningNiti" },
   { value: "4", label: "AI Providers (Free Tiers)" },
   { value: "$0", label: "Monthly Infrastructure Cost" },
-  { value: "46.9k", label: "Stars · OmniRoute" },
+  { value: "50k", label: "Stars · OmniRoute" },
   { value: "3", label: "Enterprise Internships" },
   { value: "70%", label: "Query Latency Reduction" },
 ] as const;
@@ -309,8 +324,8 @@ export const TECH_STACK = {
   Languages: ["JavaScript (ES6+)", "TypeScript", "Python", "C++"],
   Frontend: ["React 19", "Next.js 16", "Redux", "Tailwind CSS v4", "Framer Motion", "Recharts", "Radix UI / shadcn"],
   Backend: ["FastAPI 0.128", "Node.js", "Express.js", "SQLAlchemy 2.0", "Pydantic v2", "REST APIs", "GraphQL", "JWT", "Clerk Auth", "RBAC", "Microservices"],
-  "AI / ML": ["LangChain", "LangGraph", "RAG Pipelines", "Hybrid Search (Vector + BM25)", "Cross-Encoder Reranking", "FlashRank", "Ollama", "AI Agents", "Prompt Engineering", "Vector Embeddings", "pgvector"],
-  "LLM Providers": ["Groq (Llama 3.3)", "Cerebras (GPT-OSS-120B)", "Mistral (Magistral)", "Google Gemini", "OpenAI", "Anthropic", "DeepSeek", "HuggingFace"],
+  "AI / ML": ["LangChain", "LangGraph", "RAG Pipelines", "Hybrid Search (Vector + Full-Text)", "Reciprocal Rank Fusion", "Cross-Encoder Reranking", "FlashRank", "Ollama", "AI Agents", "Prompt Engineering", "Retrieval Evaluation (Hit Rate / MRR / nDCG)", "pgvector"],
+  "LLM Providers": ["Groq (gpt-oss-120b)", "Cerebras (gpt-oss-120b)", "Mistral (magistral-small)", "Google Gemini", "OpenAI", "Anthropic", "DeepSeek", "HuggingFace"],
   Databases: ["PostgreSQL + pgvector", "Supabase", "MongoDB", "Redis Stack 7.2 (HNSW)", "Upstash Redis", "Prisma ORM"],
   "Cloud / DevOps": ["Vercel", "HuggingFace Spaces", "Docker Compose", "GitHub Actions CI/CD", "Linux", "Git"],
 } as const;
