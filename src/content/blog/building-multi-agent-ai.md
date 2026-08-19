@@ -8,7 +8,9 @@ tags: ["LangChain", "FastAPI", "Next.js", "RAG"]
 relatedProjectSlug: "miningniti"
 ---
 
-> **TL;DR:** I built MiningNiti — an AI document intelligence platform for India's coal mining industry — using a multi-agent architecture, RAG-powered chat, and async background processing. It reduced manual compliance analysis time by 90% and won the Smart India Hackathon 2023 National Finale. Here's every technical and architectural decision that got us there.
+> **TL;DR:** I built MiningNiti — an AI document intelligence platform for India's coal mining industry — using a multi-agent architecture, RAG-powered chat, and async background processing. It won the Smart India Hackathon 2023 National Finale. Here's every technical and architectural decision that got us there.
+
+> **Update, August 2026.** This post was written in March 2024, when the system ran four agents behind a Celery queue with Gemini doing the generation. It has changed since, and I've corrected the architecture sections below rather than leave a stale post standing: there are now **five agents** across four providers, generation runs on Groq/Cerebras/Mistral with Gemini reduced to embeddings, and retrieval quality is scored against a labelled golden set on every CI run. I've also removed two timing figures I could no longer reproduce. The current state is in the [MiningNiti case study](/work/miningniti).
 
 ---
 
@@ -49,42 +51,51 @@ Before diving into the agents, here's the high-level system design:
 [FastAPI Gateway] — JWT Auth (Clerk) — Rate Limiting — CORS
        ↓
   ┌────────────────────────────────────┐
-  │         Orchestrator Agent          │
-  │  (parallelizes agent execution)     │
-  └──────┬──────────┬──────────┬───────┘
-         ↓          ↓          ↓
-  [Classifier] [Safety    ] [Entity   ]  [Summarizer]
-  [Agent     ] [Analyzer  ] [Extractor]  [Agent     ]
-         ↓          ↓          ↓               ↓
-  ┌──────────────────────────────────────────────┐
-  │   PostgreSQL + pgvector  │  Redis + Celery   │
-  │   (storage + embeddings) │  (async queue)    │
-  └──────────────────────────────────────────────┘
+  │            Orchestrator            │
+  │   (coordinates — not an agent)     │
+  └─────────────────┬──────────────────┘
+                    ↓
+             [Classifier]          Groq gpt-oss-120b
+             runs FIRST — its category feeds the rest
+                    ↓
+     ┌──────────────┼──────────────┐   asyncio.gather()
+     ↓              ↓              ↓
+ [Safety     ]  [Entity     ]  [Summarizer]
+ [Analyzer   ]  [Extractor  ]
+  Mistral        Cerebras        Cerebras
+  skipped for non-safety docs
+                    ↓
+ ┌──────────────────────────────────────────────┐
+ │   PostgreSQL + pgvector  │  Upstash Redis    │
+ │   (storage + embeddings) │  (analysis cache) │
+ └──────────────────────────────────────────────┘
+
+ [Compliance Auditor]  Groq — ON DEMAND, not on upload
+  per-clause Pass / Fail / Not Addressed matrix
 ```
 
-The key architectural insight here: **the user never waits for AI processing.** When a document is uploaded, the API immediately returns a `202 Accepted`, and the document is pushed into a Celery queue. All four agents run in the background, concurrently. The frontend polls for status. This keeps the UI snappy regardless of document size.
+The key architectural insight here: **the user never waits for AI processing.** When a document is uploaded the API returns immediately, the work goes onto a background queue, and the frontend polls for status. That keeps the UI snappy regardless of document size.
+
+One honest correction to the original version of this post: that queue is an in-process `asyncio.Queue`, not Celery. The Celery dependency is still sitting commented out in the requirements file. The consequence is real — queued work does not survive a restart and does not scale across replicas — so it belongs on the known-limits list rather than being described as finished.
 
 ---
 
-## The Agent Layer: Four Specialists, One Orchestrator
+## The Agent Layer: Five Specialists, One Orchestrator
 
 ### 1. The Classifier Agent — Knowing What You're Looking At
 
 Every document pipeline starts with classification. You can't apply the right analysis without first knowing what kind of document you have.
 
-Our Classifier Agent categorizes documents into nine types:
+Our Classifier Agent sorts documents into four categories. The original version of this post listed nine; the taxonomy was collapsed because a fine-grained label that nothing downstream ever branches on is just a more expensive label:
 
 | Category | Examples |
 |---|---|
-| `safety_protocol` | Emergency evacuation procedures, PPE guidelines |
-| `regulatory` | MSHA 30 CFR, OSHA 1926, EPA compliance docs |
-| `incident_report` | Accident investigations, near-miss reports |
-| `equipment_manual` | Continuous miner operation guides, conveyor specs |
-| `geological` | Drill core logs, assay reports |
-| `environmental` | Air quality monitoring, water discharge reports |
-| `training` | Miner certification curricula, safety training |
-| `maintenance` | Preventive maintenance schedules, repair logs |
-| `permit` | Mining permits, land use applications |
+| `safety` | Emergency evacuation procedures, PPE guidelines, incident investigations |
+| `regulatory` | MSHA 30 CFR, OSHA 1926, EPA compliance docs, permits |
+| `equipment` | Continuous miner operation guides, conveyor specs, maintenance schedules |
+| `geological` | Drill core logs, assay reports, environmental monitoring |
+
+The category is load-bearing rather than decorative: it decides which agents run at all. A document classified `equipment` skips the safety analyzer entirely, so it never pays for a hazard screen it does not need.
 
 Here's a simplified version of how the classifier agent works:
 
@@ -209,9 +220,17 @@ This output is what non-technical stakeholders (site managers, legal teams, gove
 
 ---
 
-### 5. The Orchestrator — Running it All in Parallel
+### 5. The Compliance Auditor — Run on Demand
 
-The Orchestrator is where we recover the performance lost by using four agents instead of one. Instead of running agents sequentially, we use `asyncio.gather()` to run them concurrently:
+The fifth agent does not run on upload. Auditing a document against a body of regulation is expensive and only meaningful once somebody actually asks, so this one is triggered explicitly. It cross-references an operational document against the relevant regulations and returns a per-clause **Pass / Fail / Not Addressed** matrix — a shape a safety officer can act on directly, rather than a paragraph of prose they have to re-read and interpret.
+
+It runs on Groq's `gpt-oss-120b` and falls back to Cerebras on a rate limit: same model, four times the per-minute token headroom.
+
+---
+
+### 6. The Orchestrator — Running it All in Parallel
+
+The Orchestrator is where we recover the performance lost by using several agents instead of one. Instead of running agents sequentially, we use `asyncio.gather()` to run them concurrently:
 
 ```python
 # app/agents/orchestrator.py
@@ -238,7 +257,9 @@ class OrchestratorAgent:
         }
 ```
 
-The net effect: instead of 4 sequential LLM calls taking ~20 seconds, we get classification in ~3 seconds, then the remaining three agents complete in parallel in ~5 seconds. **Total: ~8 seconds end-to-end** for a full multi-agent analysis of a 50-page document.
+The net effect: one blocking call for classification, then three agents overlapping instead of queueing behind each other.
+
+The original version of this post put concrete numbers here — roughly 20 seconds sequential against roughly 8 end-to-end. I have removed them. They came from ad-hoc runs on a laptop against a single document, and I cannot reproduce them under controlled conditions, which makes them decoration rather than evidence. The numbers I can stand behind are further down: retrieval quality, measured against a labelled set on every CI run.
 
 ---
 
@@ -453,9 +474,20 @@ async function pollJobStatus(taskId: string) {
 | Cross-document querying | Ctrl+F across PDFs | Natural language RAG chat |
 | Audit trail | Manual spreadsheets | Automated, timestamped logs |
 
-**We reduced document analysis time by over 90%.**
+The original version of this post claimed a reduction of "over 90%" in document analysis time. I have taken that out. It was never measured against a baseline I could point to — it was an estimate that hardened into a statistic through repetition, which is exactly how portfolio numbers go bad.
 
-More importantly: we won the **Smart India Hackathon 2023 National Finale** — competing against 1,000+ teams across the country. The judges weren't just impressed by the demo. They were impressed that the architecture was actually **production-ready**, not a prototype held together with duct tape.
+Here is what is actually measured. Retrieval runs against a labelled golden set of 12 queries over a 130-chunk mining corpus on **every CI run**, using a local sentence-transformers model so it needs no API keys and stays deterministic. The gate blocks the build:
+
+| Metric | What it measures | Floor | Current |
+|---|---|---|---|
+| Hit Rate@5 | Any relevant chunk in the top 5 | 0.90 | **1.000** |
+| MRR | How high the first relevant chunk ranks | 0.75 | **1.000** |
+| Recall@5 | Share of all relevant chunks retrieved | 0.85 | **0.958** |
+| nDCG@5 | Rewards clustering relevant chunks high | 0.75 | **0.968** |
+
+Alongside that: 262 tests collected, 26.2K lines across two apps, five agents across four providers, $0/month infrastructure.
+
+And we won the **Smart India Hackathon 2023 National Finale**, from a field of 44,000+ teams, on a Ministry of Coal problem statement. The judges were not just impressed by the demo — they were impressed that the architecture was actually **production-shaped**, not a prototype held together with duct tape.
 
 ---
 
@@ -466,14 +498,17 @@ No post-mortem is complete without honesty about what could be better.
 **1. LangGraph instead of custom orchestration.**
 We wrote our orchestrator from scratch. LangGraph would have given us graph-based agent state management, built-in retry logic, and streaming support out of the box. When I revisit this project, LangGraph is the first upgrade.
 
-**2. Observability from day one.**
-We added logging after the fact. I'd now instrument with LangSmith or LangFuse from the first commit to trace every agent call, token count, latency, and output quality.
+**2. Observability from day one.** *(since done)*
+We added logging after the fact. LangSmith tracing now wraps `AgentOrchestrator.analyze_document()`, `hybrid_search()` and `ChatService.generate_response()`, degrading to a no-op when the key is absent so local runs are unaffected.
 
-**3. Evaluation before production.**
-We didn't have systematic evals for our agents' outputs. In production, you need to know when your safety analyzer's accuracy regresses after an LLM API update. RAGAS for RAG evaluation would be the first addition.
+**3. Evaluation before production.** *(since done — and it changed my mind about something)*
+We had no systematic evals. There is now a retrieval gate in CI, and building it produced the single most useful finding in the project: aggregate metrics could not prove the lexical arm was alive. Making keyword search return nothing left every aggregate metric unchanged, because at a 130-chunk corpus the cross-encoder simply compensated. A green dashboard could not distinguish working hybrid search from half-dead hybrid search. The suite now carries direct guards that the lexical index returns rows and can tell 30 CFR 75.323 from 75.400 — those are the tests that actually fail when it breaks.
 
-**4. Streaming responses in chat.**
-Our RAG chat returns the full response at once. Token streaming (using SSE or WebSockets) would dramatically improve perceived performance, especially for longer analysis outputs.
+**4. Streaming responses in chat.** *(since done)*
+Chat now streams over SSE with inline `[Document, Page X]` citations rather than returning the whole response at once.
+
+**5. The thing I did not anticipate: a 400-row table became one 14,703-character chunk.**
+Chunking was configured in words and grouped by sentence. A Markdown table contains no sentence-ending punctuation, so an entire table emitted as a single chunk — and `gemini-embedding-001` truncates silently past roughly 2,048 tokens. Most of that table was never indexed, and nothing anywhere raised an error. The fix was a hard `MAX_CHUNK_CHARS = 4000` applied after sentence grouping. Silent truncation is the failure mode I now look for first.
 
 ---
 
@@ -497,7 +532,7 @@ If you're building production GenAI applications, here's what this project taugh
 
 The full source code is on GitHub: [github.com/Iammilansoni/MiningNiti](https://github.com/Iammilansoni/MiningNiti)
 
-The stack: **FastAPI + Python 3.11 | Next.js 15 | PostgreSQL + pgvector | Redis + Celery | Google Gemini 2.0 Flash | Docker Compose**
+The stack: **FastAPI 0.128 + Python 3.11 | Next.js 16 + React 19 | PostgreSQL 16 + pgvector | Upstash Redis | Groq / Cerebras / Mistral for generation | Gemini `gemini-embedding-001` for embeddings | Clerk | Docker**
 
 ---
 
