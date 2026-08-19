@@ -1,6 +1,6 @@
 ---
 title: "The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows"
-description: "LangChain's sequential chains broke down the moment I needed 6 AI agents to collaborate, retry on failure, and share state. LangGraph's state machine model gave me explicit control over agent orchestration. Here's the architecture, the code, and why it matters."
+description: "LangChain's sequential chains broke down the moment I needed five AI agents to collaborate, retry on failure, and share state. LangGraph's state machine model gave me explicit control over agent orchestration. Here's the architecture, the code, and why it matters."
 publishedAt: "2026-06-29"
 coverImage: "/LangGraph.png"
 categories: ["AI", "Agents", "LangGraph"]
@@ -8,7 +8,7 @@ tags: ["LangGraph", "Multi-Agent", "State Machine", "FastAPI", "AI Agents"]
 relatedProjectSlug: "miningniti"
 ---
 
-> **TL;DR:** I replaced LangChain's sequential `LLMChain` pipelines with LangGraph's state machine architecture for MiningNiti's 6-agent document processing system. The result: explicit control flow, retry-on-failure per agent, shared mutable state, and the ability to run agents concurrently with conditional branching. Here's exactly how it works.
+> **TL;DR:** I replaced LangChain's sequential `LLMChain` pipelines with LangGraph's state machine architecture for MiningNiti's five-agent document processing system. The result: explicit control flow, retry-on-failure per agent, shared mutable state, and the ability to run agents concurrently with conditional branching. Here's exactly how it works.
 
 ---
 
@@ -20,7 +20,7 @@ It broke immediately.
 
 **Problem 1: Conditional branching.** The Compliance Auditor agent needed to run *after* the Classifier determined a document's type. If the document was a safety protocol, skip the Compliance Auditor entirely. Sequential chains don't branch.
 
-**Problem 2: Shared state.** All 6 agents needed access to the original document, the classification result, extracted entities, and the summary. With chains, I was passing growing dictionaries of context through each step — a maintainability nightmare.
+**Problem 2: Shared state.** All five agents needed access to the original document, the classification result, extracted entities, and the summary. With chains, I was passing growing dictionaries of context through each step — a maintainability nightmare.
 
 **Problem 3: Error recovery.** If the Entity Extractor failed (rate limit from Cerebras), the entire pipeline died. I needed per-agent retry logic without restarting from scratch.
 
@@ -107,7 +107,7 @@ from langchain_mistralai import ChatMistralAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 
 async def classifier_agent(state: MiningState) -> dict:
-    """Classify document type using Groq (Llama 3.3)."""
+    """Classify document type using Groq (gpt-oss-120b)."""
     llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
     
     prompt = f"""Classify this mining document into exactly one category:
@@ -285,7 +285,7 @@ Notice each agent catches its own exceptions and returns `{"errors": [...]}` ins
 
 ### 3. Token budget management
 
-6 agents × average 2K tokens per prompt = 12K tokens per document. For a 10K-word document, you're looking at 30K+ tokens total. Use `raw_text[:3000]` truncation in prompts and route to cheaper models (Groq Llama) for classification/extraction, reserving expensive models (Gemini) for compliance auditing where accuracy matters most.
+Five agents × average 2K tokens per prompt = 10K tokens per document. For a 10K-word document, you're looking at 30K+ tokens total. Truncate aggressively in prompts, and route by *token budget* rather than by preference: Groq's free tier allows 8K tokens/minute while Cerebras serves the identical `gpt-oss-120b` at 30K/minute, so the heavier extraction and summarisation work goes to Cerebras and falls back there automatically when Groq rate-limits.
 
 ### 4. Checkpointing
 
@@ -297,10 +297,12 @@ LangGraph supports checkpointing via `MemorySaver`. For production, use `SqliteS
 
 After migrating from LangChain chains to LangGraph:
 
-- **Reliability:** 98.7% pipeline completion rate (up from 72% with sequential chains)
-- **Speed:** 6 agents run in parallel → 3.2s total vs 14s sequential
-- **Cost:** $0/month using free-tier providers (Groq + Cerebras + Gemini)
-- **Flexibility:** Adding a new agent = adding one node + one edge. No pipeline restructuring.
+- **Error isolation:** one agent failing no longer kills the run — failures accumulate in `errors` and the rest of the pipeline completes.
+- **Concurrency:** the classifier runs first because its category feeds the others; the safety analyzer, entity extractor and summarizer then run together under `asyncio.gather()`, and the safety analyzer is skipped outright for non-safety documents.
+- **Cost:** $0/month using free-tier providers (Groq + Cerebras + Gemini embeddings).
+- **Flexibility:** adding a new agent = one node + one edge. No pipeline restructuring.
+
+A note on numbers, added later: an earlier version of this post quoted a 98.7% completion rate and a 14s → 3.2s speedup. Those came from ad-hoc runs during the migration and I have not been able to reproduce them under controlled conditions, so I've removed them rather than leave unverifiable figures standing. What *is* measured, on every CI run, is retrieval quality against a labelled golden set — Hit Rate@5 1.000, MRR 1.000, Recall@5 0.958, nDCG@5 0.968, against floors of 0.90 / 0.75 / 0.85 / 0.75. That gate blocks the build. See the [MiningNiti case study](/work/miningniti) for the current architecture.
 
 ---
 

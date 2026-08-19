@@ -1,6 +1,6 @@
 ---
 title: "Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month"
-description: "I replaced Pinecone and Weaviate with pgvector on Supabase's free tier and built a hybrid search pipeline combining BM25 + cosine similarity with Reciprocal Rank Fusion. Here's the architecture, the code, and the gotchas nobody talks about."
+description: "I replaced Pinecone and Weaviate with pgvector on Supabase's free tier and built a hybrid search pipeline pairing lexical scoring with cosine similarity via Reciprocal Rank Fusion. Here's the architecture, the code, and the gotchas nobody talks about — including why the keyword half was eventually rewritten."
 publishedAt: "2026-06-29"
 coverImage: "/Hybrid RAG Pipeline.png"
 categories: ["AI", "RAG", "PostgreSQL"]
@@ -8,7 +8,9 @@ tags: ["pgvector", "Hybrid Search", "RRF", "Supabase", "FastAPI"]
 relatedProjectSlug: "miningniti"
 ---
 
-> **TL;DR:** I built a production RAG pipeline for $0/month by combining pgvector (on Supabase free tier) with BM25 keyword search via PostgreSQL's `pg_trgm` extension. Reciprocal Rank Fusion merges both result sets. Cross-encoder reranking with FlashRank pushes precision higher. No Pinecone. No Weaviate. No invoice.
+> **TL;DR:** I built a production RAG pipeline for $0/month by combining pgvector (on Supabase free tier) with lexical scoring inside PostgreSQL. Reciprocal Rank Fusion merges both result sets. Cross-encoder reranking pushes precision higher. No Pinecone. No Weaviate. No invoice.
+
+> **Update, August 2026.** Two corrections to the original post. First, the keyword arm described below used `pg_trgm` trigram similarity, and I called it "BM25" in a few places — it is not BM25, and I have stopped writing it that way. Second, MiningNiti has since **replaced trigram similarity with PostgreSQL full-text search** (`ts_rank_cd` over a GIN `tsvector`), because trigram scored short questions far too low to be useful. The RRF structure and everything else here still stands. The measured retrieval numbers are at the end, and they are now produced by a CI gate rather than a spreadsheet.
 
 ---
 
@@ -60,7 +62,7 @@ User Query
          Merged Top-N results
               │
               ▼
-         FlashRank Cross-Encoder Reranking
+        Cross-Encoder Reranking (ms-marco-MiniLM-L-6-v2)
               │
               ▼
          Top-5 chunks → LLM generation
@@ -227,7 +229,7 @@ def rerank_chunks(query: str, chunks: list[dict], top_k: int = 5) -> list[dict]:
     return [results[i]["meta"] for i in range(min(top_k, len(results)))]
 ```
 
-Cross-encoders are slower than bi-encoders (they process query + document together, not separately), but they're significantly more accurate. FlashRank uses ONNX runtime for fast inference — typically <50ms for 20 passages.
+Cross-encoders are slower than bi-encoders (they process query + document together, not separately), but they are significantly more accurate. The code below uses FlashRank, which wraps ONNX runtime for fast inference; MiningNiti itself now runs `ms-marco-MiniLM-L-6-v2` through sentence-transformers, over-fetching 20 candidates and reranking down to 5. Same shape, different package.
 
 **Why not just increase the vector search top-K?** Because bi-encoder cosine similarity is a rough approximation. It measures semantic similarity, not relevance. A chunk about "coal dust explosion thresholds" might have high cosine similarity to "safety regulations" but low actual relevance to a query about "ventilation requirements." Cross-encoders catch this.
 
@@ -235,9 +237,13 @@ Cross-encoders are slower than bi-encoders (they process query + document togeth
 
 ## The Gotchas Nobody Warns You About
 
-### 1. `pg_trgm` similarity ≠ BM25
+### 1. `pg_trgm` similarity ≠ BM25 — and it eventually broke
 
-PostgreSQL's `pg_trgm` extension provides trigram similarity, not true BM25 scoring. For most use cases, this is fine — trigram similarity handles partial matches and typos well. But if you need proper term frequency / inverse document frequency scoring, you'll need a dedicated search extension like `pg_search` (which implements Tantivy under the hood).
+PostgreSQL's `pg_trgm` extension provides trigram similarity, not true BM25 scoring. Everybody writing about this says "hybrid BM25 + vector"; almost nobody is running BM25. Real BM25 needs a dedicated extension like `pg_search` (Tantivy under the hood).
+
+For a while the distinction seemed academic — trigram similarity handles partial matches and typos well. It stopped being academic on short queries. A question like *"methane limits?"* is three tokens, and trigram overlap against a 1,000-word chunk scores it into the floor, so the lexical arm contributed nothing exactly when it was most needed. MiningNiti now uses PostgreSQL full-text search — `ts_rank_cd` over a GIN `tsvector` — which scores on term frequency and handles short queries properly.
+
+If you take one thing from this post, take this: name your retrieval components accurately, because the wrong name hides the failure mode.
 
 ### 2. Embedding dimension matters for HNSW performance
 
@@ -257,17 +263,27 @@ The `k=60` constant in RRF was chosen in the original paper for web search datas
 
 After deploying this pipeline in MiningNiti:
 
+The original version of this post reported 92% top-5 accuracy and ~120ms end-to-end latency. Both were one-off measurements I cannot reproduce, so I have replaced them with numbers that regenerate themselves on every CI run.
+
+Retrieval is scored against a labelled golden set of 12 queries over a 130-chunk mining corpus, using a local sentence-transformers model so the job needs no API keys and stays deterministic. The gate blocks the build:
+
+| Metric | What it measures | Floor | Current |
+|---|---|---|---|
+| Hit Rate@5 | Any relevant chunk in the top 5 | 0.90 | **1.000** |
+| MRR | How high the first relevant chunk ranks | 0.75 | **1.000** |
+| Recall@5 | Share of all relevant chunks retrieved | 0.85 | **0.958** |
+| nDCG@5 | Rewards clustering relevant chunks high | 0.75 | **0.968** |
+
 - **Cost:** $0/month (Supabase free tier + free-tier AI providers)
-- **Retrieval accuracy:** 92% relevant chunks in top-5 (measured against manually annotated test set)
-- **Latency:** ~120ms end-to-end (hybrid search ~15ms, reranking ~50ms, LLM generation ~55ms)
-- **Scale:** 10,000+ document chunks indexed, <10ms query time on HNSW index
+
+A caveat worth stating, because it is the kind of thing these posts usually omit: a 130-chunk corpus is small, and perfect scores on a small labelled set mean the gate is working, not that retrieval is solved. Its job is to fail loudly when something regresses.
 
 ---
 
 ## The Takeaway
 
-1. **pgvector + pg_trgm gives you hybrid search for free.** Reciprocal Rank Fusion merges keyword and vector results without score normalization hacks. It's not perfect, but it's production-viable for <1M vectors.
+1. **pgvector plus Postgres' own lexical search gives you hybrid retrieval for free.** Reciprocal Rank Fusion merges keyword and vector results without score-normalisation hacks. Use full-text search rather than trigram similarity for the keyword arm — and do not call either of them BM25.
 
-2. **Cross-encoder reranking is the highest-ROI optimization.** Adding a FlashRank reranker after retrieval improved precision by 15-20% in my benchmarks. It's cheap, fast, and the accuracy gain is worth the ~50ms latency.
+2. **Cross-encoder reranking is the highest-ROI optimisation — and it will also hide your bugs.** Reranking meaningfully improved precision. It also compensated so well for a dead keyword arm that every aggregate metric stayed green while half the pipeline did nothing. Test the components directly, not just the end-to-end score.
 
 3. **Stop paying for vector DBs you don't need.** If your dataset is <1M vectors and you already use PostgreSQL, pgvector eliminates an entire infrastructure dependency. The $400/month Pinecone bill became $0/month on Supabase free tier — and the pipeline is more flexible because SQL and vectors live in the same query.
