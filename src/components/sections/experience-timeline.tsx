@@ -21,8 +21,9 @@ const CREDENTIALS = [
     href: "https://www.linkedin.com/in/sonimilan/overlay/1720793634608/single-media-viewer/?profileId=ACoAAD8piA8BZ-BgPuiIf8eBWQ8P0fjWXPcdZbw",
   },
   {
-    title: "Hackathon organiser — CodeFiesta",
-    detail: "2023–2025 · logistics, scaling, technical operations",
+    title: "Organising team & Sponsorship Head — CodeFiesta",
+    detail:
+      "2023–2025 · National-level college hackathon · Ran the event alongside faculty and students; led sponsorships and partnerships, plus logistics, scaling and technical operations",
   },
   {
     title: "Class representative, 2 years",
