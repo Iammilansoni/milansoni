@@ -32,7 +32,11 @@ export function TextRoll({ text, className = "" }: { text: string; className?: s
               hover: { y: 0 }
             }}
             transition={{ duration: 0.3, delay: i * 0.02, ease: [0.33, 1, 0.68, 1] }}
-            className="inline-block whitespace-pre text-foreground"
+            /* Inherit the button's colour — do NOT pin this to text-foreground.
+               The primary CTA is `bg-foreground text-background`, so a pinned
+               foreground made the incoming copy light-on-light and the label
+               appeared to vanish on hover. */
+            className="inline-block whitespace-pre"
           >
             {char}
           </motion.span>
