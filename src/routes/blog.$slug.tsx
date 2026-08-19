@@ -21,7 +21,12 @@ import rscStreamingRaw from "@/content/blog/rsc-streaming-llms-nextjs.md?raw";
 
 // Parse frontmatter out of the raw markdown
 function parseLocalArticle(raw: string, slug: string): Article {
-  const fmMatch = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  // Normalise line endings first. The frontmatter pattern below anchors on
+  // "\n", so a CRLF file silently failed to match and every field fell back to
+  // its default — which meant the page <title> became the raw slug and the
+  // meta description was empty, with nothing visibly broken on the page.
+  const src = raw.replace(/\r\n/g, "\n");
+  const fmMatch = src.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
   const meta: Record<string, any> = {};
   if (fmMatch) {
     fmMatch[1].split("\n").forEach(line => {
@@ -38,7 +43,7 @@ function parseLocalArticle(raw: string, slug: string): Article {
       }
     });
   }
-  const content = fmMatch ? fmMatch[2] : raw;
+  const content = fmMatch ? fmMatch[2] : src;
   const wordCount = content.split(/\s+/).length;
   return {
     slug,
@@ -64,13 +69,45 @@ const LOCAL_ARTICLES: Record<string, Article> = {
 };
 
 export const Route = createFileRoute("/blog/$slug")({
+  /**
+   * Articles previously emitted a <title> and nothing else — no description,
+   * no canonical, no social card. Search and social both fall back to scraping
+   * whatever they find, which is how good writing ends up with a blank preview
+   * and no snippet. Every article now ships the full set, derived from its own
+   * frontmatter, so a new markdown file needs no extra work here.
+   */
   head: ({ params }) => {
-    const local = LOCAL_ARTICLES[params.slug];
+    const a = LOCAL_ARTICLES[params.slug];
+    if (!a) return { meta: [{ title: "Article | Milan Soni" }] };
+
+    const url = `https://milansoni.vercel.app/blog/${a.slug}`;
+    const image = a.coverImage
+      ? `https://milansoni.vercel.app${a.coverImage}`
+      : "https://milansoni.vercel.app/og-image.png";
+
     return {
       meta: [
-        { title: local ? `${local.title} | Milan Soni` : "Article | Milan Soni" },
-      ]
-    }
+        { title: `${a.title} | Milan Soni` },
+        { name: "description", content: a.description },
+        { name: "author", content: "Milan Soni" },
+        { name: "keywords", content: [...a.categories, ...a.tags].join(", ") },
+
+        { property: "og:type", content: "article" },
+        { property: "og:title", content: a.title },
+        { property: "og:description", content: a.description },
+        { property: "og:url", content: url },
+        { property: "og:image", content: image },
+        { property: "article:published_time", content: a.publishedAt },
+        { property: "article:author", content: "Milan Soni" },
+        ...a.tags.map((t) => ({ property: "article:tag", content: t })),
+
+        { name: "twitter:card", content: "summary_large_image" },
+        { name: "twitter:title", content: a.title },
+        { name: "twitter:description", content: a.description },
+        { name: "twitter:image", content: image },
+      ],
+      links: [{ rel: "canonical", href: url }],
+    };
   },
   component: ArticlePage,
 });
@@ -102,14 +139,61 @@ function ArticlePage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "Article",
-            headline: article.title,
-            image: article.coverImage ? `https://milansoni.vercel.app${article.coverImage}` : undefined,
-            datePublished: article.publishedAt,
-            author: [{ "@type": "Person", name: "Milan Soni", url: "https://milansoni.vercel.app/" }]
-          })
+          /* Full BlogPosting rather than a bare Article: headline + image +
+             dates + publisher + mainEntityOfPage are what Google actually
+             requires before an article is eligible for rich results. */
+          __html: JSON.stringify([
+            {
+              "@context": "https://schema.org",
+              "@type": "BlogPosting",
+              headline: article.title.slice(0, 110),
+              name: article.title,
+              description: article.description,
+              image: article.coverImage
+                ? [`https://milansoni.vercel.app${article.coverImage}`]
+                : ["https://milansoni.vercel.app/og-image.png"],
+              datePublished: article.publishedAt,
+              dateModified: article.publishedAt,
+              inLanguage: "en",
+              keywords: [...article.categories, ...article.tags].join(", "),
+              articleSection: article.categories[0],
+              timeRequired: article.readingTime,
+              mainEntityOfPage: {
+                "@type": "WebPage",
+                "@id": `https://milansoni.vercel.app/blog/${article.slug}`,
+              },
+              author: {
+                "@type": "Person",
+                name: "Milan Soni",
+                url: "https://milansoni.vercel.app/",
+                jobTitle: "AI Engineer & Full Stack Developer",
+                sameAs: [
+                  "https://github.com/Iammilansoni",
+                  "https://www.linkedin.com/in/sonimilan/",
+                  "https://medium.com/@milansoni96946",
+                ],
+              },
+              publisher: {
+                "@type": "Person",
+                name: "Milan Soni",
+                url: "https://milansoni.vercel.app/",
+              },
+            },
+            {
+              "@context": "https://schema.org",
+              "@type": "BreadcrumbList",
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "Home", item: "https://milansoni.vercel.app/" },
+                { "@type": "ListItem", position: 2, name: "Blog", item: "https://milansoni.vercel.app/blog" },
+                {
+                  "@type": "ListItem",
+                  position: 3,
+                  name: article.title,
+                  item: `https://milansoni.vercel.app/blog/${article.slug}`,
+                },
+              ],
+            },
+          ])
         }}
       />
 
