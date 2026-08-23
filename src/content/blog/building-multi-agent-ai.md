@@ -485,9 +485,9 @@ Here is what is actually measured. Retrieval runs against a labelled golden set 
 | Recall@5 | Share of all relevant chunks retrieved | 0.85 | **0.958** |
 | nDCG@5 | Rewards clustering relevant chunks high | 0.75 | **0.968** |
 
-Alongside that: 262 tests collected, 26.2K lines across two apps, five agents across four providers, $0/month infrastructure.
+Alongside that: 274 tests collected — 242 of them green as blocking CI gates on every push — 27.1K lines across two apps, five agents across four providers, $0/month infrastructure.
 
-And we won the **Smart India Hackathon 2023 National Finale**, from a field of 44,000+ teams, on a Ministry of Coal problem statement. The judges were not just impressed by the demo — they were impressed that the architecture was actually **production-shaped**, not a prototype held together with duct tape.
+A word on provenance, because it matters. The **Smart India Hackathon 2023 National Finale** win — from a field of 44,000+ teams, on a Ministry of Coal problem statement — was a *team* prototype, and it is not the system described above. That prototype was a single-pass LangChain RAG chatbot over FAISS. The architecture in this article is an independent, ground-up rebuild I started in June 2025 and have developed solo since; none of the 2023 code carried over. The hackathon gave me the problem. Everything here is what I did with it afterwards, with the time to build it production-shaped rather than demo-shaped.
 
 ---
 

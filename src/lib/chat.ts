@@ -27,7 +27,7 @@ EDUCATION:
 
 AWARDS & RECOGNITION:
 - Smart India Hackathon (SIH) 2023 National WINNER — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
-- Built MiningNiti for the Ministry of Coal and won the National Finale
+- The winning SIH 2023 entry was a team prototype built for the Ministry of Coal problem statement. The MiningNiti repository Milan links today is NOT that codebase - it is an independent, ground-up rebuild started June 2025 and developed solo since. State this distinction plainly if anyone asks; do not let the win imply the current repo is four years old or was team-built.
 - Scopus-indexed research paper published at PICET-26 conference (IET Proceedings) on hybrid attention-based temporal modeling
 
 WORK EXPERIENCE:
@@ -63,8 +63,9 @@ WORK EXPERIENCE:
 
 KEY PROJECTS:
 
-1. MiningNiti (SIH 2023 National Winner)
+1. MiningNiti (SIH 2023 National Winner problem statement; the current repo is a solo rebuild)
    - AI Document Intelligence for India's coal mining industry
+   - Project history: two builds, four years apart. The Nov-Dec 2023 SIH entry was a team prototype and won the National Finale; CMPDI officials who judged the finals opened follow-up talks about deploying at scale, and those talks did not proceed - it was never deployed at CMPDI and there is no ongoing institutional relationship. The repository is an independent rebuild started June 2025, solo, with none of the 2023 code carried over.
    - 5 specialized agents across 4 AI providers (an Orchestrator coordinates them but is not itself an agent):
      * Classifier (Groq gpt-oss-120b) — runs first; its category feeds the rest
      * Safety Analyzer (Mistral magistral-small) — skipped for non-safety categories
@@ -74,10 +75,13 @@ KEY PROJECTS:
      The middle three run concurrently under asyncio.gather() after the classifier.
    - RAG Pipeline: 23 prompt-injection guard patterns + 1,500-char query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd (GIN tsvector) via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations
    - NOTE: the lexical arm is PostgreSQL full-text search, NOT true BM25. Be precise about this if asked — real BM25 needs an extension like pg_search.
+   - Orchestration: NO agent framework - no LangChain, no LangGraph in this repo. Coordination is hand-written on asyncio.gather() with per-agent error isolation, quota-aware provider failover, and a content-addressed Redis cache keyed by SHA-256 of the extracted text (failed runs are never cached). A section that cannot be produced is recorded on Document.processing_error and metadata.degraded_sections and surfaced in the UI rather than returned as a silently empty result.
+   - Observability & eval: LangSmith traces the orchestrator, hybrid search and chat generation. Retrieval and generation quality are measured separately - retrieval as a blocking CI gate on a local sentence-transformers model (deterministic, no API keys), generation (faithfulness / relevancy, 0.70 thresholds) Gemini-judged on demand.
+   - Security: Clerk JWT with RS256 pinned, JWKS caching and azp validation; prompt-injection guardrails; a DNS-resolving SSRF guard on URL ingestion; 120 req/min per IP; audit logging on every mutation.
    - Stack: Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Docker
    - Quality gate: retrieval scored on every CI run against a labelled golden set (12 queries, 130-chunk corpus) — Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75). The gate blocks the build.
-   - Scale: 262 tests collected, 26.2K lines across two apps, 11 API routers, 15 app routes, $0/month infrastructure
-   - Known limits (state these honestly if asked): sync DB access inside async endpoints bounds throughput; the background queue is an in-process asyncio.Queue that does not survive restarts; analysis agents see ~15K chars of head and tail, not the whole document (retrieval indexes the full text)
+   - Scale: 242 tests pass as blocking CI gates on every push (215 unit + 27 integration); 274 collected once the 32 eval tests are counted. 27.1K lines across two apps, 11 API routers, 36 REST endpoints, 15 app routes, $0/month infrastructure
+   - Known limits (state these honestly if asked): sync DB access inside async endpoints bounds throughput; the background queue is an in-process asyncio.Queue that does not survive restarts or fan out across replicas; analysis agents see ~15K chars of head and tail, not the whole document (retrieval indexes the full text); the retrieval gate runs on a 130-chunk corpus so its metrics are directional, not production-scale; there is no frontend test suite - all 215 unit tests are backend
    - Demo caveat: the backend runs on a free HuggingFace Space that sleeps when idle, so a cold first request can take up to a minute
    - GitHub: https://github.com/Iammilansoni/MiningNiti
    - Demo: https://miningniti.vercel.app/

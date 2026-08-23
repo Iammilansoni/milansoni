@@ -91,19 +91,21 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 ## 6. Featured Projects
 
 ### 🏆 MiningNiti — AI Document Intelligence for Mining
-*SIH 2023 National Winner · Recognized by Coal India Limited & CMPDI*
-- **What:** A document-intelligence platform for coal mining — five specialised AI agents analyse every uploaded regulation, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build.
+*SIH 2023 National Winner (Ministry of Coal) · Recognized by Coal India Limited & CMPDI · Current repo: independent solo rebuild, June 2025 → present*
+- **What:** A document-intelligence platform for coal mining — four AI agents analyse every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build.
+- **Project history (say this plainly — the repo README states it up front, so an interviewer who clicks through will see it):** two builds, four years apart. The Nov–Dec 2023 SIH entry was a *team* prototype and won the National Finale; CMPDI officials who judged the finals opened follow-up talks about deploying at scale, and those talks did not proceed — it was never deployed at CMPDI and there is no ongoing institutional relationship. The repository you link today is an independent, ground-up rebuild started June 2025, solo since, with none of the 2023 code carried over. Framing it this way is a strength: it turns a hackathon line into two years of production work.
 - **Problem:** Coal operations generate thousands of critical documents (MSHA regulations, equipment manuals, incident reports); finding one clause across 500 pages takes hours, and a missed regulation update means violations, fines, or lives.
 - **Solution:** Four agents run on every upload — a Classifier (Groq gpt-oss-120b) whose category feeds a Safety Analyzer (Mistral magistral-small), Entity Extractor and Summarizer (Cerebras gpt-oss-120b) running concurrently under `asyncio.gather()`. A fifth, the Compliance Auditor (Groq), runs on demand and produces a per-clause Pass / Fail / Not Addressed matrix. The safety analyzer is skipped for non-safety categories. Retrieval: Gemini embeddings (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text `ts_rank_cd` via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5, streamed over SSE with inline citations.
 - **Stack:** Next.js 16, React 19, FastAPI 0.128, PostgreSQL 16 + pgvector, Supabase, Upstash Redis, Clerk Auth, Groq, Cerebras, Mistral, Gemini, Docker.
-- **Results:** CI-gated retrieval quality — **Hit Rate@5 1.000**, MRR 1.000, Recall@5 0.958, nDCG@5 0.968 (floors 0.90 / 0.75 / 0.85 / 0.75) across 12 labelled queries over a 130-chunk corpus. **262 tests**, **26.2K lines** across two apps, 11 API routers, **$0/month** infrastructure.
+- **Results:** CI-gated retrieval quality — **Hit Rate@5 1.000**, MRR 1.000, Recall@5 0.958, nDCG@5 0.968 (floors 0.90 / 0.75 / 0.85 / 0.75) across 12 labelled queries over a 130-chunk corpus. **242 tests** passing as blocking CI gates on every push (215 unit + 27 integration; **274 collected** with the eval suites), **27.1K lines** across two apps, 11 API routers, **36 REST endpoints**, **$0/month** infrastructure.
 - **Engineering depth worth mentioning in interviews:**
   - Chose pdfplumber over PyMuPDF because PyMuPDF is AGPL-3.0 and the project ships MIT — and pdfplumber turned out to recover the tables PyMuPDF flattens, which matters because mining regulations are largely tabular.
   - Found a 400-row table collapsing into one 14,703-character chunk (Markdown tables have no sentence-ending punctuation, and the embedding model truncates silently past ~2,048 tokens, so most of it was never indexed with no error raised). Fixed with a hard 4,000-character chunk ceiling.
   - Proved the lexical arm was actually contributing: disabling it left every aggregate retrieval metric unchanged, so added direct guard tests that the lexical index returns rows and can distinguish 30 CFR 75.323 from 75.400.
   - Collapsed two compounding retry layers (orchestrator + agent base class reached nine attempts per failure) into one.
   - Routed provider fallback by token budget, not preference: Groq allows 8K tokens/min, Cerebras serves the identical model at 30K/min.
-- **Known limits (state them; they read as maturity):** synchronous DB access inside async endpoints bounds per-worker throughput; the background queue is an in-process `asyncio.Queue` that does not survive restarts; analysis agents see ~15K characters of head and tail rather than the whole document (retrieval indexes the full text).
+- **Known limits (state them; they read as maturity):** synchronous DB access inside async endpoints bounds per-worker throughput; the background queue is an in-process `asyncio.Queue` that does not survive restarts or fan out across replicas; analysis agents see ~15K characters of head and tail rather than the whole document (retrieval indexes the full text); the retrieval gate runs on a 130-chunk golden corpus, so its metrics are directional rather than a production-scale claim; there is no frontend test suite — all 215 unit tests are backend.
+- **Differentiator worth leading with:** there is **no agent framework** in this repo — no LangChain, no LangGraph. Orchestration is hand-written on `asyncio.gather()` with per-agent error isolation, quota-aware provider failover and a content-addressed Redis cache (failed runs are never cached). Failure is loud: a section that cannot be produced lands on `Document.processing_error` and `metadata.degraded_sections` and is surfaced in the UI rather than returned as a silently empty result. LangSmith traces the orchestrator, hybrid search and chat generation.
 - **Links:** GitHub github.com/Iammilansoni/MiningNiti · Demo miningniti.vercel.app *(free HuggingFace Space — a cold first request can take up to a minute)*
 
 ### NLPForge — NLP Dataset Generator & Semantic Search *(built at nTheta Works)*
@@ -128,7 +130,7 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 ## 7. Education
 
 **B.Tech, Computer Science & Engineering** — Global Institute of Technology, Jaipur, Rajasthan
-*Oct 2022 – May 2026 · CGPA: 8.10 (graduating 2026)*
+*Oct 2022 – Apr 2026 · CGPA: 8.10 (graduating 2026)*
 - **Core coursework:** Data Structures & Algorithms, Artificial Intelligence, Database Management Systems, Operating Systems, Computer Networks, Object-Oriented Programming.
 
 ---
@@ -163,7 +165,7 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 |--------|---------|
 | Top 1% / 44,000+ teams | SIH 2023 National win |
 | Hit Rate@5 1.000 · nDCG@5 0.968 (CI-gated eval) | MiningNiti retrieval |
-| 262 tests · 26.2K lines across two apps | MiningNiti |
+| 242 tests green in CI · 274 collected · 27.1K lines across two apps | MiningNiti |
 | $0/month infrastructure | MiningNiti / hybrid RAG |
 | +40% accuracy · −60% QA effort | NLPForge |
 | +45% faster reports · +30% efficiency | FinSageAI360 |

@@ -48,7 +48,7 @@ Milan Soni is an AI Engineer and Full Stack Developer specializing in transformi
 
 > SIH 2023 National Winner | Recognized by Coal India Limited & CMPDI
 
-A document-intelligence platform for coal mining: five specialized AI agents analyze every uploaded regulation, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Built for the Ministry of Coal.
+A document-intelligence platform for coal mining: four AI agents analyze every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Two builds, four years apart: the SIH 2023 National Finale winner was a team prototype against the Ministry of Coal problem statement; this codebase is an independent, ground-up rebuild started June 2025 and developed solo since, sharing none of that code.
 
 **Problem**: Coal mining generates thousands of critical documents — MSHA regulations, equipment manuals, safety protocols, environmental impact assessments, incident investigations — scattered across PDFs and siloed systems. Finding a specific clause across 500 pages takes hours, and a missed regulation update means violations, fines, or lives.
 
@@ -81,7 +81,7 @@ A document-intelligence platform for coal mining: five specialized AI agents ana
 
 **Quality gate**: retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus, using a local sentence-transformers model so it needs no API keys and stays deterministic. Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75). Generation quality (faithfulness, answer relevancy) is Gemini-judged and run on demand rather than in CI.
 
-**Scale**: 262 tests collected (203 unit, 27 integration, 32 eval), 10,192 lines of backend Python across 61 modules, 15,995 lines of frontend TS/TSX across 128 files, 11 API routers, 15 app routes, 99 commits since 18 Jun 2025.
+**Scale**: 274 tests collected (215 unit, 27 integration, 32 eval) — 242 of them run green as blocking CI gates on every push; 10,643 lines of backend Python, 16,426 lines of frontend TS/TSX, 11 API routers, 36 REST endpoints, 15 app routes.
 
 **Known limits** (tracked as next work):
 - Synchronous database access inside async endpoints blocks the event loop, bounding throughput per worker

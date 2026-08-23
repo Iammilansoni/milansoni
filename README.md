@@ -38,7 +38,7 @@ I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production R
 
 | Area | What I Do |
 |------|-----------|
-| **AI / LLM Engineering** | Production RAG pipelines with hybrid search, multi-agent orchestration (5 agents), cross-encoder reranking, evaluation harnesses |
+| **AI / LLM Engineering** | Production RAG pipelines with hybrid search, multi-agent orchestration (5 agents, no framework), cross-encoder reranking, CI-gated evaluation harnesses |
 | **Full Stack** | React 19 + TanStack Start frontends, FastAPI async backends, Clerk auth, enterprise RBAC |
 | **Data & Infrastructure** | PostgreSQL + pgvector, Redis HNSW indexes, Docker orchestration, $0/month free-tier deployments |
 | **Systems Thinking** | Algorithm design, scalable backend architecture, multi-provider AI orchestration |
@@ -49,9 +49,12 @@ I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production R
 
 ### MiningNiti — AI Document Intelligence for Mining
 
-> **SIH 2023 National Winner** | Recognized by Coal India Limited & CMPDI
+> **SIH 2023 National Winner** (Ministry of Coal) | Recognized by Coal India Limited & CMPDI
+> **Independent solo rebuild, June 2025 → present**
 
-A document-intelligence platform for coal mining: five specialized AI agents analyze every uploaded regulation, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored in CI and the score blocks the build.
+A document-intelligence platform for coal mining: four AI agents analyze every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored in CI and the score blocks the build.
+
+**Two builds, four years apart.** The SIH 2023 entry was a team prototype and won the National Finale. This is not that codebase — it is an independent, ground-up rebuild started June 2025 and developed solo since, with none of the 2023 code carried over.
 
 ```
     Document Upload
@@ -84,7 +87,7 @@ An Orchestrator coordinates these five; it is a coordinator, not a sixth agent.
 
 **Quality gate (CI):** Hit Rate@5 1.000 · MRR 1.000 · Recall@5 0.958 · nDCG@5 0.968 — against floors of 0.90 / 0.75 / 0.85 / 0.75 on 12 labelled queries over a 130-chunk corpus.
 
-**Results:** Won SIH 2023 National Finale. 5 AI agents, 4 providers, 262 tests, 26.2K lines, $0/month infrastructure.
+**Results:** 5 AI agents across 4 providers, 36 REST endpoints, 242 tests passing as blocking CI gates (215 unit + 27 integration; 274 collected with the eval suites), 27.1K lines, $0/month infrastructure. No agent framework — orchestration is hand-written on `asyncio.gather()` with per-agent error isolation and quota-aware provider failover.
 
 **Links:** [GitHub](https://github.com/Iammilansoni/MiningNiti) | [Live Demo](https://miningniti.vercel.app/)
 

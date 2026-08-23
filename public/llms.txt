@@ -32,12 +32,12 @@
 
 > SIH 2023 National Winner | Recognized by Coal India Limited & CMPDI
 
-A document-intelligence platform for coal mining: five specialized AI agents analyze every uploaded regulation, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Built for the Ministry of Coal.
+A document-intelligence platform for coal mining: four AI agents analyze every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Built against the Ministry of Coal problem statement that won SIH 2023 as a team prototype; this codebase is an independent solo rebuild started June 2025.
 
 - **Agents (5)**: Classifier (Groq gpt-oss-120b, runs first — its category feeds the rest), Safety Analyzer (Mistral magistral-small, skipped for non-safety categories), Entity Extractor (Cerebras gpt-oss-120b), Summarizer (Cerebras gpt-oss-120b) — these three run concurrently under asyncio.gather() — plus Compliance Auditor (Groq gpt-oss-120b) on demand. An Orchestrator coordinates them but is not itself an agent.
 - **RAG Pipeline**: 23 prompt-injection guard patterns + 1,500-char query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a GIN tsvector via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations. The lexical arm is PostgreSQL full-text search, not true BM25.
 - **Tech**: Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Groq, Cerebras, Mistral, Gemini, Docker
-- **Metrics**: 5 AI agents, 4 providers, 262 tests, 26.2K lines across two apps, $0/month infrastructure cost
+- **Metrics**: 5 AI agents, 4 providers, 36 REST endpoints, 242 tests green in CI (274 collected), 27.1K lines across two apps, $0/month infrastructure cost
 - **Quality gate**: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — 12 labelled queries over a 130-chunk corpus, run in CI.
 - **Known limits**: synchronous DB access inside async endpoints bounds per-worker throughput; the background queue is an in-process asyncio.Queue that does not survive restarts; analysis agents see ~15K chars of head and tail rather than the full document (retrieval indexes the full text).
 - **Impact**: Won SIH 2023 National Finale for the Ministry of Coal; recognized by Coal India Limited & CMPDI.

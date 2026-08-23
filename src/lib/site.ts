@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 50k★ open-source AI gateway (5+ PRs merged, 21,000+ tests), built a 5-agent document intelligence platform that won SIH 2023 National (Ministry of Coal, 44,000+ teams) with retrieval quality gated in CI, and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
+    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 50k★ open-source AI gateway (5+ PRs merged, 21,000+ tests), rebuilt solo the Ministry of Coal document-intelligence platform a team of us won SIH 2023 National with (44,000+ teams), this time with retrieval quality gated in CI, and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -60,11 +60,11 @@ export const PROJECTS: Project[] = [
   {
     slug: "miningniti",
     name: "MiningNiti",
-    tag: "🏆 SIH 2023 National Winner · Recognized by Coal India Limited & CMPDI",
+    tag: "🏆 SIH 2023 National Winner (Ministry of Coal) · Independent solo rebuild, June 2025 → present",
     blurb:
       "AI-Powered Document Intelligence for the Mining Industry — transforming thousands of fragmented PDFs into an instantly queryable, citation-backed source of truth.",
     description:
-      "A document-intelligence platform for coal mining: five specialised AI agents analyse every uploaded regulation, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build.",
+      "A document-intelligence platform for coal mining: four AI agents analyse every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Two builds, four years apart — the SIH 2023 winner was a team prototype; this is an independent, ground-up rebuild, solo since June 2025, sharing none of that code.",
     metrics: [
       { value: "5", label: "Specialized AI Agents" },
       { value: "1.000", label: "Hit Rate@5 (CI-gated)" },
@@ -77,12 +77,14 @@ export const PROJECTS: Project[] = [
       "Four agents run on every upload: a classifier whose category feeds a safety analyzer, entity extractor and summarizer running concurrently under asyncio.gather(). A fifth audits compliance on demand, cross-referencing operational documents against regulations into a per-clause Pass / Fail / Not Addressed matrix. The safety analyzer is skipped entirely for non-safety categories, so an equipment manual never pays for a hazard screen it does not need. Questions go through a measured retrieval pipeline and every answer cites its document and page.",
     architecture: [
       "Frontend: Next.js 16 App Router (Turbopack) + React 19 across 15 routes — Clerk auth, TanStack Query, Recharts analytics, react-pdf viewer.",
-      "API: FastAPI 0.128 with 11 routers under /api/v1, Clerk JWT verification via JWKS (PyJWT), slowapi rate limiting at 120 req/min per IP, Pydantic v2 validation.",
+      "API: FastAPI 0.128 with 11 routers under /api/v1, Clerk JWT verification via JWKS (PyJWT) with RS256 pinned, JWKS cached and the azp claim validated, a DNS-resolving SSRF guard on URL ingestion, slowapi rate limiting at 120 req/min per IP, Pydantic v2 validation and audit logging on every mutation.",
       "Agents: Classifier (Groq gpt-oss-120b) runs first because its category feeds the rest; Safety Analyzer (Mistral magistral-small), Entity Extractor and Summarizer (Cerebras gpt-oss-120b) run concurrently; Compliance Auditor (Groq) runs on demand.",
+      "Orchestration: no agent framework. Coordination is hand-written on asyncio.gather() with per-agent error isolation, quota-aware provider failover and a content-addressed Redis cache, so a re-upload of identical content costs zero LLM calls. Failure is loud: a section that cannot be produced is recorded on Document.processing_error and metadata.degraded_sections and shown in the UI, rather than laundered into a plausible-looking empty result.",
       "Ingestion: pdfplumber for layout and tables with a Tesseract OCR fallback for pages yielding almost no extractable text (capped at 50 pages/doc at 200 DPI); chunks of ~1000 words with 200 overlap under a hard 4,000-character ceiling, embedded 100 at a time.",
       "Retrieval: 23 prompt-injection guard patterns and a 1,500-character query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a GIN tsvector via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations.",
       "Data: Supabase PostgreSQL 16 with pgvector HNSW, Supabase Storage for uploads, Upstash Redis caching completed analyses keyed by SHA-256(extracted text) + PIPELINE_VERSION — failed runs are never cached.",
       "CI: five jobs — backend lint, a bandit security scan, pytest with coverage against real PostgreSQL and Redis services, the retrieval quality gate, and a frontend lint-and-build. Alembic migrations run before the server binds, so a failed migration stops the deploy rather than serving a half-built schema.",
+      "Evaluation & observability: retrieval and generation are scored separately, because a blended number hides which half failed. Retrieval runs in CI as a blocking gate on a local sentence-transformers model — deterministic, no API keys. Generation quality (faithfulness and relevancy, 0.70 thresholds) is Gemini-judged on demand. LangSmith traces the orchestrator, hybrid search and chat generation end to end.",
     ],
     tradeoffs: [
       "Chose the weaker PDF library on purpose: PyMuPDF extracts more reliably but is AGPL-3.0, and this project ships MIT — so pdfplumber it was. It then turned out to recover tables that PyMuPDF flattens, and mining regulations are largely tabular, which made the licence-driven choice the better technical one too.",
@@ -92,12 +94,14 @@ export const PROJECTS: Project[] = [
       "Fallback routed by token budget, not preference: Groq's free tier allows 8K tokens/minute — the tightest constraint in the system — while Cerebras serves the identical gpt-oss-120b at 30K/minute. So agents fall back to Cerebras on a Groq rate limit: same model, same output, four times the headroom.",
     ],
     results:
-      "Won Smart India Hackathon 2023 National Finale for the Ministry of Coal; recognised by Coal India Limited & CMPDI. Retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — the gate blocks the build. 262 tests collected across 26.2K lines in two apps, all on $0/month infrastructure.",
+      "Two builds, four years apart. The Smart India Hackathon 2023 entry — a team prototype against the Ministry of Coal problem statement — won the National Finale and was recognised by Coal India Limited & CMPDI. This is not that codebase: it is an independent, ground-up rebuild started June 2025 and developed solo since, and none of the 2023 code carried over. Retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — the gate blocks the build. 242 tests pass as blocking CI gates on every push (215 unit, 27 integration), out of 274 collected once the eval suites are counted, across 27.1K lines in two apps and 36 REST endpoints — all on $0/month infrastructure.",
     limits: [
       "Database access is synchronous inside async endpoints, so a query blocks the event loop and throughput per worker is bounded.",
       "The background queue is an in-process asyncio.Queue: queued work does not survive a restart and does not scale across replicas.",
       "Analysis agents see roughly 15K characters of head and tail rather than the whole document. Retrieval still indexes the full text — the limit applies to the agents only.",
       "The lexical arm is PostgreSQL full-text search, not true BM25. Everyone claims 'hybrid BM25 + vector'; real BM25 needs an extension like pg_search. Worth being precise about rather than rounding up.",
+      "The retrieval gate runs against a 130-chunk golden corpus. At that scale the metrics are directional — they catch a regression, they are not a claim about production-scale behaviour.",
+      "No frontend test suite. All 215 unit tests are backend; the frontend is covered by lint and a blocking production build, nothing more.",
     ],
     githubUrl: "https://github.com/Iammilansoni/MiningNiti",
     demoUrl: "https://miningniti.vercel.app/",
@@ -339,7 +343,7 @@ export const TECH_STACK = {
   Languages: ["JavaScript (ES6+)", "TypeScript", "Python", "C++"],
   Frontend: ["React 19", "Next.js 16", "Redux", "Tailwind CSS v4", "Framer Motion", "Recharts", "Radix UI / shadcn"],
   Backend: ["FastAPI 0.128", "Node.js", "Express.js", "SQLAlchemy 2.0", "Pydantic v2", "REST APIs", "GraphQL", "JWT", "Clerk Auth", "RBAC", "Microservices"],
-  "AI / ML": ["LangChain", "LangGraph", "RAG Pipelines", "Hybrid Search (Vector + Full-Text)", "Reciprocal Rank Fusion", "Cross-Encoder Reranking", "FlashRank", "Ollama", "AI Agents", "Prompt Engineering", "Retrieval Evaluation (Hit Rate / MRR / nDCG)", "pgvector"],
+  "AI / ML": ["LangChain", "LangGraph", "Google ADK", "RAG Pipelines", "Hybrid Search (Vector + Full-Text)", "Reciprocal Rank Fusion", "Cross-Encoder Reranking", "FlashRank", "Ollama", "AI Agents", "Prompt Engineering", "Retrieval Evaluation (Hit Rate / MRR / nDCG)", "pgvector"],
   "LLM Providers": ["Groq (gpt-oss-120b)", "Cerebras (gpt-oss-120b)", "Mistral (magistral-small)", "Google Gemini", "OpenAI", "Anthropic", "DeepSeek", "HuggingFace"],
   Databases: ["PostgreSQL + pgvector", "Supabase", "MongoDB", "Redis Stack 7.2 (HNSW)", "Upstash Redis", "Prisma ORM"],
   "Cloud / DevOps": ["Vercel", "HuggingFace Spaces", "Docker Compose", "GitHub Actions CI/CD", "Linux", "Git"],
