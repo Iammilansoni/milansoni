@@ -432,3 +432,125 @@
     }
   }
 }
+
+/* ─────────────────────────────────────────────────────────────────────
+   PORTRAIT — the photographic surface.
+
+   Both portraits are studio frames: a lit subject against pure black.
+   That fact drives the whole treatment. Rather than dropping a bright
+   rectangle onto the page, the plinth continues the photograph's own
+   background, so the frame has no visible edge behind the subject and
+   the figure appears to emerge from the surface.
+
+   The plinth is near-black in BOTH themes on purpose. On the dark canvas
+   it sits a hair below the page value and reads as emergence; on light
+   paper the same surface reads as a deliberate gallery print — which is
+   the only honest way to place a black-background photograph on paper.
+   Theming it to follow the canvas would blow the subject out on light.
+   ───────────────────────────────────────────────────────────────────── */
+@layer utilities {
+  .plinth {
+    position: relative;
+    isolation: isolate;
+    background:
+      radial-gradient(120% 78% at 50% 0%, oklch(0.24 0.022 265 / 0.55), transparent 64%),
+      oklch(0.085 0.006 265);
+    border: 1px solid oklch(1 0 0 / 0.08);
+    box-shadow:
+      var(--elevated),
+      inset 0 1px 0 0 oklch(1 0 0 / 0.07);
+    transition:
+      box-shadow 0.6s var(--ease-out-quint),
+      border-color 0.6s var(--ease-out-quint);
+  }
+  .plinth:hover {
+    border-color: color-mix(in oklab, var(--accent) 42%, oklch(1 0 0 / 0.08));
+    box-shadow:
+      var(--elevated-hover),
+      inset 0 1px 0 0 color-mix(in oklab, var(--accent) 34%, transparent);
+  }
+
+  /* Pointer-tracked bloom. `plus-lighter` adds light to the photograph
+     instead of veiling it — the subject stays readable under the wash,
+     which a normal-blended overlay would flatten. Driven by --mx/--my,
+     written straight to the node, so tracking costs no React renders. */
+  .plinth-sheen {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    z-index: 2;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 12%),
+      color-mix(in oklab, var(--accent) 24%, transparent),
+      transparent 62%
+    );
+    mix-blend-mode: plus-lighter;
+    opacity: 0;
+    transition: opacity 0.55s var(--ease-out-quint);
+  }
+  .plinth:hover .plinth-sheen { opacity: 1; }
+  @media (hover: none) {
+    .plinth:hover { box-shadow: var(--elevated); }
+    .plinth:hover .plinth-sheen { opacity: 0; }
+  }
+
+  /* The photograph's lower edge dissolves into the plinth so the torso
+     runs out of light rather than hitting a crop line. Two strengths:
+     `-deep` for the full-length frame, the default for the square crop
+     where there is far less body to lose. */
+  .portrait-fade {
+    -webkit-mask-image: linear-gradient(to bottom, #000 74%, transparent 99%);
+    mask-image: linear-gradient(to bottom, #000 74%, transparent 99%);
+  }
+  .portrait-fade-deep {
+    -webkit-mask-image: linear-gradient(to bottom, #000 58%, transparent 97%);
+    mask-image: linear-gradient(to bottom, #000 58%, transparent 97%);
+  }
+
+  /* A restrained grade. The source files are already low-saturation and
+     moody; pushing them further (or the grayscale→colour hover cliché)
+     would fight the photography. This only firms the blacks, and hover
+     returns the last of the saturation. */
+  .portrait-grade {
+    filter: saturate(0.88) contrast(1.06);
+    transition: filter 0.7s var(--ease-out-quint);
+  }
+  .plinth:hover .portrait-grade {
+    filter: saturate(1.04) contrast(1.03);
+  }
+
+  /* Crop marks. The same technical-editorial register as the site's mono
+     labels — four hairline corners that register the frame without
+     drawing a box around it. */
+  .crop-mark {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-color: color-mix(in oklab, var(--accent) 55%, transparent);
+    opacity: 0.55;
+    pointer-events: none;
+    z-index: 3;
+    transition: opacity 0.5s var(--ease-out-quint);
+  }
+  .plinth:hover .crop-mark { opacity: 1; }
+}
+
+@layer utilities {
+  /* The avatar's live ring. A conic sweep masked down to a 2px annulus and
+     rotated by Framer Motion — one arc of accent light orbiting the crop.
+     Masking rather than stacking two circles keeps the plate underneath
+     transparent, so the ring reads on either canvas. */
+  .avatar-ring {
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      color-mix(in oklab, var(--accent) 90%, transparent) 62deg,
+      color-mix(in oklab, var(--accent) 20%, transparent) 128deg,
+      transparent 190deg,
+      transparent 360deg
+    );
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 2px));
+  }
+}

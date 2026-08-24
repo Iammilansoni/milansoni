@@ -107,7 +107,7 @@ const STAGES: Stage[] = [
     metrics: [
       { value: "5", label: "Agents" },
       { value: "4", label: "Providers" },
-      { value: "$0/mo", label: "Infrastructure" },
+      { value: "30K", label: "Tokens/min Headroom" },
     ],
     tech: ["Groq", "Cerebras", "Mistral", "asyncio"],
     source: { label: "MiningNiti", href: "/work/miningniti" },
