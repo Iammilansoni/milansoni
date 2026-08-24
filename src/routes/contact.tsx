@@ -5,6 +5,7 @@ import { Github, Linkedin, Mail, PenLine, Check } from "lucide-react";
 import { toast } from "sonner";
 import { Reveal } from "@/components/reveal";
 import { SITE } from "@/lib/site";
+import { PortraitAvatar } from "@/components/ui/portrait";
 import { motion, AnimatePresence } from "framer-motion";
 
 const Schema = z.object({
@@ -98,8 +99,25 @@ function ContactPage() {
       <div className="aurora-bg opacity-60" />
       <div className="relative mx-auto max-w-6xl px-6 py-20">
         <Reveal>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Contact</p>
-          <h1 className="mt-4 font-display text-5xl md:text-7xl max-w-3xl">
+          {/* A contact page is the one place on the site where a face does
+              real work — it tells the reader who is on the other end of the
+              form before they decide to fill it in. */}
+          <div className="flex items-center gap-4">
+            <PortraitAvatar
+              src="/milan-portrait.jpg"
+              alt="Milan Soni"
+              size={56}
+              focus="50% 26%"
+              zoom={1.45}
+            />
+            <div>
+              <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">Contact</p>
+              <p className="mt-1 text-sm text-foreground">
+                {SITE.name} <span className="text-muted-foreground">· {SITE.location}</span>
+              </p>
+            </div>
+          </div>
+          <h1 className="mt-8 font-display text-5xl md:text-7xl max-w-3xl">
             Let's build <span className="text-aurora">something good.</span>
           </h1>
           <p className="mt-6 max-w-xl text-muted-foreground">
