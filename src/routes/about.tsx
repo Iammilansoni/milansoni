@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Reveal } from "@/components/reveal";
 import { Magnetic } from "@/components/ui/magnetic";
+import { Portrait } from "@/components/ui/portrait";
 import { SITE, EXPERIENCE } from "@/lib/site";
 
 export const Route = createFileRoute("/about")({
@@ -11,6 +12,7 @@ export const Route = createFileRoute("/about")({
       { property: "og:title", content: "About Milan Soni | Software Engineer & Researcher" },
       { property: "og:description", content: "Learn about Milan Soni's background, education at Global Institute of Technology, and journey as a GenAI engineer and full-stack developer." },
       { property: "og:url", content: "https://milansoni.vercel.app/about" },
+      { property: "og:image", content: "https://milansoni.vercel.app/milan-portrait.jpg" },
     ],
     links: [{ rel: "canonical", href: "https://milansoni.vercel.app/about" }],
     scripts: [
@@ -25,6 +27,7 @@ export const Route = createFileRoute("/about")({
             "@type": "Person",
             name: SITE.name,
             jobTitle: "Software Engineer & GenAI Engineer",
+            image: "https://milansoni.vercel.app/milan-portrait.jpg",
             alumniOf: {
               "@type": "CollegeOrUniversity",
               name: "Global Institute of Technology"
@@ -41,16 +44,46 @@ function About() {
   return (
     <div className="relative">
       <div className="aurora-bg opacity-60" />
-      <div className="relative mx-auto max-w-3xl px-6 py-24">
-        <Reveal>
-          <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">About</p>
-          <h1 className="mt-4 font-display text-5xl md:text-7xl leading-none tracking-tight">
-            I build software the way <span className="text-aurora">good companies do.</span>
-          </h1>
-        </Reveal>
+      {/*
+        The measure widened from max-w-3xl to max-w-6xl to make room for the
+        portrait. The prose still sits in 7 of 12 columns, which lands it at
+        roughly the same reading width it had before — the extra space is the
+        photograph's, not the paragraph's.
+      */}
+      <div className="relative mx-auto max-w-6xl px-6 py-24">
+        {/* ── Masthead: the claim, and the face making it ── */}
+        <div className="grid items-center gap-12 md:grid-cols-12 lg:gap-16">
+          <div className="md:col-span-7">
+            <Reveal>
+              <p className="font-mono text-xs uppercase tracking-widest text-muted-foreground">About</p>
+              <h1 className="mt-4 font-display text-5xl leading-none tracking-tight md:text-7xl">
+                I build software the way <span className="text-aurora">good companies do.</span>
+              </h1>
+            </Reveal>
+          </div>
 
-        <div className="mt-16 grid md:grid-cols-12 gap-12">
-          <div className="md:col-span-7 space-y-8 text-lg leading-relaxed text-muted-foreground">
+          <div className="md:col-span-5">
+            <Portrait
+              src="/milan-portrait.jpg"
+              alt="Milan Soni"
+              width={1126}
+              height={1397}
+              className="aspect-[4/5]"
+              fade="deep"
+              parallax={5}
+              index="01"
+              priority
+              caption={
+                <>
+                  Milan Soni · {SITE.location}
+                </>
+              }
+            />
+          </div>
+        </div>
+
+        <div className="mt-20 grid gap-12 md:mt-28 md:grid-cols-12 lg:gap-16">
+          <div className="space-y-8 text-lg leading-relaxed text-muted-foreground md:col-span-7">
             <Reveal>
               <p className="leading-relaxed">
                 I'm Milan — a Computer Science graduate from Jaipur. I spent the last few years doing
@@ -73,8 +106,9 @@ function About() {
                 testing platform on FastAPI + Redis with two-stage retrieval (NLPForge), a multi-tenant financial intelligence
                 SaaS on Next.js + Node (FinSageAI360), and a LangChain-powered document workflow engine for
                 logistics (Om Logistics). My latest work includes deploying 5 specialized AI agents
-                across 4 providers (Groq, Cerebras, Mistral, Gemini) on $0/month infrastructure,
-                with retrieval quality scored against a labelled golden set on every CI run.
+                across 4 providers (Groq, Cerebras, Mistral, Gemini), cutting a $400/month managed
+                vector DB down to pgvector, with retrieval quality scored against a labelled golden
+                set on every CI run.
               </p>
             </Reveal>
             <Reveal delay={0.15}>
@@ -85,24 +119,41 @@ function About() {
               </p>
             </Reveal>
             <Reveal delay={0.2}>
-              <p className="font-display text-3xl text-foreground not-italic mt-12 border-l-2 border-aurora-1 pl-6">
+              <p className="mt-12 border-l-2 border-aurora-1 pl-6 font-display text-3xl not-italic text-foreground">
                 Right now I'm looking for engineering roles where I can ship product end-to-end —
                 ideally somewhere that takes AI seriously as a craft, not a buzzword.
               </p>
             </Reveal>
           </div>
 
-          <div className="md:col-span-5 space-y-8">
+          <div className="space-y-10 md:col-span-5">
+            {/*
+              The second frame is the quieter one — subject turned away, no
+              eye contact — so it sits beside the working history rather than
+              competing with the masthead. Square crop: there is far less body
+              in this shot, and a tall frame would leave it swimming.
+            */}
+            <Portrait
+              src="/milan-profile.jpg"
+              alt="Milan Soni"
+              width={1024}
+              height={1006}
+              className="aspect-square"
+              parallax={3}
+              index="02"
+              caption="Off the clock"
+            />
+
             <Reveal delay={0.1}>
-              <div className="glass rounded-3xl p-8 sticky top-32">
-                <h3 className="font-display text-2xl mb-6 flex items-center gap-2">
+              <div className="glass sticky top-32 rounded-3xl p-8">
+                <h3 className="mb-6 flex items-center gap-2 font-display text-2xl">
                   <span className="h-2 w-2 rounded-full bg-aurora-2" /> Journey
                 </h3>
                 <div className="space-y-6">
                   {EXPERIENCE.map((exp, i) => (
-                    <div key={i} className="relative pl-6 border-l border-hairline">
-                      <span className="absolute -left-1.5 top-2 h-3 w-3 rounded-full bg-background border-2 border-aurora-3" />
-                      <div className="text-xs font-mono text-muted-foreground mb-1">{exp.period}</div>
+                    <div key={i} className="relative border-l border-hairline pl-6">
+                      <span className="absolute -left-1.5 top-2 h-3 w-3 rounded-full border-2 border-aurora-3 bg-background" />
+                      <div className="mb-1 font-mono text-xs text-muted-foreground">{exp.period}</div>
                       <div className="font-medium text-foreground">{exp.role}</div>
                       <div className="text-sm text-muted-foreground">{exp.company}</div>
                     </div>
@@ -116,17 +167,17 @@ function About() {
         <Reveal delay={0.25}>
           <div className="mt-20 flex flex-wrap items-center gap-4 border-t border-hairline pt-10">
             <Magnetic strength={20}>
-              <Link to="/contact" className="rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background hover:opacity-90 transition">
+              <Link to="/contact" className="rounded-full bg-foreground px-8 py-4 text-sm font-medium text-background transition hover:opacity-90">
                 Get in touch
               </Link>
             </Magnetic>
             <Magnetic strength={20}>
-              <a href={SITE.socials.linkedin} target="_blank" rel="noreferrer" className="rounded-full border border-hairline px-6 py-4 text-sm hover:bg-secondary transition">
+              <a href={SITE.socials.linkedin} target="_blank" rel="noreferrer" className="rounded-full border border-hairline px-6 py-4 text-sm transition hover:bg-secondary">
                 LinkedIn →
               </a>
             </Magnetic>
             <Magnetic strength={20}>
-              <a href={SITE.socials.github} target="_blank" rel="noreferrer" className="rounded-full border border-hairline px-6 py-4 text-sm hover:bg-secondary transition">
+              <a href={SITE.socials.github} target="_blank" rel="noreferrer" className="rounded-full border border-hairline px-6 py-4 text-sm transition hover:bg-secondary">
                 GitHub →
               </a>
             </Magnetic>
