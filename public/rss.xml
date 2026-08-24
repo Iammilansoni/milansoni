@@ -5,7 +5,7 @@
     <link>https://milansoni.vercel.app/blog</link>
     <description>Architecture decisions, trade-offs, and measured results from building production RAG pipelines and multi-agent LLM systems.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 24 Aug 2026 05:12:07 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 24 Aug 2026 05:26:39 GMT</lastBuildDate>
     <atom:link href="https://milansoni.vercel.app/rss.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month</title>

@@ -12,7 +12,7 @@ const PROOF_POINTS = [
     headline: "National Winner",
     sub: "Ministry of Coal · recognised by Coal India Limited & CMPDI",
     detail:
-      "Built MiningNiti — AI document intelligence with 5 specialised agents, hybrid retrieval scored by a CI-gated eval, and per-clause compliance auditing, after replacing a $400/month vector DB with pgvector.",
+      "Built MiningNiti — AI document intelligence with 5 specialised agents, hybrid retrieval scored by a CI-gated eval, and per-clause compliance auditing.",
     links: [
       { label: "Official results", href: "https://www.sih.gov.in/sih2023-grand-finale-result" },
       { label: "Source", href: "https://github.com/Iammilansoni/MiningNiti" },
