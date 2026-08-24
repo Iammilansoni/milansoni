@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 50k★ open-source AI gateway (5+ PRs merged, 21,000+ tests), rebuilt solo the Ministry of Coal document-intelligence platform a team of us won SIH 2023 National with (44,000+ teams), this time with retrieval quality gated in CI, and deployed $0/month production systems using free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
+    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 50k★ open-source AI gateway (5+ PRs merged, 21,000+ tests), rebuilt solo the Ministry of Coal document-intelligence platform a team of us won SIH 2023 National with (44,000+ teams), this time with retrieval quality gated in CI, and cut a $400/month managed vector DB to pgvector on free-tier AI providers. Scopus-indexed researcher. B.Tech CSE '26.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -68,7 +68,7 @@ export const PROJECTS: Project[] = [
     metrics: [
       { value: "5", label: "Specialized AI Agents" },
       { value: "1.000", label: "Hit Rate@5 (CI-gated)" },
-      { value: "$0/mo", label: "Infrastructure Cost" },
+      { value: "$400/mo", label: "Saved vs Managed Vector DB" },
     ],
     tech: ["Next.js 16", "React 19", "FastAPI", "PostgreSQL + pgvector", "Supabase", "Upstash Redis", "Clerk Auth", "Groq", "Cerebras", "Mistral", "Gemini", "Docker"],
     problem:
@@ -94,7 +94,7 @@ export const PROJECTS: Project[] = [
       "Fallback routed by token budget, not preference: Groq's free tier allows 8K tokens/minute — the tightest constraint in the system — while Cerebras serves the identical gpt-oss-120b at 30K/minute. So agents fall back to Cerebras on a Groq rate limit: same model, same output, four times the headroom.",
     ],
     results:
-      "Two builds, four years apart. The Smart India Hackathon 2023 entry — a team prototype against the Ministry of Coal problem statement — won the National Finale and was recognised by Coal India Limited & CMPDI. This is not that codebase: it is an independent, ground-up rebuild started June 2025 and developed solo since, and none of the 2023 code carried over. Retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — the gate blocks the build. 242 tests pass as blocking CI gates on every push (215 unit, 27 integration), out of 274 collected once the eval suites are counted, across 27.1K lines in two apps and 36 REST endpoints — all on $0/month infrastructure.",
+      "Two builds, four years apart. The Smart India Hackathon 2023 entry — a team prototype against the Ministry of Coal problem statement — won the National Finale and was recognised by Coal India Limited & CMPDI. This is not that codebase: it is an independent, ground-up rebuild started June 2025 and developed solo since, and none of the 2023 code carried over. Retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — the gate blocks the build. 242 tests pass as blocking CI gates on every push (215 unit, 27 integration), out of 274 collected once the eval suites are counted, across 27.1K lines in two apps and 36 REST endpoints — all with a $400/month managed vector DB replaced by pgvector.",
     limits: [
       "Database access is synchronous inside async endpoints, so a query blocks the event loop and throughput per worker is bounded.",
       "The background queue is an in-process asyncio.Queue: queued work does not survive a restart and does not scale across replicas.",
@@ -333,7 +333,7 @@ export const EXPERIENCE = [
 export const STATS = [
   { value: "5", label: "AI Agents in MiningNiti" },
   { value: "4", label: "AI Providers (Free Tiers)" },
-  { value: "$0", label: "Monthly Infrastructure Cost" },
+  { value: "$400/mo", label: "Saved vs Managed Vector DB" },
   { value: "50k", label: "Stars · OmniRoute" },
   { value: "3", label: "Enterprise Internships" },
   { value: "70%", label: "Query Latency Reduction" },
