@@ -5,8 +5,19 @@
     <link>https://milansoni.vercel.app/blog</link>
     <description>Architecture decisions, trade-offs, and measured results from building production RAG pipelines and multi-agent LLM systems.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 24 Aug 2026 05:26:39 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 03 Sep 2026 10:24:10 GMT</lastBuildDate>
     <atom:link href="https://milansoni.vercel.app/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>OpenTelemetry for FastAPI: How I Traced an Async Backend That Looked Fast and Wasn't</title>
+      <link>https://milansoni.vercel.app/blog/opentelemetry-fastapi-async-tracing</link>
+      <guid isPermaLink="true">https://milansoni.vercel.app/blog/opentelemetry-fastapi-async-tracing</guid>
+      <description>A hands-on guide to instrumenting a FastAPI service with OpenTelemetry — auto-instrumentation, custom spans, event-loop lag metrics, trace-correlated logs, and sampling. Including the blocking database call that only a trace waterfall could find.</description>
+      <pubDate>Thu, 03 Sep 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Milan Soni</dc:creator>
+      <category>Observability</category>
+      <category>Python</category>
+      <category>Backend</category>
+    </item>
     <item>
       <title>Stop Overpaying for Vector DBs: Building a Production-Ready Hybrid RAG Pipeline for $0/Month</title>
       <link>https://milansoni.vercel.app/blog/hybrid-rag-pipeline-zero-cost</link>

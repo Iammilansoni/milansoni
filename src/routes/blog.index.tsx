@@ -8,6 +8,24 @@ import type { Article } from "@/lib/blog";
 /* ─── Static articles (always available, no server function needed) ─── */
 const STATIC_ARTICLES: Article[] = [
   {
+    slug: "opentelemetry-fastapi-async-tracing",
+    title:
+      "OpenTelemetry for FastAPI: How I Traced an Async Backend That Looked Fast and Wasn't",
+    description:
+      "A hands-on guide to instrumenting a FastAPI service with OpenTelemetry — auto-instrumentation, custom spans, event-loop lag metrics, trace-correlated logs, and sampling. Including the blocking database call that only a trace waterfall could find.",
+    publishedAt: "2026-09-03T00:00:00Z",
+    readingTime: "14 min read",
+    categories: ["Observability", "Python", "Backend"],
+    tags: ["OpenTelemetry", "FastAPI", "Distributed Tracing", "SigNoz"],
+    source: "local",
+    relatedProjectSlug: "miningniti",
+    badges: [
+      { label: "Signals", value: "Traces + Metrics + Logs" },
+      { label: "Setup", value: "<100 LOC" },
+      { label: "Export", value: "OTLP" },
+    ],
+  },
+  {
     slug: "building-multi-agent-ai",
     title: "How I Built a Production-Grade Multi-Agent AI System That Won a National Hackathon — and What It Taught Me About Real-World GenAI",
     description:
