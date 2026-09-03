@@ -4,6 +4,7 @@ import { ArrowUpRight, Github, Linkedin, Mail, Instagram, BookOpen, MapPin } fro
 import { SITE, NAV } from "@/lib/site";
 import { TextRoll } from "@/components/ui/text-roll";
 import { MSLogo } from "@/components/ui/ms-logo";
+import { PortraitAvatar } from "@/components/ui/portrait";
 
 const SOCIALS = [
   { label: "GitHub", href: SITE.socials.github, icon: Github },
@@ -78,12 +79,23 @@ export function Footer() {
             <p className="text-muted-foreground text-sm leading-relaxed mb-8 max-w-md">
               {SITE.description}
             </p>
-            <div className="flex items-center gap-2.5 text-xs text-aurora-1 font-mono bg-aurora-1/5 border border-aurora-1/20 w-max px-4 py-2 rounded-full">
-              <span className="relative flex h-2 w-2">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-aurora-1 opacity-75" />
-                <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora-1" />
-              </span>
-              Available for 2026 roles
+            <div className="flex items-center gap-5">
+              {/* The side profile sits high and left of centre in its frame,
+                  with a lot of backdrop around it — hence the push-in. */}
+              <PortraitAvatar
+                src="/milan-profile.jpg"
+                alt="Milan Soni"
+                size={104}
+                focus="48% 27%"
+                zoom={1.85}
+              />
+              <div className="flex items-center gap-2.5 text-xs text-aurora-1 font-mono bg-aurora-1/5 border border-aurora-1/20 w-max px-4 py-2 rounded-full">
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-aurora-1 opacity-75" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-aurora-1" />
+                </span>
+                Available for 2026 roles
+              </div>
             </div>
           </div>
 

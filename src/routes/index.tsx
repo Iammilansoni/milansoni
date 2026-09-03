@@ -1,6 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { lazy, Suspense } from "react";
 import { Hero } from "@/components/sections/hero";
+import { Intro } from "@/components/sections/intro";
+import { PortraitStage } from "@/components/sections/portrait-stage";
 
 // Below-fold sections stay lazy to protect LCP and TTI.
 const FeaturedProjects = lazy(() => import("@/components/sections/featured-projects").then(m => ({ default: m.FeaturedProjects })));
@@ -33,11 +35,24 @@ function Index() {
   return (
     <>
       <Hero />
+      {/*
+        Two portrait moments, deliberately far apart. The positioning band
+        comes first, straight off the hero, routing each kind of visitor to
+        their next click; the slower introduction waits until after the
+        evidence. Stacking them would spend both in one scroll.
+      */}
+      <PortraitStage
+        src="/milan-profile.jpg"
+        alt="Milan Soni"
+        width={1024}
+        height={1006}
+      />
       <Suspense fallback={<div className="h-96" />}>
         <FeaturedProjects />
         <SystemsLab />
         <BentoGrid />
         <ExperienceTimeline />
+        <Intro />
         <RecentArticles />
         <CTASection />
       </Suspense>

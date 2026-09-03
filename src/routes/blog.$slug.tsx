@@ -18,6 +18,7 @@ import buildingMultiAgentRaw from "@/content/blog/building-multi-agent-ai.md?raw
 import hybridRagRaw from "@/content/blog/hybrid-rag-pipeline-zero-cost.md?raw";
 import langgraphRaw from "@/content/blog/langgraph-multi-agent-state-machine.md?raw";
 import rscStreamingRaw from "@/content/blog/rsc-streaming-llms-nextjs.md?raw";
+import otelFastapiRaw from "@/content/blog/opentelemetry-fastapi-async-tracing.md?raw";
 
 // Parse frontmatter out of the raw markdown
 function parseLocalArticle(raw: string, slug: string): Article {
@@ -66,6 +67,10 @@ const LOCAL_ARTICLES: Record<string, Article> = {
   "hybrid-rag-pipeline-zero-cost": parseLocalArticle(hybridRagRaw, "hybrid-rag-pipeline-zero-cost"),
   "langgraph-multi-agent-state-machine": parseLocalArticle(langgraphRaw, "langgraph-multi-agent-state-machine"),
   "rsc-streaming-llms-nextjs": parseLocalArticle(rscStreamingRaw, "rsc-streaming-llms-nextjs"),
+  "opentelemetry-fastapi-async-tracing": parseLocalArticle(
+    otelFastapiRaw,
+    "opentelemetry-fastapi-async-tracing"
+  ),
 };
 
 export const Route = createFileRoute("/blog/$slug")({
