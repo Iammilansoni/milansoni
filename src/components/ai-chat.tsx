@@ -31,20 +31,35 @@ export function AiChat({ articleContext }: { articleContext?: string }) {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(true);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const chat = useServerFn(sendChatMessage);
 
-  const scrollToBottom = useCallback(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  // Scroll the list itself rather than scrollIntoView on a sentinel: the latter
+  // walks up to the page scroller and leaves the newest reply clipped behind
+  // the input bar on mobile.
+  const scrollToBottom = useCallback((smooth = true) => {
+    const el = listRef.current;
+    if (!el) return;
+    requestAnimationFrame(() => {
+      el.scrollTo({ top: el.scrollHeight, behavior: smooth ? "smooth" : "auto" });
+    });
   }, []);
 
   useEffect(() => {
-    if (isOpen) {
-      scrollToBottom();
-      setTimeout(() => inputRef.current?.focus(), 300);
+    if (!isOpen) return;
+    scrollToBottom(false);
+    // Autofocusing on touch pops the keyboard and halves the visual viewport
+    // before the panel has settled, so leave it to the user there.
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      const t = setTimeout(() => inputRef.current?.focus(), 300);
+      return () => clearTimeout(t);
     }
-  }, [isOpen, messages, scrollToBottom]);
+  }, [isOpen, scrollToBottom]);
+
+  useEffect(() => {
+    if (isOpen) scrollToBottom();
+  }, [messages, isLoading, isOpen, scrollToBottom]);
 
   const sendMessage = useCallback(
     async (text: string) => {
@@ -109,14 +124,20 @@ export function AiChat({ articleContext }: { articleContext?: string }) {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-24 right-4 md:right-6 z-999 w-[calc(100vw-2rem)] max-w-sm"
+            className="fixed right-4 md:right-6 z-999 w-[calc(100dvw-2rem)] max-w-sm"
+            style={{ bottom: "calc(6rem + env(safe-area-inset-bottom))" }}
             initial={{ opacity: 0, scale: 0.9, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", damping: 20, stiffness: 260 }}
           >
             <div className="glass rounded-3xl border border-hairline shadow-elevated overflow-hidden flex flex-col"
-              style={{ height: "480px", background: "oklch(0.12 0.014 264 / 0.97)", backdropFilter: "blur(40px) saturate(200%)" }}
+              style={{
+                height: "min(480px, calc(100dvh - 9rem - env(safe-area-inset-bottom)))",
+                minHeight: "260px",
+                background: "oklch(0.12 0.014 264 / 0.97)",
+                backdropFilter: "blur(40px) saturate(200%)",
+              }}
             >
               {/* Header */}
               <div className="flex items-center justify-between px-5 py-4 border-b border-hairline/50 shrink-0">
@@ -141,7 +162,7 @@ export function AiChat({ articleContext }: { articleContext?: string }) {
               </div>
 
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 scrollbar-thin">
+              <div ref={listRef} className="flex-1 min-h-0 overflow-y-auto overscroll-contain px-4 py-4 space-y-4 scrollbar-thin">
                 {messages.map((msg) => (
                   <div
                     key={msg.id}
@@ -160,7 +181,7 @@ export function AiChat({ articleContext }: { articleContext?: string }) {
                     </div>
                     {/* Bubble */}
                     <div
-                      className={`max-w-[78%] rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
+                      className={`max-w-[78%] min-w-0 whitespace-pre-wrap break-words rounded-2xl px-4 py-2.5 text-sm leading-relaxed ${
                         msg.role === "user"
                           ? "bg-aurora-1/20 border border-aurora-1/30 text-foreground rounded-tr-sm"
                           : "bg-secondary/60 border border-hairline/50 text-foreground rounded-tl-sm"
@@ -202,8 +223,6 @@ export function AiChat({ articleContext }: { articleContext?: string }) {
                     ))}
                   </div>
                 )}
-
-                <div ref={messagesEndRef} />
               </div>
 
               {/* Input */}
@@ -217,7 +236,7 @@ export function AiChat({ articleContext }: { articleContext?: string }) {
                     onKeyDown={handleKeyDown}
                     placeholder="Ask about skills, projects, experience..."
                     disabled={isLoading}
-                    className="flex-1 bg-transparent text-sm text-foreground placeholder:text-muted-foreground/50 outline-none disabled:opacity-50"
+                    className="flex-1 min-w-0 bg-transparent text-base md:text-sm text-foreground placeholder:text-muted-foreground/50 outline-none disabled:opacity-50"
                   />
                   <button
                     onClick={() => sendMessage(input)}
@@ -236,7 +255,8 @@ export function AiChat({ articleContext }: { articleContext?: string }) {
       {/* Floating Trigger Button */}
       <motion.button
         onClick={() => setIsOpen((o) => !o)}
-        className="fixed bottom-5 right-4 md:right-6 z-999 group"
+        className="fixed right-4 md:right-6 z-999 group"
+        style={{ bottom: "calc(1.25rem + env(safe-area-inset-bottom))" }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         aria-label="Open AI Chat"
