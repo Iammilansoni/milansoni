@@ -28,7 +28,7 @@
 I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure.
 
 - **SIH 2023 National Winner** — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
-- **Open Source Contributor** — 5+ PRs merged to OmniRoute (50k★), 21,000+ tests, across 4 releases
+- **Open Source Contributor** — 5+ PRs merged to OmniRoute (50k+★), 21,000+ tests, across 4 releases
 - **Scopus-Indexed Researcher** — Peer-reviewed paper on hybrid attention-based temporal modeling (PICET-2026, IET Conference Proceedings)
 - **CS Graduate (2026)** — B.Tech CSE from Global Institute of Technology, Jaipur (CGPA: 8.10)
 
