@@ -67,21 +67,21 @@ KEY PROJECTS:
    - AI Document Intelligence for India's coal mining industry
    - Project history: two builds, four years apart. The Nov-Dec 2023 SIH entry was a team prototype and won the National Finale; CMPDI officials who judged the finals opened follow-up talks about deploying at scale, and those talks did not proceed - it was never deployed at CMPDI and there is no ongoing institutional relationship. The repository is an independent rebuild started June 2025, solo, with none of the 2023 code carried over.
    - 5 specialized agents across 4 AI providers (an Orchestrator coordinates them but is not itself an agent):
-     * Classifier (Groq gpt-oss-120b) — runs first; its category feeds the rest
-     * Safety Analyzer (Mistral magistral-small) — skipped for non-safety categories
-     * Entity Extractor (Cerebras gpt-oss-120b)
-     * Summarizer (Cerebras gpt-oss-120b)
-     * Compliance Auditor (Groq gpt-oss-120b) — runs on demand, not on upload
+     * Classifier (Groq gpt-oss-120b ↔ NVIDIA NIM) — runs first; its category feeds the rest
+     * Safety Analyzer (Mistral magistral-small ↔ NVIDIA NIM / Groq) — skipped for non-safety categories
+     * Entity Extractor (NVIDIA NIM nemotron-3.5-super-vl-120b-a12b ↔ Groq)
+     * Summarizer (NVIDIA NIM nemotron-3.5-super-vl-120b-a12b ↔ Groq)
+     * Compliance Auditor (Groq gpt-oss-120b ↔ NVIDIA NIM) — runs on demand, not on upload
      The middle three run concurrently under asyncio.gather() after the classifier.
    - RAG Pipeline: 23 prompt-injection guard patterns + 1,500-char query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd (GIN tsvector) via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations
    - NOTE: the lexical arm is PostgreSQL full-text search, NOT true BM25. Be precise about this if asked — real BM25 needs an extension like pg_search.
-   - Orchestration: NO agent framework - no LangChain, no LangGraph in this repo. Coordination is hand-written on asyncio.gather() with per-agent error isolation, quota-aware provider failover, and a content-addressed Redis cache keyed by SHA-256 of the extracted text (failed runs are never cached). A section that cannot be produced is recorded on Document.processing_error and metadata.degraded_sections and surfaced in the UI rather than returned as a silently empty result.
+   - Orchestration: NO agent framework - no LangChain, no LangGraph in this repo. Coordination is hand-written on asyncio.gather() with per-agent error isolation, per-call quota-aware provider failover (disabling reasoning/thinking tokens on NIM for fast structured JSON), and a content-addressed Redis cache keyed by SHA-256 of the extracted text (failed runs are never cached). A section that cannot be produced is recorded on Document.processing_error and metadata.degraded_sections and surfaced in the UI rather than returned as a silently empty result.
    - Observability & eval: LangSmith traces the orchestrator, hybrid search and chat generation. Retrieval and generation quality are measured separately - retrieval as a blocking CI gate on a local sentence-transformers model (deterministic, no API keys), generation (faithfulness / relevancy, 0.70 thresholds) Gemini-judged on demand.
    - Security: Clerk JWT with RS256 pinned, JWKS caching and azp validation; prompt-injection guardrails; a DNS-resolving SSRF guard on URL ingestion; 120 req/min per IP; audit logging on every mutation.
-   - Stack: Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Docker
+   - Stack: Next.js 16, React 19, FastAPI (Python 3.14, uv), PostgreSQL 16 + pgvector, Supabase, Upstash Redis, Clerk Auth, NVIDIA NIM, Groq, Mistral, Gemini, Docker
    - Quality gate: retrieval scored on every CI run against a labelled golden set (12 queries, 130-chunk corpus) — Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75). The gate blocks the build.
-   - Scale: 242 tests pass as blocking CI gates on every push (215 unit + 27 integration); 274 collected once the 32 eval tests are counted. 27.1K lines across two apps, 11 API routers, 36 REST endpoints, 15 app routes, $0/month infrastructure
-   - Known limits (state these honestly if asked): sync DB access inside async endpoints bounds throughput; the background queue is an in-process asyncio.Queue that does not survive restarts or fan out across replicas; analysis agents see ~15K chars of head and tail, not the whole document (retrieval indexes the full text); the retrieval gate runs on a 130-chunk corpus so its metrics are directional, not production-scale; there is no frontend test suite - all 215 unit tests are backend
+   - Scale: 321 unit tests (262 pytest unit + 59 pillar unittest) and 18 retrieval-metric checks pass offline out of 380 collected tests across unit, PostgreSQL integration, and eval suites; 11 API routers, 37 REST endpoints, $0/month infrastructure
+   - Known limits (state these honestly if asked): sync DB access inside async endpoints bounds throughput; the background queue is an in-process asyncio.Queue that does not span replicas (startup Postgres advisory locks recover interrupted rows on restart); analysis agents see ~15K chars of head and tail, not the whole document (retrieval indexes the full text); the retrieval gate runs on a 130-chunk corpus so its metrics are directional, not production-scale; there is no frontend unit test suite - all 321 unit tests are backend
    - Demo caveat: the backend runs on a free HuggingFace Space that sleeps when idle, so a cold first request can take up to a minute
    - GitHub: https://github.com/Iammilansoni/MiningNiti
    - Demo: https://miningniti.vercel.app/
@@ -140,7 +140,7 @@ TECHNICAL SKILLS:
 - Frontend: React 19, Next.js 16, TanStack Start/Router/Query, Tailwind CSS v4, Framer Motion, Recharts, Radix UI/shadcn, Three.js
 - Backend: FastAPI 0.128, Node.js, Express.js, SQLAlchemy 2.0, Pydantic v2, JWT, Clerk Auth, RBAC, Microservices
 - AI/ML: LangChain, LangGraph, RAG Pipelines, Hybrid Search (Vector + Full-Text), Reciprocal Rank Fusion, Cross-Encoder Reranking, FlashRank, Ollama, AI Agents, Retrieval Evaluation (Hit Rate / MRR / nDCG), pgvector
-- LLM Providers: Groq (gpt-oss-120b), Cerebras (gpt-oss-120b), Mistral (magistral-small), Google Gemini, OpenAI, Anthropic, DeepSeek, HuggingFace
+- LLM Providers: NVIDIA NIM (nemotron-3.5-super-vl-120b-a12b), Groq (gpt-oss-120b), Mistral (magistral-small), Google Gemini, OpenAI, Anthropic, DeepSeek, HuggingFace
 - Databases: PostgreSQL + pgvector, Supabase, MongoDB, Redis Stack 7.2 (HNSW), Upstash Redis, Prisma ORM
 - Cloud/DevOps: Vercel, Nitro, HuggingFace Spaces, Docker Compose, GitHub Actions CI/CD, Linux, Git
 

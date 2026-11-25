@@ -10,7 +10,7 @@ relatedProjectSlug: "miningniti"
 
 > **TL;DR:** I built MiningNiti — an AI document intelligence platform for India's coal mining industry — using a multi-agent architecture, RAG-powered chat, and async background processing. It won the Smart India Hackathon 2023 National Finale. Here's every technical and architectural decision that got us there.
 
-> **Update, August 2026.** This post was written in March 2024, when the system ran four agents behind a Celery queue with Gemini doing the generation. It has changed since, and I've corrected the architecture sections below rather than leave a stale post standing: there are now **five agents** across four providers, generation runs on Groq/Cerebras/Mistral with Gemini reduced to embeddings, and retrieval quality is scored against a labelled golden set on every CI run. I've also removed two timing figures I could no longer reproduce. The current state is in the [MiningNiti case study](/work/miningniti).
+> **Update, 2026.** This post was written in March 2024, when the system ran four agents behind a Celery queue with Gemini doing the generation. It has changed since, and I've corrected the architecture sections below rather than leave a stale post standing: there are now **five agents** across four providers, generation runs on Groq / NVIDIA NIM / Mistral with Gemini reduced to embeddings, and retrieval quality is scored against a labelled golden set on every CI run. I've also removed two timing figures I could no longer reproduce. The current state is in the [MiningNiti case study](/work/miningniti).
 
 ---
 
@@ -55,14 +55,15 @@ Before diving into the agents, here's the high-level system design:
   │   (coordinates — not an agent)     │
   └─────────────────┬──────────────────┘
                     ↓
-             [Classifier]          Groq gpt-oss-120b
+             [Classifier]          Groq gpt-oss-120b ↔ NVIDIA NIM
              runs FIRST — its category feeds the rest
                     ↓
      ┌──────────────┼──────────────┐   asyncio.gather()
      ↓              ↓              ↓
  [Safety     ]  [Entity     ]  [Summarizer]
  [Analyzer   ]  [Extractor  ]
-  Mistral        Cerebras        Cerebras
+  Mistral        NVIDIA NIM      NVIDIA NIM
+  ↔ NIM/Groq     ↔ Groq          ↔ Groq
   skipped for non-safety docs
                     ↓
  ┌──────────────────────────────────────────────┐
@@ -70,7 +71,7 @@ Before diving into the agents, here's the high-level system design:
  │   (storage + embeddings) │  (analysis cache) │
  └──────────────────────────────────────────────┘
 
- [Compliance Auditor]  Groq — ON DEMAND, not on upload
+ [Compliance Auditor]  Groq ↔ NVIDIA NIM — ON DEMAND, not on upload
   per-clause Pass / Fail / Not Addressed matrix
 ```
 
@@ -224,7 +225,7 @@ This output is what non-technical stakeholders (site managers, legal teams, gove
 
 The fifth agent does not run on upload. Auditing a document against a body of regulation is expensive and only meaningful once somebody actually asks, so this one is triggered explicitly. It cross-references an operational document against the relevant regulations and returns a per-clause **Pass / Fail / Not Addressed** matrix — a shape a safety officer can act on directly, rather than a paragraph of prose they have to re-read and interpret.
 
-It runs on Groq's `gpt-oss-120b` and falls back to Cerebras on a rate limit: same model, four times the per-minute token headroom.
+It runs on Groq's `gpt-oss-120b` and falls back to NVIDIA NIM (`nvidia/nemotron-3.5-super-vl-120b-a12b`) on a rate or quota limit.
 
 ---
 
@@ -485,7 +486,7 @@ Here is what is actually measured. Retrieval runs against a labelled golden set 
 | Recall@5 | Share of all relevant chunks retrieved | 0.85 | **0.958** |
 | nDCG@5 | Rewards clustering relevant chunks high | 0.75 | **0.968** |
 
-Alongside that: 274 tests collected — 242 of them green as blocking CI gates on every push — 27.1K lines across two apps, five agents across four providers, $0/month infrastructure.
+Alongside that: 380 tests collected (321 unit tests and 18 deterministic retrieval eval checks running offline), 37 REST endpoints, five agents across four providers, $0/month infrastructure.
 
 A word on provenance, because it matters. The **Smart India Hackathon 2023 National Finale** win — from a field of 44,000+ teams, on a Ministry of Coal problem statement — was a *team* prototype, and it is not the system described above. That prototype was a single-pass LangChain RAG chatbot over FAISS. The architecture in this article is an independent, ground-up rebuild I started in June 2025 and have developed solo since; none of the 2023 code carried over. The hackathon gave me the problem. Everything here is what I did with it afterwards, with the time to build it production-shaped rather than demo-shaped.
 
@@ -532,7 +533,7 @@ If you're building production GenAI applications, here's what this project taugh
 
 The full source code is on GitHub: [github.com/Iammilansoni/MiningNiti](https://github.com/Iammilansoni/MiningNiti)
 
-The stack: **FastAPI 0.128 + Python 3.11 | Next.js 16 + React 19 | PostgreSQL 16 + pgvector | Upstash Redis | Groq / Cerebras / Mistral for generation | Gemini `gemini-embedding-001` for embeddings | Clerk | Docker**
+The stack: **FastAPI 0.128+ + Python 3.14 (`uv`) | Next.js 16 + React 19 | PostgreSQL 16 + pgvector | Upstash Redis | Groq / NVIDIA NIM / Mistral for generation | Gemini `gemini-embedding-001` for embeddings | Clerk | Docker**
 
 ---
 

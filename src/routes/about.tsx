@@ -106,7 +106,7 @@ function About() {
                 testing platform on FastAPI + Redis with two-stage retrieval (NLPForge), a multi-tenant financial intelligence
                 SaaS on Next.js + Node (FinSageAI360), and a LangChain-powered document workflow engine for
                 logistics (Om Logistics). My latest work includes deploying 5 specialized AI agents
-                across 4 providers (Groq, Cerebras, Mistral, Gemini) on pgvector rather than a
+                across 4 providers (Groq, NVIDIA NIM, Mistral, Gemini) on pgvector rather than a
                 managed vector database, with retrieval quality scored against a labelled golden
                 set on every CI run.
               </p>

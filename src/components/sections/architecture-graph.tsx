@@ -34,12 +34,12 @@ const nodeTypes = {
 };
 
 const initialNodes = [
-  { id: 'frontend', type: 'custom', position: { x: 350, y: 20 }, data: { label: 'Frontend', subLabel: 'Next.js 15 + shadcn', icon: Globe, isActive: false } },
-  { id: 'gateway', type: 'custom', position: { x: 350, y: 120 }, data: { label: 'API Gateway', subLabel: 'FastAPI + JWT Auth', icon: Server, isActive: false } },
-  { id: 'orchestrator', type: 'custom', position: { x: 350, y: 220 }, data: { label: 'AI Agent Layer', subLabel: '4 Parallel Domain Agents', icon: Cpu, isActive: false } },
-  { id: 'db', type: 'custom', position: { x: 50, y: 340 }, data: { label: 'Vector Store', subLabel: 'PostgreSQL + pgvector', icon: Database, isActive: false } },
-  { id: 'redis', type: 'custom', position: { x: 350, y: 340 }, data: { label: 'Task Queue', subLabel: 'Redis + Celery', icon: Layers, isActive: false } },
-  { id: 'gemini', type: 'custom', position: { x: 650, y: 340 }, data: { label: 'LLM Engine', subLabel: 'Gemini 2.0 Flash', icon: Bot, isActive: false } },
+  { id: 'frontend', type: 'custom', position: { x: 350, y: 20 }, data: { label: 'Frontend', subLabel: 'Next.js 16 + React 19', icon: Globe, isActive: false } },
+  { id: 'gateway', type: 'custom', position: { x: 350, y: 120 }, data: { label: 'API Gateway', subLabel: 'FastAPI 0.128 + Clerk RS256', icon: Server, isActive: false } },
+  { id: 'orchestrator', type: 'custom', position: { x: 350, y: 220 }, data: { label: 'Async Orchestrator', subLabel: 'Classifier → 3 Parallel', icon: Cpu, isActive: false } },
+  { id: 'db', type: 'custom', position: { x: 50, y: 340 }, data: { label: 'PostgreSQL + pgvector', subLabel: 'HNSW + tsvector GIN', icon: Database, isActive: false } },
+  { id: 'redis', type: 'custom', position: { x: 350, y: 340 }, data: { label: 'Queue & Cache', subLabel: 'asyncio.Queue + Upstash Redis', icon: Layers, isActive: false } },
+  { id: 'gemini', type: 'custom', position: { x: 650, y: 340 }, data: { label: 'Multi-Provider AI', subLabel: 'NIM · Groq · Mistral · Gemini', icon: Bot, isActive: false } },
 ];
 
 const edgeStyle = { stroke: 'var(--muted-foreground)', strokeWidth: 2, opacity: 0.2 };
@@ -84,7 +84,7 @@ export function ArchitectureGraph() {
     setNodeActive('frontend', false);
 
     // Step 2: Gateway
-    setStepText("2. FastAPI Gateway authenticates JWT & routes to Orchestrator...");
+    setStepText("2. FastAPI Gateway verifies Clerk RS256 JWT & routes to Queue...");
     setNodeActive('gateway', true);
     setEdgeActive('e-front-gate', false);
     await sleep(800);
@@ -93,13 +93,13 @@ export function ArchitectureGraph() {
     setNodeActive('gateway', false);
 
     // Step 3: Orchestrator
-    setStepText("3. Orchestrator initializes Classifier, Safety, Entity, & Summarizer agents...");
+    setStepText("3. Classifier runs first, then Safety · Entities · Summary run via gather()...");
     setNodeActive('orchestrator', true);
     setEdgeActive('e-gate-orch', false);
     await sleep(1000);
 
     // Step 4: Parallel Processing
-    setStepText("4. Agents execute concurrently against Redis, pgvector & Gemini...");
+    setStepText("4. Agents & RAG query Redis cache, pgvector/GIN & NVIDIA NIM / Groq / Mistral...");
     setEdgeActive('e-orch-db', true);
     setEdgeActive('e-orch-redis', true);
     setEdgeActive('e-orch-gemini', true);

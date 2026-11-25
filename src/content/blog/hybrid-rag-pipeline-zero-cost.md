@@ -18,7 +18,7 @@ relatedProjectSlug: "miningniti"
 
 When I started building MiningNiti — an AI document intelligence platform for India's coal mining industry — I did what every tutorial tells you to do: spin up Pinecone, embed everything with OpenAI, and call it a day.
 
-Then I got the bill. $400/month for a hackathon project. For a student building on free-tier AI providers (Groq, Cerebras, Gemini), paying $400/month for vector storage was absurd.
+Then I got the bill. $400/month for a hackathon project. For a student building on free-tier AI providers (Groq, NVIDIA NIM, Mistral, Gemini), paying $400/month for vector storage was absurd.
 
 The real kicker? Pinecone's free tier gives you 100K vectors. A single mining regulation document can produce 2,000+ chunks. I needed to store 10,000+ documents. The math didn't work.
 

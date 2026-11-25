@@ -61,21 +61,22 @@ A document-intelligence platform for coal mining: four AI agents analyze every u
            │
            ▼
     ┌──────────────┐
-    │  Classifier  │  Groq gpt-oss-120b — runs FIRST
+    │  Classifier  │  Groq gpt-oss-120b ↔ NVIDIA NIM — runs FIRST
     └──────┬───────┘  its category feeds the rest
            │
      ┌─────┴──────────┬─────────────────┐   asyncio.gather()
      ▼                ▼                 ▼
  Safety Analyzer  Entity Extractor  Summarizer
- (Mistral)        (Cerebras)        (Cerebras)
+ (Mistral         (NVIDIA NIM       (NVIDIA NIM
+  ↔ NIM/Groq)      ↔ Groq)           ↔ Groq)
  skipped for
  non-safety docs
            │
            ▼
-    Chunks + Embeddings → pgvector (HNSW)
+    Chunks + Embeddings → pgvector (HNSW + tsvector GIN)
 
     ┌────────────────────┐
-    │ Compliance Auditor │  Groq — ON DEMAND, not on upload
+    │ Compliance Auditor │  Groq ↔ NVIDIA NIM — ON DEMAND, not on upload
     └────────────────────┘  per-clause Pass / Fail / Not Addressed
 ```
 
@@ -83,11 +84,11 @@ An Orchestrator coordinates these five; it is a coordinator, not a sixth agent.
 
 **Retrieval:** 23 injection-guard patterns + 1,500-char cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text `ts_rank_cd` via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder → top 5 → streamed over SSE with inline `[Document, Page X]` citations. *(The lexical arm is Postgres full-text search, not true BM25.)*
 
-**Tech:** Next.js 16, React 19, FastAPI, PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, Groq, Cerebras, Mistral, Gemini, Docker
+**Tech:** Next.js 16, React 19, FastAPI (Python 3.14, `uv`), PostgreSQL + pgvector, Supabase, Upstash Redis, Clerk Auth, NVIDIA NIM, Groq, Mistral, Gemini, Docker
 
 **Quality gate (CI):** Hit Rate@5 1.000 · MRR 1.000 · Recall@5 0.958 · nDCG@5 0.968 — against floors of 0.90 / 0.75 / 0.85 / 0.75 on 12 labelled queries over a 130-chunk corpus.
 
-**Results:** 5 AI agents across 4 providers, 36 REST endpoints, 242 tests passing as blocking CI gates (215 unit + 27 integration; 274 collected with the eval suites), 27.1K lines, $0/month infrastructure. No agent framework — orchestration is hand-written on `asyncio.gather()` with per-agent error isolation and quota-aware provider failover.
+**Results:** 5 AI agents across 4 providers, 37 REST endpoints, 321 unit tests (262 pytest unit + 59 pillar unittest) and 18 retrieval-metric checks offline (380 collected across unit, PostgreSQL integration, and LLM-eval suites), $0/month infrastructure. No agent framework — orchestration is hand-written on `asyncio.gather()` with per-agent error isolation and per-call quota-aware provider failover.
 
 **Links:** [GitHub](https://github.com/Iammilansoni/MiningNiti) | [Live Demo](https://miningniti.vercel.app/)
 
@@ -190,7 +191,7 @@ Languages       : JavaScript (ES6+) · TypeScript · Python · C++
 Frontend        : React 19 · TanStack Start · TanStack Router · TanStack Query · Tailwind CSS v4 · Framer Motion · Recharts · Radix UI / shadcn · Three.js
 Backend         : FastAPI 0.128 · Node.js · Express.js · SQLAlchemy 2.0 · Pydantic v2 · JWT · Clerk Auth · RBAC · Microservices
 AI / ML         : LangChain · LangGraph · RAG Pipelines · Hybrid Search (Vector + BM25) · Cross-Encoder Reranking · FlashRank · Ollama · AI Agents · pgvector
-LLM Providers   : Groq (Llama 3.3) · Cerebras (GPT-OSS-120B) · Mistral (Magistral) · Google Gemini · OpenAI · Anthropic · DeepSeek · HuggingFace
+LLM Providers   : NVIDIA NIM (Nemotron 3.5 Super VL) · Groq (gpt-oss-120b) · Mistral (Magistral) · Google Gemini · OpenAI · Anthropic · DeepSeek · HuggingFace
 Databases       : PostgreSQL + pgvector · Supabase · MongoDB · Redis Stack 7.2 (HNSW) · Upstash Redis · Prisma ORM
 Cloud / DevOps  : Vercel · Nitro · HuggingFace Spaces · Docker Compose · GitHub Actions CI/CD · Linux · Git
 ```

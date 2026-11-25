@@ -13,7 +13,7 @@ relatedProjectSlug: "miningniti"
 
 ## The symptom: an average that lied
 
-MiningNiti — the document intelligence platform I maintain — has a FastAPI backend with 36 REST endpoints. Uploads fan out to several LLM providers, retrieval runs a hybrid pgvector + full-text search, and chat streams over SSE. The kind of service where "it's slow" can mean twelve different things.
+MiningNiti — the document intelligence platform I maintain — has a FastAPI backend with 37 REST endpoints under `/api/v1`. Uploads fan out to several LLM providers, retrieval runs a hybrid pgvector + full-text search, and chat streams over SSE. The kind of service where "it's slow" can mean twelve different things.
 
 The dashboard said mean latency was fine. Users said the app "hangs sometimes." Both were true, and that combination is the classic signature of a *concurrency* problem rather than a *speed* problem: nothing is individually slow, but requests are queueing behind each other somewhere invisible.
 

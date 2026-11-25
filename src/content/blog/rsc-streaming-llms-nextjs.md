@@ -78,10 +78,10 @@ The user never sees a spinner. They see results appearing progressively.
 │  │  - Closes stream when complete   │   │
 │  └──────────────────────────────────┘   │
 │                                          │
-│  ┌──────────┐ ┌──────────┐ ┌────────┐  │
-│  │ Groq     │ │ Cerebras │ │ Gemini │  │
-│  │ (1.2s)   │ │ (1.8s)   │ │ (2.1s) │  │
-│  └──────────┘ └──────────┘ └────────┘  │
+│  ┌──────────┐ ┌────────────┐ ┌────────┐  │
+│  │ Groq     │ │ NVIDIA NIM │ │ Gemini │  │
+│  │ (1.2s)   │ │ (1.8s)     │ │ (2.1s) │  │
+│  └──────────┘ └────────────┘ └────────┘  │
 └─────────────────────────────────────────┘
 ```
 
@@ -136,8 +136,13 @@ The AI processing happens via a Server Action that streams its response:
 
 import { streamText } from "ai"; // Vercel AI SDK
 import { groq } from "@ai-sdk/groq";
-import { cerebras } from "@ai-sdk/cerebras";
+import { createOpenAI } from "@ai-sdk/openai";
 import { google } from "@ai-sdk/google";
+
+const nim = createOpenAI({
+  baseURL: "https://integrate.api.nvidia.com/v1",
+  apiKey: process.env.NVIDIA_API_KEY,
+});
 
 type AgentResult = {
   agent: string;
@@ -156,7 +161,7 @@ export async function processDocument(
   // Fire all agents concurrently
   const agents = [
     { name: "Classifier", model: groq("llama-3.3-70b-versatile") },
-    { name: "Safety Analyzer", model: cerebras("llama-3.3-70b-versatile") },
+    { name: "Safety Analyzer", model: nim("nvidia/nemotron-3.5-super-vl-120b-a12b") },
     { name: "Summarizer", model: groq("llama-3.3-70b-versatile") },
   ];
 

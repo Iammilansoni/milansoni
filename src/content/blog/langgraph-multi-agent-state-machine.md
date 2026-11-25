@@ -22,7 +22,7 @@ It broke immediately.
 
 **Problem 2: Shared state.** All five agents needed access to the original document, the classification result, extracted entities, and the summary. With chains, I was passing growing dictionaries of context through each step — a maintainability nightmare.
 
-**Problem 3: Error recovery.** If the Entity Extractor failed (rate limit from Cerebras), the entire pipeline died. I needed per-agent retry logic without restarting from scratch.
+**Problem 3: Error recovery.** If the Entity Extractor failed (rate limit from the LLM provider), the entire pipeline died. I needed per-agent retry logic without restarting from scratch.
 
 LangChain's `AgentExecutor` helps, but it's still fundamentally a loop around a single agent. What I needed was a **graph** — nodes, edges, conditional routing, and shared state.
 
@@ -154,7 +154,7 @@ async def safety_analyzer(state: MiningState) -> dict:
         return {"errors": [f"Safety Analyzer failed: {str(e)}"]}
 
 async def entity_extractor(state: MiningState) -> dict:
-    """Extract entities using Cerebras (GPT-OSS-120B)."""
+    """Extract entities using NVIDIA NIM."""
     from langchain_community.llms import Ollama
     
     llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
@@ -174,7 +174,7 @@ async def entity_extractor(state: MiningState) -> dict:
         return {"errors": [f"Entity Extractor failed: {str(e)}"]}
 
 async def summarizer_agent(state: MiningState) -> dict:
-    """Generate executive summary using Cerebras."""
+    """Generate executive summary using NVIDIA NIM."""
     from langchain_community.llms import Ollama
     
     llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0.3)
@@ -285,7 +285,7 @@ Notice each agent catches its own exceptions and returns `{"errors": [...]}` ins
 
 ### 3. Token budget management
 
-Five agents × average 2K tokens per prompt = 10K tokens per document. For a 10K-word document, you're looking at 30K+ tokens total. Truncate aggressively in prompts, and route by *token budget* rather than by preference: Groq's free tier allows 8K tokens/minute while Cerebras serves the identical `gpt-oss-120b` at 30K/minute, so the heavier extraction and summarisation work goes to Cerebras and falls back there automatically when Groq rate-limits.
+Five agents × average 2K tokens per prompt = 10K tokens per document. For a 10K-word document, you're looking at 30K+ tokens total. Truncate aggressively in prompts, and route around free-tier token ceilings: Groq's free tier allows ~8K tokens/minute, so the heavier extraction and summarisation work runs primary on NVIDIA NIM (`nemotron-3.5-super-vl-120b-a12b`, with thinking tokens disabled for fast JSON) and fails over cleanly between providers when limits hit.
 
 ### 4. Checkpointing
 
@@ -299,7 +299,7 @@ After migrating from LangChain chains to LangGraph:
 
 - **Error isolation:** one agent failing no longer kills the run — failures accumulate in `errors` and the rest of the pipeline completes.
 - **Concurrency:** the classifier runs first because its category feeds the others; the safety analyzer, entity extractor and summarizer then run together under `asyncio.gather()`, and the safety analyzer is skipped outright for non-safety documents.
-- **Cost:** $0/month using free-tier providers (Groq + Cerebras + Gemini embeddings).
+- **Cost:** $0/month using free-tier providers (Groq + NVIDIA NIM + Mistral + Gemini embeddings).
 - **Flexibility:** adding a new agent = one node + one edge. No pipeline restructuring.
 
 A note on numbers, added later: an earlier version of this post quoted a 98.7% completion rate and a 14s → 3.2s speedup. Those came from ad-hoc runs during the migration and I have not been able to reproduce them under controlled conditions, so I've removed them rather than leave unverifiable figures standing. What *is* measured, on every CI run, is retrieval quality against a labelled golden set — Hit Rate@5 1.000, MRR 1.000, Recall@5 0.958, nDCG@5 0.968, against floors of 0.90 / 0.75 / 0.85 / 0.75. That gate blocks the build. See the [MiningNiti case study](/work/miningniti) for the current architecture.

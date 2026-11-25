@@ -98,18 +98,18 @@ const STAGES: Stage[] = [
     blurb:
       "Four run on upload; the fifth runs only when asked. Splitting the work by cognitive task gives each step its own prompt, its own model, and its own failure boundary.",
     points: [
-      "Safety Analyzer (Mistral magistral-small), Entity Extractor and Summarizer (Cerebras gpt-oss-120b) run concurrently under asyncio.gather() once the classifier returns.",
+      "Safety Analyzer (Mistral magistral-small), Entity Extractor and Summarizer (NVIDIA NIM nemotron-3.5-super-vl-120b-a12b with thinking disabled for fast JSON) run concurrently under asyncio.gather() once the classifier returns.",
       "Compliance Auditor (Groq) runs on demand and returns a per-clause Pass / Fail / Not Addressed matrix — a shape someone can act on, not a paragraph to re-read.",
-      "Fallback is routed by token budget, not preference: Groq's free tier allows 8K tokens/minute, Cerebras serves the identical model at 30K. Same output, four times the headroom.",
-      "Each agent catches its own exceptions and returns them in an errors list rather than raising, so one failure does not kill the run.",
+      "Per-call quota failover: Entity Extractor and Summarizer fail over from NVIDIA NIM to Groq; Classifier, Safety Analyzer, and Compliance Auditor automatically fail over to NVIDIA NIM / Groq when free-tier rate or quota limits hit.",
+      "Each agent catches its own exceptions and records degraded sections explicitly rather than swallowing failures.",
     ],
     note: "Retry logic originally existed in both the orchestrator and the agent base class. Composed, they reached nine attempts and minutes of sleep per agent on a single failure. It now lives in exactly one place.",
     metrics: [
       { value: "5", label: "Agents" },
       { value: "4", label: "Providers" },
-      { value: "30K", label: "Tokens/min Headroom" },
+      { value: "$0/mo", label: "Free-Tier Infra" },
     ],
-    tech: ["Groq", "Cerebras", "Mistral", "asyncio"],
+    tech: ["NVIDIA NIM", "Groq", "Mistral", "asyncio"],
     source: { label: "MiningNiti", href: "/work/miningniti" },
   },
   {

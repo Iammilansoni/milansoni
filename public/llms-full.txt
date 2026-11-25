@@ -55,20 +55,20 @@ A document-intelligence platform for coal mining: four AI agents analyze every u
 **Solution**: Four agents run on every upload — a classifier whose category feeds a safety analyzer, entity extractor and summarizer running concurrently under asyncio.gather() — while a fifth audits compliance on demand, cross-referencing operational documents against regulations into a per-clause Pass / Fail / Not Addressed matrix. The safety analyzer is skipped entirely for non-safety categories, so an equipment manual never pays for a hazard screen it does not need.
 
 **Agents (5, across 4 providers)**:
-- Classifier — Groq gpt-oss-120b — runs first; outputs safety / equipment / regulatory / geological
-- Safety Analyzer — Mistral magistral-small — hazards, MSHA/OSHA violations (skipped for non-safety docs)
-- Entity Extractor — Cerebras gpt-oss-120b — equipment, chemicals, regulations, personnel
-- Summarizer — Cerebras gpt-oss-120b — key points and actionable items
-- Compliance Auditor — Groq gpt-oss-120b — on demand; per-clause Pass / Fail / Not Addressed matrix
+- Classifier — Groq gpt-oss-120b ↔ NVIDIA NIM — runs first; outputs safety / equipment / regulatory / geological
+- Safety Analyzer — Mistral magistral-small ↔ NVIDIA NIM / Groq — hazards, MSHA/OSHA violations (skipped for non-safety docs)
+- Entity Extractor — NVIDIA NIM nemotron-3.5-super-vl-120b-a12b ↔ Groq — equipment, chemicals, regulations, personnel
+- Summarizer — NVIDIA NIM nemotron-3.5-super-vl-120b-a12b ↔ Groq — key points and actionable items
+- Compliance Auditor — Groq gpt-oss-120b ↔ NVIDIA NIM — on demand; per-clause Pass / Fail / Not Addressed matrix
 - (An Orchestrator coordinates these; it is a coordinator, not a sixth agent.)
 
 **Architecture**:
-- Frontend: Next.js 16 App Router (Turbopack) + React 19 across 15 routes — Clerk auth, TanStack Query, Recharts, react-pdf viewer
-- API: FastAPI 0.128, 11 routers under /api/v1, Clerk JWT verification via JWKS (PyJWT), slowapi at 120 req/min per IP, Pydantic v2
+- Frontend: Next.js 16 App Router (Turbopack) + React 19 — Clerk auth, TanStack Query, Recharts, portal multi-format viewer + ⌘K palette
+- API: FastAPI 0.128+ (Python 3.14, uv), 11 routers (37 endpoints) under /api/v1, Clerk JWT verification via JWKS (PyJWT), slowapi at 120 req/min per IP, Pydantic v2
 - Ingestion: pdfplumber for layout and tables with Tesseract OCR fallback (capped 50 pages/doc at 200 DPI); ~1000-word chunks with 200 overlap under a hard 4,000-character ceiling; embedded 100 at a time
-- Retrieval: 23 prompt-injection guard patterns + 1,500-char query cap -> Gemini gemini-embedding-001 (768-dim) -> pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a GIN tsvector via Reciprocal Rank Fusion (k=60) -> over-fetch 20 -> ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 -> generation streamed over SSE with inline [Document, Page X] citations
+- Retrieval: 23 prompt-injection guard patterns + 1,500-char query cap -> Gemini gemini-embedding-001 (768-dim) -> pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a STORED GIN tsvector via Reciprocal Rank Fusion (k=60) -> over-fetch 20 -> ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 -> generation streamed over SSE with inline [Document, Page X] citations
 - Data: Supabase PostgreSQL 16 + pgvector HNSW, Supabase Storage for uploads, Upstash Redis caching completed analyses keyed by SHA-256(extracted text) + PIPELINE_VERSION (failed runs are never cached)
-- CI: five jobs — backend lint, bandit security scan, pytest with coverage against real PostgreSQL and Redis, the retrieval quality gate, frontend lint-and-build. Alembic migrations run before the server binds.
+- CI: blocking lint (black, isort), pytest unit & PostgreSQL integration suites, deterministic retrieval quality gate, frontend ESLint + Next.js production build, and Docker build validation; Alembic migrations run before server binds
 
 **Note on the lexical arm**: it is PostgreSQL full-text search (ts_rank_cd over a GIN tsvector), NOT true BM25. "Hybrid BM25 + vector" is the claim everyone makes; real BM25 needs an extension like pg_search. Stated precisely rather than rounded up.
 
@@ -76,12 +76,12 @@ A document-intelligence platform for coal mining: four AI agents analyze every u
 - Chose the weaker PDF library on purpose: PyMuPDF extracts more reliably but is AGPL-3.0 and this project ships MIT, so pdfplumber was used — and it turned out to recover tables PyMuPDF flattens, which matters because mining regulations are largely tabular
 - A 400-row table became one 14,703-character chunk: chunking grouped by sentence, but Markdown tables contain no sentence-ending punctuation, and gemini-embedding-001 truncates silently past ~2,048 tokens, so most of the table was never indexed with no error raised. Fixed with a hard MAX_CHUNK_CHARS = 4000
 - Aggregate metrics could not prove the lexical arm was alive: disabling keyword search left every aggregate retrieval metric unchanged at a 130-chunk corpus size, so the suite now carries direct guards that the lexical index returns rows and can distinguish 30 CFR 75.323 from 75.400
-- Two retry layers multiplied instead of adding: backoff in both the orchestrator and the agent base class composed to nine attempts and minutes of sleep per agent; retry and provider fallback now live in BaseAgent._generate_json alone
-- Fallback routed by token budget, not preference: Groq's free tier allows 8K tokens/min, Cerebras serves the identical gpt-oss-120b at 30K/min, so agents fall back to Cerebras on a Groq rate limit — same model, four times the headroom
+- Two retry layers multiplied instead of adding: backoff in both the orchestrator and the agent base class composed to nine attempts and minutes of sleep per agent; retry and per-call provider fallback now live in BaseAgent._generate_json alone
+- Quota-aware failover across free tiers: Groq caps around 8K tokens/min and Mistral quotas can exhaust per-request, so Entity Extractor and Summarizer run primary on NVIDIA NIM (nemotron-3.5-super-vl-120b-a12b with thinking disabled for fast JSON) with Groq fallback, while Classifier, Safety Analyzer, and Compliance Auditor automatically fail over to NVIDIA NIM / Groq when quota-limited
 
 **Quality gate**: retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus, using a local sentence-transformers model so it needs no API keys and stays deterministic. Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75). Generation quality (faithfulness, answer relevancy) is Gemini-judged and run on demand rather than in CI.
 
-**Scale**: 274 tests collected (215 unit, 27 integration, 32 eval) — 242 of them run green as blocking CI gates on every push; 10,643 lines of backend Python, 16,426 lines of frontend TS/TSX, 11 API routers, 36 REST endpoints, 15 app routes.
+**Scale**: 321 unit tests (262 pytest unit + 59 pillar unittest) and 18 retrieval-metric checks pass offline out of 380 total collected tests across unit, PostgreSQL integration, and LLM-eval suites; 11 API routers, 37 REST endpoints.
 
 **Known limits** (tracked as next work):
 - Synchronous database access inside async endpoints blocks the event loop, bounding throughput per worker
@@ -264,7 +264,7 @@ React Server Components + chunked streaming for AI dashboards. Instead of the us
 
 **Pitfalls covered**: No hooks in server components, mandatory Suspense boundaries, 1MB Server Action body cap, hydration mismatches, uneven framework maturity.
 
-**Tooling**: React Server Components, Next.js App Router, Vercel AI SDK (streamText, createStreamableValue), Groq (Llama 3.3), Cerebras, Google Gemini, Framer Motion.
+**Tooling**: React Server Components, Next.js App Router, Vercel AI SDK (streamText, createStreamableValue), Groq, NVIDIA NIM, Google Gemini, Framer Motion.
 
 **Related project**: MiningNiti
 
@@ -359,7 +359,7 @@ Languages       : JavaScript (ES6+) · TypeScript · Python · C++
 Frontend        : React 19 · Next.js 16 · TanStack Start/Router/Query · Tailwind CSS v4 · Framer Motion · Recharts · Radix UI / shadcn · Three.js
 Backend         : FastAPI 0.128 · Node.js · Express.js · SQLAlchemy 2.0 · Pydantic v2 · JWT · Clerk Auth · RBAC · Microservices
 AI / ML         : LangChain · LangGraph · RAG Pipelines · Hybrid Search (Vector + Full-Text) · Cross-Encoder Reranking · FlashRank · Ollama · AI Agents · pgvector
-LLM Providers   : Groq (gpt-oss-120b) · Cerebras (gpt-oss-120b) · Mistral (magistral-small) · Google Gemini · OpenAI · Anthropic · DeepSeek · HuggingFace
+LLM Providers   : NVIDIA NIM (nemotron-3.5-super-vl-120b-a12b) · Groq (gpt-oss-120b) · Mistral (magistral-small) · Google Gemini · OpenAI · Anthropic · DeepSeek · HuggingFace
 Databases       : PostgreSQL + pgvector · Supabase · MongoDB · Redis Stack 7.2 (HNSW) · Upstash Redis · Prisma ORM
 Cloud / DevOps  : Vercel · Nitro · HuggingFace Spaces · Docker Compose · GitHub Actions CI/CD · Linux · Git
 ```
