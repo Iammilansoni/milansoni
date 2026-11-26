@@ -16,7 +16,7 @@ const STATIC_POSTS: MediumPost[] = [
     pubDate: "2025-12-30 10:36:53",
     description:
       "After shipping over 10 AI agents in production, I have hard-earned lessons about what the hype gets wrong. Here is what actually matters when building real-world AI systems.",
-    categories: ["llm", "ai-agent", "software-development", "artificalintelligence", "startups"],
+    categories: ["llm", "ai-agent", "software-development", "artificial-intelligence", "startups"],
   },
   {
     title: "The AI Tools That Will Actually Matter in 2026 (From a CS Student Building Real Projects)",

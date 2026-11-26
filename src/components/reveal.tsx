@@ -44,7 +44,7 @@ export function Reveal({
     <motion.div
       initial={{ opacity: 0, ...(reduce ? {} : from[direction]), filter: blur && !reduce ? "blur(8px)" : "blur(0px)" }}
       whileInView={{ opacity: 1, x: 0, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={{ once: true, amount: "some" }}
       transition={{ duration: reduce ? 0 : duration, ease: EASE_OUT_EXPO, delay: reduce ? 0 : delay }}
       className={className}
       {...rest}

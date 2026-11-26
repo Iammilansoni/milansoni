@@ -40,7 +40,7 @@ const ROLES = [
   "AI ENGINEER · FULL STACK · RAG SPECIALIST",
   "SIH 2023 WINNER · MINISTRY OF COAL",
   "SCOPUS-INDEXED AUTHOR · PiCET-2026 · IET",
-  "5+ PRs MERGED · OMNIROUTE · 50k★",
+  "7 PRs MERGED · OMNIROUTE · 90k★",
   "5 PRODUCTION AGENTS · 4 LLM PROVIDERS",
 ];
 const ROLE_INTERVAL = 3600;
@@ -62,9 +62,9 @@ const STATS = [
   { value: "5", label: "AI Agents Deployed" },
   { value: "3+", label: "Enterprise Internships" },
   {
-    value: "50k★",
+    value: "90k★",
     label: "Open Source · OmniRoute",
-    href: "https://github.com/diegosouzapw/OmniRoute",
+    href: "https://github.com/cheaper-inference/OmniRoute",
   },
 ];
 

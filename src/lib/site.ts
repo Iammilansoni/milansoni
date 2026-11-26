@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 50k★ open-source AI gateway (5+ PRs merged, 21,000+ tests), rebuilt solo the Ministry of Coal document-intelligence platform a team of us won SIH 2023 National with (44,000+ teams), this time with retrieval quality gated in CI, and shipped it on pgvector with routing across four LLM providers. Scopus-indexed researcher. B.Tech CSE '26.",
+    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 90k★ open-source AI gateway (7 PRs merged, 21,000+ tests), rebuilt solo the Ministry of Coal document-intelligence platform a team of us won SIH 2023 National with (44,000+ teams), this time with retrieval quality gated in CI, and shipped it on pgvector with routing across four LLM providers. Scopus-indexed researcher. B.Tech CSE '26.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -263,7 +263,7 @@ export const EXPERIENCE = [
   {
     company: "OmniRoute",
     role: "Open Source Contributor",
-    period: "Jul 2026",
+    period: "Jul 2026 – Present",
     location: "Remote",
     highlights: [
       "Diagnosed an HTTP 400 regression in the memory-injection pipeline affecting strict LLM providers (Xiaomi MiMo); proposed a declarative systemMessageMustBeFirst Zod schema flag adopted by the maintainer into the shipped fix — 25/25 Vitest + 30/30 Node test-runner coverage (PR #6225)",
@@ -334,7 +334,7 @@ export const STATS = [
   { value: "5", label: "AI Agents in MiningNiti" },
   { value: "4", label: "AI Providers (Free Tiers)" },
   { value: "321", label: "Unit Tests Passing" },
-  { value: "50k", label: "Stars · OmniRoute" },
+  { value: "90k+", label: "Stars · OmniRoute" },
   { value: "3", label: "Enterprise Internships" },
   { value: "70%", label: "Query Latency Reduction" },
 ] as const;

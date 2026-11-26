@@ -28,7 +28,7 @@
 I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure.
 
 - **SIH 2023 National Winner** — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
-- **Open Source Contributor** — 5+ PRs merged to OmniRoute (50k+★), 21,000+ tests, across 4 releases
+- **Open Source Contributor** — 7 PRs merged to OmniRoute (90k+★), 21,000+ tests, across multiple releases
 - **Scopus-Indexed Researcher** — Peer-reviewed paper on hybrid attention-based temporal modeling (PICET-2026, IET Conference Proceedings)
 - **CS Graduate (2026)** — B.Tech CSE from Global Institute of Technology, Jaipur (CGPA: 8.10)
 
@@ -152,7 +152,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
-| Open Source Contributor | [OmniRoute](https://github.com/diegosouzapw/OmniRoute) (50k★) | Jul 2026 | 5+ PRs shipped: HTTP 400 fix (schema adoption), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
+| Open Source Contributor | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul 2026 – Present | 7 PRs shipped: usage telemetry & provider routing (#13969, #9397, #9353), MITM fix (#6366), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
 | Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval pipeline: 40% accuracy improvement, 60% QA reduction |
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
@@ -162,7 +162,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 ## Open Source — OmniRoute
 
-> [OmniRoute](https://github.com/diegosouzapw/OmniRoute) · 50k★ · 230+ LLM providers · Open-source universal AI gateway
+> [OmniRoute](https://github.com/cheaper-inference/OmniRoute) · 90k★ · 230+ LLM providers · Open-source universal AI gateway
 
 Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
 

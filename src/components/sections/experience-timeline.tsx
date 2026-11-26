@@ -10,7 +10,7 @@ import { EXPERIENCE } from "@/lib/site";
  * apparatus around what is, in substance, a list of roles.
  */
 
-const CREDENTIALS = [
+const CREDENTIALS: ReadonlyArray<{ title: string; detail: string; href?: string }> = [
   {
     title: "NASSCOM Certified Full Stack Developer",
     detail: "IT-ITeS Sector Skills Council · 2024",
@@ -18,7 +18,6 @@ const CREDENTIALS = [
   {
     title: "First place — Jigyasa, GIT Jaipur",
     detail: "Blockchain, smart contracts & decentralised systems",
-    href: "https://www.linkedin.com/in/sonimilan/overlay/1720793634608/single-media-viewer/?profileId=ACoAAD8piA8BZ-BgPuiIf8eBWQ8P0fjWXPcdZbw",
   },
   {
     title: "Class representative, 2 years",

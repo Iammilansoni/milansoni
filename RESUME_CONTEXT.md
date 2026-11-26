@@ -26,14 +26,14 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 **Signature credentials:**
 - 🏆 **Smart India Hackathon (SIH) 2023 National Winner** — Top 1% of 44,000+ teams; recognized by Coal India Limited & CMPDI (Ministry of Coal).
 - 📄 **Scopus-Indexed Researcher** — Peer-reviewed paper on hybrid attention-based temporal modeling (PICET-2026, IET Conference Proceedings).
-- 🌐 **Open-Source Contributor to OmniRoute** — 5+ PRs merged into a 50k★ universal AI gateway (230+ LLM providers, 21,000+ tests).
+- 🌐 **Open-Source Contributor to OmniRoute** — 7 PRs merged into a 90k★ universal AI gateway (230+ LLM providers, 21,000+ tests).
 - 💼 **3 Enterprise Internships + Freelance** — Shipped production systems at nTheta Works, OBG Outsourcing, and Om Logistics.
 - 🎓 **B.Tech CSE 2026** — Global Institute of Technology, Jaipur (CGPA 8.10).
 
 **One-line variants (pick by role):**
 - *AI-focused:* "AI Engineer building production RAG pipelines and multi-agent LLM systems — SIH 2023 National Winner & Scopus-indexed researcher."
 - *Full-stack:* "Full Stack Developer (React 19 / FastAPI) shipping enterprise SaaS with AI-driven analytics and multi-tenant RBAC."
-- *Generalist:* "CS graduate ('26) with 3 internships, a national hackathon win, published research, and merged open-source contributions to a 50k★ AI project."
+- *Generalist:* "CS graduate ('26) with 3 internships, a national hackathon win, published research, and 7 merged PRs in a 90k★ AI project."
 
 ---
 
@@ -62,8 +62,8 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 
 ## 5. Professional Experience
 
-### OmniRoute — Open Source Contributor · Remote · Jul 2026
-*Open-source universal AI gateway — 50k★, 230+ LLM providers, single OpenAI-compatible endpoint, MCP server, A2A protocol, 21,000+ tests.*
+### OmniRoute — Open Source Contributor · Remote · Jul 2026 – Present
+*Open-source universal AI gateway — 90k★, 230+ LLM providers, single OpenAI-compatible endpoint, MCP server, A2A protocol, 21,000+ tests.*
 - Diagnosed an HTTP 400 regression in the memory-injection pipeline affecting strict LLM providers (Xiaomi MiMo); proposed a declarative `systemMessageMustBeFirst` Zod schema flag adopted by the maintainer into the shipped fix — 25/25 Vitest + 30/30 Node test-runner coverage (**PR #6225**).
 - Built an accessible "Configured Only" filter toggle for the live provider-rankings dashboard, mapping live connection state to a filterable data grid — 168 additions across 4 files, 9/9 tests passing, `role="switch"` + `aria-checked` for screen readers; shipped into v3.8.45 (**PR #6245**).
 - Integrated Claude 5 Sonnet into the `claude_web` provider registry with regression coverage, shipping a verified signed commit within hours of the model's release (**PR #6209**, v3.8.45).
@@ -145,7 +145,7 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
   - **Verified in the institute's official 4.0 report** ([PDF](https://gitjaipur.com/wp-content/uploads/2026/01/hackathon-Report_4.0.pdf)): **200 teams** in the 2025 participants list, **13 teams** in the final round, **24-hour** onsite format, 9–10 Oct 2025.
   - **Verified on** [gitjaipur.com](https://gitjaipur.com/national-level-hackathons/): participants **650+ (2024) → 750+ (2025)**; colleges **25+ → 30+**.
 - 👥 **Class Representative (2 years)** and volunteer programming tutor for junior students.
-- 🌐 **Open-source contributor** — 5+ merged PRs into OmniRoute (50k★).
+- 🌐 **Open-source contributor** — 7 merged PRs into OmniRoute (90k★).
 
 ---
 
@@ -171,7 +171,7 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 | +45% faster reports · +30% efficiency | FinSageAI360 |
 | 91.4% accuracy · 0.89 R² | SmartLearnX ML models |
 | 70% latency reduction · 10,000+ docs · +40% retrieval | Om Logistics |
-| 5+ PRs merged into 50k★ project | OmniRoute |
+| 7 PRs merged into 90k★ project | OmniRoute |
 
 ---
 

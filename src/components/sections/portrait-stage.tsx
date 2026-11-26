@@ -64,7 +64,7 @@ const AUDIENCES: ReadonlyArray<{
   },
   {
     who: "For engineers",
-    line: "5+ PRs merged into OmniRoute, a 50k★ AI gateway. Trade-offs and eval harnesses written down.",
+    line: "7 PRs merged into OmniRoute, a 90k★ AI gateway. Trade-offs and eval harnesses written down.",
     action: "GitHub",
     href: SITE.socials.github,
     external: true,
