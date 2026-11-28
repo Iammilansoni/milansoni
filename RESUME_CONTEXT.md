@@ -76,7 +76,7 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 ### Om Logistics Ltd. — Software Developer Intern · Delhi · Jun – Aug 2024
 - Implemented semantic document search with Python, LangChain, and FAISS vector embeddings alongside Node.js RESTful APIs automating internal logistics lookup workflows.
 
-### OmniRoute — Open Source Contributor (Part-Time) · Remote · Jul – Sep 2026
+### OmniRoute — Open Source Contributor (Part-Time) · Remote · Jul 2026 – Present
 *Open-source universal AI gateway — 90k★, 375+ LLM providers, single OpenAI-compatible endpoint, MCP server, A2A protocol, 21,000+ tests.*
 - Authored **7 merged PRs**: fixed Claude thinking-block telemetry parsing (**PR #13969**), enforced Gemini-Web reasoning/tool constraints (**PR #9397**), fixed quota reset-window routing strategy prioritization (**PR #9353**), and eliminated Turbopack over-bundling warnings on MITM dynamic imports (**PR #6366**).
 - Built an accessible "Configured Only" filter toggle for the live provider-rankings dashboard, mapping live connection state to a filterable data grid — 168 additions across 4 files, 9/9 tests passing, `role="switch"` + `aria-checked`; shipped into v3.8.45 (**PR #6245**).

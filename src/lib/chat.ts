@@ -46,7 +46,7 @@ WORK EXPERIENCE & OPEN SOURCE:
 4. Om Logistics Ltd. — Software Developer Intern (Jun–Aug 2024, Delhi)
    - Implemented semantic document search using Python, LangChain, and FAISS embeddings alongside Node.js workflow lookup REST APIs
 
-5. OmniRoute (90k★) — Open Source Contributor (Part-Time, Jul–Sep 2026, Remote)
+5. OmniRoute (90k★) — Open Source Contributor (Part-Time, Jul 2026 – Present, Remote)
    - Contributed 7 merged PRs across the 375+ provider universal AI gateway (21,000+ tests): parsed Claude thinking blocks in telemetry (#13969), enforced Gemini-Web reasoning/tool constraints (#9397), fixed quota reset-window routing (#9353), and fixed MITM dynamic imports eliminating Turbopack warnings (#6366)
    - Built accessible "Configured Only" filter toggle mapping live /api/providers state (PR #6245, 168 additions, 9/9 tests, v3.8.45), integrated Claude 5 Sonnet (#6209), normalized docs across 42 locales (#6105), and diagnosed a strict-provider ordering regression (#6172 -> PR #6225)
 

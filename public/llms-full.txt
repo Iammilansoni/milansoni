@@ -216,7 +216,7 @@ An adaptive educational web app integrating a FastAPI ML microservice with a Rea
 
 ---
 
-### OmniRoute — Open Source Contributor (Part-Time, Jul – Sep 2026)
+### OmniRoute — Open Source Contributor (Part-Time, Jul 2026 – Present)
 
 > OmniRoute · 90k★ · 375+ LLM providers · Open-source universal AI gateway
 

@@ -98,7 +98,7 @@ An adaptive educational web app integrating a FastAPI ML microservice, BERT quiz
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | Built SmartLearnX LMS with FastAPI ML microservice, BERT quiz generation, and spaCy chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Built JWT/RBAC APIs and anomaly-validation checks for multi-tenant FinSageAI360 ledgers |
 | Software Developer Intern | Om Logistics | Jun – Aug 2024 | Implemented LangChain + FAISS document search and Node.js logistics lookup APIs |
-| Open Source Contributor (Part-Time) | OmniRoute (90k★) | Jul – Sep 2026 | 7 PRs shipped across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209, #6105) + strict-provider fix (#6172 -> #6225) |
+| Open Source Contributor (Part-Time) | OmniRoute (90k★) | Jul 2026 – Present | 7 PRs shipped across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209, #6105) + strict-provider fix (#6172 -> #6225) |
 | Organising Team & Sponsorship Head | CodeFiesta (national hackathon, GIT Jaipur) | 2024 – 2025 | 18+ sponsorships secured for editions 3.0 and 4.0; 2025 edition ran 200 teams from 30+ colleges through a 24-hour onsite build, 13 in the final round |
 
 ## Tech Stack

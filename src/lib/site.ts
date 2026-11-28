@@ -302,7 +302,7 @@ export const EXPERIENCE = [
   {
     company: "OmniRoute",
     role: "Open-Source Contributor (Part-Time)",
-    period: "Jul 2026 – Sep 2026",
+    period: "Jul 2026 – Present",
     location: "Remote",
     highlights: [
       "Authored 7 merged PRs in the 90k★ open-source universal AI gateway (375+ providers, 21,000+ tests), including parsing Claude-format thinking blocks into observed usage telemetry (PR #13969) and enforcing Gemini-Web reasoning/tool schemas to block malformed upstream requests (PR #9397)",

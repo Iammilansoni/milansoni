@@ -156,7 +156,7 @@ An adaptive educational web app integrating a FastAPI ML microservice with a Rea
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | Built SmartLearnX LMS with FastAPI ML microservice, BERT quiz generation, and spaCy chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Built JWT/RBAC APIs and automated financial anomaly-validation checks for FinSageAI360 |
 | Software Developer Intern | Om Logistics | Jun – Aug 2024 | Implemented LangChain + FAISS document search and Node.js logistics lookup APIs |
-| Open Source Contributor (Part-Time) | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul – Sep 2026 | Merged logic & UI PRs across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209) + strict-provider schema design (#6172 -> #6225) |
+| Open Source Contributor (Part-Time) | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul 2026 – Present | Merged logic & UI PRs across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209) + strict-provider schema design (#6172 -> #6225) |
 
 ---
 
