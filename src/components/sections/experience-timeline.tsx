@@ -90,7 +90,7 @@ export function ExperienceTimeline() {
                 B.Tech, Computer Science &amp; Engineering
               </h3>
               <p className="mt-2 text-sm text-muted-foreground">
-                Global Institute of Technology, Jaipur · Oct 2022 – May 2026
+                Global Institute of Technology, Jaipur · Oct 2022 – Apr 2026
               </p>
               <div className="mt-6 flex gap-10">
                 <div>

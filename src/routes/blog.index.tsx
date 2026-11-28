@@ -65,7 +65,7 @@ const STATIC_ARTICLES: Article[] = [
     slug: "langgraph-multi-agent-state-machine",
     title: "The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows",
     description:
-      "LangChain's sequential chains broke down the moment I needed 6 AI agents to collaborate, retry on failure, and share state. LangGraph's state machine model gave me explicit control over agent orchestration.",
+      "LangChain's sequential chains broke down the moment I needed 5 AI agents to collaborate, retry on failure, and share state. LangGraph's state machine model gave me explicit control over agent orchestration.",
     publishedAt: "2026-06-29T00:00:00Z",
     readingTime: "14 min read",
     categories: ["AI", "Agents", "LangGraph"],

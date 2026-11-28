@@ -58,7 +58,7 @@ const AUDIENCES: ReadonlyArray<{
   },
   {
     who: "For founders",
-    line: "Solo, end to end: an AI LMS, a financial SaaS, and a doc-intelligence platform running five agents across four LLM providers.",
+    line: "Solo, end to end: an AI LMS, a financial SaaS, and a doc-intelligence platform running five agents across four AI providers.",
     action: "See the work",
     to: "/work",
   },

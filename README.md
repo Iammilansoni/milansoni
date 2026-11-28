@@ -54,7 +54,7 @@ I'm **Milan Soni**, an AI Engineer and Full Stack Developer. I ship production R
 
 A document-intelligence platform for coal mining: four AI agents analyze every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored in CI and the score blocks the build.
 
-**Two builds, four years apart.** The SIH 2023 entry was a team prototype and won the National Finale. This is not that codebase — it is an independent, ground-up rebuild started June 2025 and developed solo since, with none of the 2023 code carried over.
+**Two builds, two years apart.** The SIH 2023 entry was a team prototype and won the National Finale. This is not that codebase — it is an independent, ground-up rebuild started June 2025 and developed solo since, with none of the 2023 code carried over.
 
 ```
     Document Upload
@@ -94,31 +94,31 @@ An Orchestrator coordinates these five; it is a coordinator, not a sixth agent.
 
 ---
 
-### NLPForge — NLP Dataset Generator & Semantic Search
+### NLPForge (NLPFT-2) — Natural-Language to Validated REST API Router
 
-> Enterprise AI NLP Platform
+> Independent solo v2 rebuild (evolved from NLPForge v1 built at nTheta Works)
 
-An enterprise-grade platform bridging natural language and API testing. Describe what you want to test in plain English, and NLPForge processes your request through a two-stage retrieval pipeline to produce structured, executable API test cases.
+An independent v2 rewrite of the NLPForge prototype built during my nTheta Works internship (v1 used Redis HNSW + FlashRank across 8 providers). Here in NLPFT-2, plain-English requests are routed to OpenAPI-validated endpoints across 20+ providers on `pgvector HNSW` + PostgreSQL Row-Level Security (RLS).
 
 ```
-  Input: "Authenticate with email user@test.com and password pass123"
+  Input: "refund order 8820"
                           │
                           ▼
   ┌─────────────────────────────────────────┐
-  │  Stage 1: KNN Vector Similarity Search  │
-  │  Ollama → Redis HNSW (Top-5)           │
+  │  pgvector HNSW Endpoint Retrieval       │
+  │  (Cross-encoder ablated off: 59% → 80%) │
   ├─────────────────────────────────────────┤
-  │  Stage 2: FlashRank Cross-Encoder       │
-  │  ms-marco-MiniLM-L-12-v2 Reranking     │
+  │  Schema Rules + Local Ollama Fallback   │
+  │  + PostgreSQL RLS Tenant Isolation      │
   └─────────────────────────────────────────┘
                           │
                           ▼
-  { api_name, endpoint, method, extracted_body }
+  { validated_endpoint, schema_checked_payload }
 ```
 
-**Tech:** Next.js 16, FastAPI, SQLAlchemy 2.0, PostgreSQL 15, Redis Stack 7.2, FlashRank, Ollama, Docker
+**Tech:** FastAPI, SQLAlchemy 2.0, Pydantic v2, PostgreSQL + pgvector (RLS), Celery, Redis, Next.js, Ollama, Docker, pytest
 
-**Results:** 8 LLM providers, 15+ embedding models, 40% accuracy improvement, 60% QA effort reduction.
+**Results:** 80% top-1 / 97% top-3 on 180-query CI gate, 98% precision (ungrounded values 55 → 1 per 100), 43 RLS tenancy endpoints, 229 pytest tests (197 unit + 32 PostgreSQL integration), 20+ providers.
 
 **Links:** [GitHub](https://github.com/Iammilansoni/NLPFT-2)
 
@@ -152,8 +152,8 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
-| Open Source Contributor | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul 2026 – Present | 7 PRs shipped: usage telemetry & provider routing (#13969, #9397, #9353), MITM fix (#6366), provider filter (9/9 tests), Claude 5 Sonnet integration, 42-locale docs normalization |
-| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Two-stage semantic retrieval pipeline: 40% accuracy improvement, 60% QA reduction |
+| Open Source Contributor | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul – Sep 2026 | 7 PRs shipped across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209, #6105) + strict-provider schema design (#6172 -> #6225) |
+| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | NLPForge v1 semantic template search: 40% accuracy improvement, 60% QA reduction |
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
 | Software Developer Intern | Om Logistics | Jun – Aug 2024 | LangChain + FAISS: 70% latency reduction across 10K+ docs |
@@ -162,9 +162,13 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 ## Open Source — OmniRoute
 
-> [OmniRoute](https://github.com/cheaper-inference/OmniRoute) · 90k★ · 230+ LLM providers · Open-source universal AI gateway
+> [OmniRoute](https://github.com/cheaper-inference/OmniRoute) · 90k★ · 375+ LLM providers · Open-source universal AI gateway
 
-Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
+Contributed 7 merged PRs to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 375+ LLM providers (1,400+ models) with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
+
+### Telemetry, Routing & Build Fixes
+
+Parsed Claude reasoning blocks in observed usage telemetry (**PR #13969**), enforced Gemini-Web reasoning and tool constraints (**PR #9397**), fixed quota reset-window routing prioritization (**PR #9353**), and refactored MITM dynamic imports to eliminate Next.js Turbopack warnings (**PR #6366**).
 
 ### Frontend Engineering (React / Next.js)
 
@@ -178,9 +182,9 @@ Integrated **Claude 5 Sonnet** into the `claude_web` provider registry with a re
 
 Audited 9 core docs and ~20 localized READMEs across 42 locales, removing untranslated Portuguese/Chinese prose and correcting stale architecture facts (routing strategies **13→17**, service modules **36→134**). Passed `docs-sync-strict` CI gate — **zero regressions (PR #6105, v3.8.44).**
 
-### Core Backend Logic & Schema Design
+### Core Backend Schema Design Proposal
 
-Diagnosed an HTTP 400 regression for strict LLM providers (Xiaomi MiMo) caused by system-message ordering in the memory-injection pipeline. Proposed a **declarative Zod schema** with a `systemMessageMustBeFirst` flag — adopted by the maintainer into the broader shipped fix. **25/25 Vitest + 30/30 Node test-runner coverage (PR #6225).**
+Diagnosed an HTTP 400 regression for strict LLM providers (Xiaomi MiMo) caused by system-message ordering in the memory-injection pipeline (**PR #6172**). Proposed a declarative `systemMessageMustBeFirst` Zod schema flag design adopted by the maintainer into the shipped **PR #6225** fix.
 
 ---
 

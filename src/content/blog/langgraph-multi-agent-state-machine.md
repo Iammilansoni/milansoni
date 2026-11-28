@@ -10,6 +10,8 @@ relatedProjectSlug: "miningniti"
 
 > **TL;DR:** I replaced LangChain's sequential `LLMChain` pipelines with LangGraph's state machine architecture for MiningNiti's five-agent document processing system. The result: explicit control flow, retry-on-failure per agent, shared mutable state, and the ability to run agents concurrently with conditional branching. Here's exactly how it works.
 
+> **Update, 2026.** This article captures the earlier LangGraph + Celery stage of MiningNiti's architecture. In the current shipped rebuild ([MiningNiti case study](/work/miningniti)), I removed agent-framework overhead altogether in favor of hand-written `asyncio.gather()` orchestration (Classifier first, then Safety Analyzer, Entity Extractor, and Summarizer in parallel, with Compliance Auditor running on demand) and an in-process `asyncio.Queue` recovered via PostgreSQL advisory locks.
+
 ---
 
 ## When Linear Chains Break

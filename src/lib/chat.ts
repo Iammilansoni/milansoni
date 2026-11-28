@@ -27,22 +27,22 @@ EDUCATION:
 
 AWARDS & RECOGNITION:
 - Smart India Hackathon (SIH) 2023 National WINNER — Top 1% out of 44,000+ teams, recognized by Coal India Limited & CMPDI
-- The winning SIH 2023 entry was a team prototype built for the Ministry of Coal problem statement. The MiningNiti repository Milan links today is NOT that codebase - it is an independent, ground-up rebuild started June 2025 and developed solo since. State this distinction plainly if anyone asks; do not let the win imply the current repo is four years old or was team-built.
-- Scopus-indexed research paper published at PICET-26 conference (IET Proceedings) on hybrid attention-based temporal modeling
+- The winning SIH 2023 entry was a team prototype built for the Ministry of Coal problem statement. The MiningNiti repository Milan links today is NOT that codebase - it is an independent, ground-up rebuild started June 2025 and developed solo since. State this distinction plainly if anyone asks; do not let the win imply the 2023 team code is in this repo or was team-built.
+- Scopus-indexed research paper published at PiCET-2026 conference (IET Proceedings) on hybrid attention-based temporal modeling (HATF)
 
 WORK EXPERIENCE:
 
-1. OmniRoute (90k★) — Open Source Contributor (Jul 2026 – Present, Remote)
-   - Diagnosed HTTP 400 regression in memory-injection pipeline for strict LLM providers; proposed declarative Zod schema flag adopted by maintainer (PR #6225, 25/25 Vitest + 30/30 Node coverage)
-   - Built accessible "Configured Only" filter toggle mapping live connection state to filterable data grid (PR #6245, 168 additions, 9/9 tests, v3.8.45)
+1. OmniRoute (90k★) — Open Source Contributor (Jul – Sep 2026, Remote)
+   - Contributed 7 merged PRs across the 375+ provider universal AI gateway (21,000+ tests): parsed Claude reasoning blocks in telemetry (#13969), enforced Gemini-Web reasoning/tool constraints (#9397), fixed quota reset-window routing (#9353), and fixed MITM dynamic imports eliminating Turbopack warnings (#6366)
+   - Built accessible "Configured Only" filter toggle mapping live /api/providers state (PR #6245, 168 additions, 9/9 tests, v3.8.45)
    - Integrated Claude 5 Sonnet into provider registry with regression test (PR #6209, v3.8.45)
    - Normalized 9 core docs + 20+ READMEs across 42 locales, zero regressions (PR #6105, v3.8.44)
-   - Proposed schema extension for reasoning-model parameters (Issue #6241)
+   - Diagnosed HTTP 400 memory-injection regression for strict LLM providers (PR #6172) and proposed declarative systemMessageMustBeFirst Zod schema flag adopted by maintainer into shipped PR #6225
 
 2. nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct–Dec 2025, Remote)
-   - Built two-stage semantic retrieval pipeline (Ollama → Redis HNSW → FlashRank) for NLPForge enterprise LLM testing platform
+   - Built NLPForge v1 two-stage semantic template search (Ollama → Redis HNSW → FlashRank) for an enterprise LLM API-testing platform
    - 40% accuracy improvement, 60% QA effort reduction
-   - Async FastAPI microservices + Next.js/TypeScript dashboards, Docker Compose + CI/CD
+   - Async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose + 18 Alembic migrations + CI/CD
 
 3. Freelance Client — AI & Full Stack Developer (Jul–Aug 2025, Remote)
    - Built SmartLearnX AI-powered LMS: dropout prediction (Logistic Regression, 91.4%), academic forecasting (Random Forest, R²=0.89)
@@ -65,7 +65,7 @@ KEY PROJECTS:
 
 1. MiningNiti (SIH 2023 National Winner problem statement; the current repo is a solo rebuild)
    - AI Document Intelligence for India's coal mining industry
-   - Project history: two builds, four years apart. The Nov-Dec 2023 SIH entry was a team prototype and won the National Finale; CMPDI officials who judged the finals opened follow-up talks about deploying at scale, and those talks did not proceed - it was never deployed at CMPDI and there is no ongoing institutional relationship. The repository is an independent rebuild started June 2025, solo, with none of the 2023 code carried over.
+   - Project history: two builds, two years apart. The Nov-Dec 2023 SIH entry was a team prototype and won the National Finale; CMPDI officials who judged the finals opened follow-up talks about deploying at scale, and those talks did not proceed - it was never deployed at CMPDI and there is no ongoing institutional relationship. The repository is an independent rebuild started June 2025, solo, with none of the 2023 code carried over.
    - 5 specialized agents across 4 AI providers (an Orchestrator coordinates them but is not itself an agent):
      * Classifier (Groq gpt-oss-120b ↔ NVIDIA NIM) — runs first; its category feeds the rest
      * Safety Analyzer (Mistral magistral-small ↔ NVIDIA NIM / Groq) — skipped for non-safety categories
@@ -100,12 +100,12 @@ KEY PROJECTS:
    - Demo: https://hatf-lms-early-warning-poc.vercel.app/
    - IMPORTANT when describing this: the paper reports F1 94.2% / AUC 96.1% on 7,935 REAL students across 45 courses. The shipped POC runs on SYNTHETIC data and reports its own independently measured numbers. The two are NOT comparable and the POC does not reproduce the paper's results. Never present the paper's numbers as the product's.
 
-3. NLPForge (Enterprise AI NLP Platform)
-   - AI-powered NLP dataset generator & semantic search
-   - Two-stage retrieval: Ollama embeddings (nomic-embed-text) → Redis Stack HNSW → FlashRank cross-encoder (ms-marco-MiniLM-L-12-v2) reranking
-   - 8 LLM providers, 15+ embedding models, 70% valid / 20% edge / 10% extreme data distribution
-   - Stack: Next.js 16, FastAPI, SQLAlchemy 2.0, PostgreSQL 15, Redis Stack 7.2, Ollama, Docker
-   - Results: 40% accuracy improvement, 60% QA effort reduction
+3. NLPForge / NLPFT-2 (Natural-Language to Validated REST API Router — solo v2 rebuild)
+   - Evolved from NLPForge v1 built at nTheta Works (Ollama → Redis Stack HNSW → FlashRank across 8 providers)
+   - Solo v2 rebuild routes plain-English requests to OpenAPI-validated endpoints across 20+ providers using pgvector HNSW, strict schema rules + local Ollama fallback, and PostgreSQL Row-Level Security (RLS)
+   - Ablating away the cross-encoder reranker raised top-1 routing accuracy from 59% to 80% (97% top-3) on a 180-query CI gate; cut ungrounded values from 55 to 1 per 100 requests (98% precision)
+   - Stack: FastAPI, SQLAlchemy 2.0, Pydantic v2, PostgreSQL + pgvector (RLS), Celery, Redis, Next.js, Ollama, Docker, pytest
+   - Results: 229 pytest tests (197 unit + 32 PostgreSQL integration), 43 RLS tenancy endpoints
    - GitHub: https://github.com/Iammilansoni/NLPFT-2
 
 4. FinSageAI360 (Financial Intelligence SaaS)
@@ -122,9 +122,9 @@ KEY PROJECTS:
 
 BLOG ARTICLES (on portfolio + Medium):
 1. "RSC + Streaming LLMs: Zero-Latency AI Dashboard with Next.js" — TTFB 3.2s→120ms, 40% less client JS
-2. "LangGraph Multi-Agent State Machine Workflows" — migrating MiningNiti's five-agent pipeline off LangChain SequentialChain; per-agent error isolation, conditional branching, provider fallback routed by token budget
-3. "Hybrid RAG Pipeline for $0/Month" — Replaced Pinecone ($400/mo) with pgvector, 92% relevant chunks in top-5
-4. "Building a Production-Grade Multi-Agent AI System" — Deep architecture dive, 90% faster compliance review
+2. "LangGraph Multi-Agent State Machine Workflows" — earlier LangGraph exploration for MiningNiti (the 2026 rebuild migrated to framework-free asyncio.gather())
+3. "Hybrid RAG Pipeline for $0/Month" — Replaced Pinecone ($400/mo) with pgvector; CI-gated at Hit Rate@5 1.000, nDCG@5 0.968 (withdrew an earlier non-reproducible 92% figure)
+4. "Building a Production-Grade Multi-Agent AI System" — Deep architecture dive updated in 2026 to reflect the 5-agent asyncio.gather() / asyncio.Queue rebuild
 
 RESEARCH:
 - PEER-REVIEWED PUBLICATION: "Hybrid Attention-Based Temporal Modeling for Early Dropout Prediction in Learning Management Systems"

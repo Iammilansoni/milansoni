@@ -36,7 +36,7 @@ const PROOF_POINTS = [
   {
     kicker: "Open source",
     headline: "OmniRoute · 90k★",
-    sub: "Universal AI gateway · 230+ LLM providers · 21,000+ tests",
+    sub: "Universal AI gateway · 375+ LLM providers · 21,000+ tests",
     detail:
       "7 PRs merged across routing, telemetry, provider schemas, and accessible UI (plus a provider-flag schema design adopted by the maintainer).",
     links: [{ label: "Repository", href: "https://github.com/cheaper-inference/OmniRoute" }],

@@ -48,7 +48,7 @@ Milan Soni is an AI Engineer and Full Stack Developer specializing in transformi
 
 > SIH 2023 National Winner | Recognized by Coal India Limited & CMPDI
 
-A document-intelligence platform for coal mining: four AI agents analyze every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Two builds, four years apart: the SIH 2023 National Finale winner was a team prototype against the Ministry of Coal problem statement; this codebase is an independent, ground-up rebuild started June 2025 and developed solo since, sharing none of that code.
+A document-intelligence platform for coal mining: four AI agents analyze every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions about them with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Two builds, two years apart: the SIH 2023 National Finale winner was a team prototype against the Ministry of Coal problem statement; this codebase is an independent, ground-up rebuild started June 2025 and developed solo since, sharing none of that code.
 
 **Problem**: Coal mining generates thousands of critical documents — MSHA regulations, equipment manuals, safety protocols, environmental impact assessments, incident investigations — scattered across PDFs and siloed systems. Finding a specific clause across 500 pages takes hours, and a missed regulation update means violations, fines, or lives.
 
@@ -126,25 +126,24 @@ A document-intelligence platform for coal mining: four AI agents analyze every u
 
 ---
 
-### NLPForge — NLP Dataset Generator & Semantic Search
+### NLPForge (NLPFT-2) — Natural-Language to Validated REST API Router
 
-> Enterprise AI NLP Platform (built at nTheta Works)
+> Independent solo v2 rebuild (evolved from NLPForge v1 built at nTheta Works)
 
-An enterprise-grade platform bridging natural language and API testing. Describe what you want to test in plain English, and NLPForge processes your request through a two-stage retrieval pipeline to produce structured, executable API test cases.
+An independent v2 rewrite of the NLPForge prototype originally built during my nTheta Works internship (v1 used Redis Stack HNSW + FlashRank across 8 providers). NLPFT-2 routes plain-English instructions (e.g., "refund order 8820") to OpenAPI-defined REST endpoints across 20+ LLM and embedding providers using pgvector HNSW, rule-based + local Ollama slot extraction, and PostgreSQL Row-Level Security (RLS).
 
-**Problem**: Writing manual API test cases is tedious and doesn't scale. QA teams struggle to cover edge cases, and mapping natural language requirements into structured API payloads is slow and error-prone.
+**Problem**: Mapping free-form natural-language instructions into executable REST calls breaks in production when retrieval picks plausible wrong endpoints, LLMs invent ungrounded parameter values, or shared workspaces lack tenant isolation.
 
-**Solution**: Built a two-stage retrieval pipeline: Stage 1 uses Ollama embeddings (nomic-embed-text) stored in Redis Stack HNSW indexes for fast KNN vector similarity search (Top-5 candidates). Stage 2 applies FlashRank cross-encoder (ms-marco-MiniLM-L-12-v2) for precise neural re-ranking. LLM-powered slot extraction supports 8 providers.
+**Solution**: Built an async FastAPI pipeline with pgvector HNSW cosine retrieval, strict Pydantic v2 schema rules + local Ollama fallback, and PostgreSQL RLS tenant policies. Ablated away the FlashRank cross-encoder reranker after benchmarking proved it degraded short-command routing accuracy.
 
 **Architecture**:
-- Frontend: Next.js 16 App Router SPA with TanStack Query v5, Framer Motion animations, and Radix UI components
-- Backend: Async FastAPI 0.123+ with SQLAlchemy 2.0 (async), Pydantic v2 validation, and full asyncio architecture
-- Stage 1 Retrieval: Ollama embedding models (15+ options) → Redis Stack 7.2 HNSW indexes for KNN similarity search
-- Stage 2 Re-ranking: FlashRank (ms-marco-MiniLM-L-12-v2) cross-encoder for precise pairwise scoring
-- Dataset Generation: AI-powered synthetic data across 8 LLM providers with 70% valid, 20% edge, 10% extreme distribution
-- Infrastructure: Docker Compose orchestration with health checks on PostgreSQL, Redis, Ollama, Backend, and Frontend
+- Frontend: Next.js workspace UI integrated with async background job polling
+- Backend: Async FastAPI with SQLAlchemy 2.0, Pydantic v2 schema validation, and Celery + Redis queues
+- Retrieval: pgvector HNSW across 20+ LLM and embedding providers, evaluated on a 180-query CI gate
+- Slot Guardrails: Schema rules + local Ollama fallback cutting ungrounded parameter values from 55 to 1 per 100 requests
+- Tenancy: PostgreSQL Row-Level Security (RLS) + owner-scoped queries verified across 43 cross-user endpoints
 
-**Results**: 8 LLM providers, 15+ embedding models. 40% accuracy improvement in NL-to-API mapping. 60% reduction in manual QA effort. 1000s of synthetic test datasets generated.
+**Tradeoffs & Results**: Ablating the cross-encoder reranker lifted top-1 routing accuracy from 59% to 80% (97% top-3) on the 180-query CI gate. Cut invented parameter values from 55 to 1 per 100 requests (98% precision). Verified across 229 pytest tests (197 unit + 32 PostgreSQL integration).
 
 **Links**: [GitHub](https://github.com/Iammilansoni/NLPFT-2)
 
@@ -193,31 +192,34 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 
 ## Experience
 
-### OmniRoute — Open Source Contributor (Jul 2026 – Present)
+### OmniRoute — Open Source Contributor (Jul – Sep 2026)
 
-> OmniRoute · 90k★ · 230+ LLM providers · Open-source universal AI gateway
+> OmniRoute · 90k★ · 375+ LLM providers · Open-source universal AI gateway
 
-Contributed to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 230+ LLM providers with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
+Contributed 7 merged PRs to the largest open-source universal AI gateway — a single OpenAI-compatible endpoint routing across 375+ LLM providers (1,400+ models) with MCP server, A2A protocol, memory system, guardrails, and 21,000+ tests.
+
+**Telemetry & Routing Reliability**:
+Parsed Claude-format thinking blocks into observed reasoning telemetry (PR #13969), enforced Gemini-Web reasoning and tool constraints blocking invalid upstream payloads (PR #9397), fixed quota reset-window routing strategy prioritization (PR #9353), and fixed MITM dynamic imports eliminating Next.js Turbopack warnings (PR #6366).
 
 **Frontend Engineering (React / Next.js)**:
-Designed and shipped an accessible "Configured Only" filter for the live provider-rankings dashboard. Fetches live connection state from /api/providers, filters rankings table and podium view in real time, adds a "Status" column with empty-state handling. Implemented as role="switch" with aria-checked for screen reader accessibility. Iterated through code review to add a useEffect cleanup flag preventing memory leaks on unmount, plus a full Vitest test suite. 168 additions across 4 files, 9/9 tests passing.
+Designed and shipped an accessible "Configured Only" filter for the live provider-rankings dashboard (PR #6245, v3.8.45). Fetches live connection state from /api/providers, filters rankings table and podium view in real time, adds a "Status" column with role="switch", aria-checked, useEffect cleanup flag, and 9/9 Vitest tests across 168 additions.
 
 **API & Provider Integrations (Claude 5 Sonnet)**:
-Integrated the newly released Claude 5 Sonnet into the claude_web provider registry. Learned to validate against the full test suite before submitting. Shipped with a "Verified" signed commit into v3.8.45.
+Integrated Claude 5 Sonnet into the claude_web provider registry with a verified signed commit and regression test (PR #6209, v3.8.45).
 
 **Architecture & CI/CD Pipelines**:
-Audited 9 core docs containing untranslated Portuguese/Chinese prose mixed into English-only documents, plus ~20 localized READMEs carrying duplicated OAuth blocks. Normalized all flagged docs, consolidated a trilingual Fly.io deployment guide, and corrected stale architecture facts (routing strategies 13 → 17, service modules 36 → 134). Verified against docs-sync-strict CI gate across all 42 locales — zero regressions.
+Audited 9 core docs and ~20 localized READMEs across 42 locales, fixing untranslated prose and stale architecture facts against the docs-sync-strict CI gate with zero regressions (PR #6105, v3.8.44).
 
-**Core Backend Logic & Schema Design**:
-Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP 400 when a memory-injected system message lands at a non-zero array index. Proposed a declarative Zod schema approach: a systemMessageMustBeFirst flag in the provider schema plus branching logic in injectMemory() — the maintainer validated this over a hardcoded alternative and adopted the naming into the broader shipped fix (PR #6225). 25/25 Vitest + 30/30 Node test-runner coverage.
+**Schema Design Proposal**:
+Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP 400 when a memory-injected system message lands at a non-zero array index (PR #6172). Proposed a declarative `systemMessageMustBeFirst` Zod schema flag design adopted by the maintainer into the shipped PR #6225 fix.
 
 ---
 
 ### nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct – Dec 2025)
 
-- Architected FastAPI microservices + Next.js / TypeScript dashboards for NLPForge-Tester
+- Architected FastAPI microservices + Next.js / TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose stack, and 18 Alembic migrations
 - Containerized via Docker with automated CI/CD pipelines on Linux servers
-- Engineered two-stage semantic retrieval (Redis Vector DB + FlashRank neural re-ranking) — improved template matching by 40% and cut manual QA effort by ~60%
+- Built NLPForge v1 two-stage semantic template search (Redis Vector DB HNSW + FlashRank neural re-ranking) — improved template matching by 40% and cut manual QA effort by ~60%
 
 ---
 
@@ -272,15 +274,7 @@ React Server Components + chunked streaming for AI dashboards. Instead of the us
 
 ### The State Machine Paradigm: Why I Ditched Linear LLM Chains for LangGraph Multi-Agent Workflows
 
-Migration from LangChain SequentialChain to LangGraph's graph-based orchestration for MiningNiti's five-agent document pipeline.
-
-**Problems with linear chains**: No conditional branching, no shared mutable state, zero resilience when one agent hits a rate limit.
-
-**LangGraph solution**: MiningState TypedDict flowing through nodes (Classifier, Safety Analyzer, Entity Extractor, Summarizer, Compliance Auditor, Assembler). After classification, three nodes fan out in parallel. Compliance Auditor gated behind conditional edge for regulatory documents only. Each node wraps LLM calls in try/except with error state writing.
-
-**Results**: Per-agent error isolation (one failure no longer kills the run), concurrent execution under asyncio.gather() after the classifier, and $0/month on free-tier providers. Extending with new agents requires only one additional node and one edge. NOTE: an earlier version of this article quoted 72% → 98.7% completion and 14s → 3.2s latency; those were ad-hoc measurements that could not be reproduced under controlled conditions and have been withdrawn. The measured figure is retrieval quality, gated in CI — see MiningNiti.
-
-**Gotchas**: List-appended state merging, scalar last-writer-wins collisions, token-budget discipline (3K char truncation), checkpointing for human-in-the-loop.
+Covers an earlier LangGraph state-machine stage of MiningNiti's five-agent document pipeline (conditional edges, per-agent error isolation, provider fallback routed by token budget). Note: an earlier version quoted 72% → 98.7% completion and 14s → 3.2s latency; those were non-reproducible and withdrawn. In the current 2026 rebuild, agent-framework overhead was removed altogether in favor of hand-written `asyncio.gather()`.
 
 ---
 
@@ -302,21 +296,9 @@ Replaced Pinecone ($400/mo) with pgvector on Supabase free tier.
 
 ### How I Built a Production-Grade Multi-Agent AI System That Won a National Hackathon
 
-Deep dive into MiningNiti's architecture.
+Architecture write-up for MiningNiti, updated in 2026 to match the current shipped rebuild: Classifier runs first (sorting into 4 load-bearing categories: safety, regulatory, equipment, geological), Safety Analyzer / Entity Extractor / Summarizer fan out via `asyncio.gather()`, Compliance Auditor runs on demand, background ingestion uses an in-process `asyncio.Queue` recovered by PostgreSQL advisory locks (rather than Celery), and retrieval quality is enforced by a blocking CI evaluation gate.
 
-**Four specialist agents**:
-1. **Classifier Agent**: Categorizes documents into 9 types (safety_protocol, regulatory, incident_report, equipment_manual, geological, environmental, training, maintenance, permit). Uses first 2,000 chars for cheap/fast classification. Confidence threshold: 0.7.
-2. **Safety Analyzer**: Hazard detection, MSHA/OSHA compliance checking, risk scoring (0-100). Critical hazard flag triggers immediate async notification.
-3. **Entity Extractor**: Domain-specific NER extracting equipment, chemicals, regulations, locations, personnel, incident types, dates. Builds queryable knowledge graph.
-4. **Summarizer**: 3-5 sentence executive summary, bullet-pointed action items, plain-language risk overview.
-
-**Orchestrator**: Classification first (others depend on doc_type), then asyncio.gather() for parallel execution. Total: ~8 seconds for 50-page document.
-
-**RAG Chat**: 512-token chunks with 64-token overlap. pgvector cosine similarity retrieval → context-augmented prompt → LLM generation with source citations.
-
-**Async Architecture**: FastAPI returns 202 Accepted → Celery + Redis queue → background processing → frontend polls job status. Upload feels instant.
-
-**Results**: 90% reduction in document analysis time. Won SIH 2023 National Finale.
+**Links**: See the live [MiningNiti case study](https://milansoni.vercel.app/work/miningniti).
 
 ---
 

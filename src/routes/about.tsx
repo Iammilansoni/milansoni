@@ -102,11 +102,12 @@ function About() {
             </Reveal>
             <Reveal delay={0.1}>
               <p>
-                Since then I've shipped production systems at three companies — an enterprise AI
-                testing platform on FastAPI + Redis with two-stage retrieval (NLPForge), a multi-tenant financial intelligence
+                Since then I've shipped production systems at three companies — an enterprise NLP-to-API
+                platform (NLPForge v1 on FastAPI + Redis during my nTheta Works internship, later independently
+                rebuilt as v2 on pgvector + PostgreSQL RLS), a multi-tenant financial intelligence
                 SaaS on Next.js + Node (FinSageAI360), and a LangChain-powered document workflow engine for
                 logistics (Om Logistics). My latest work includes deploying 5 specialized AI agents
-                across 4 providers (Groq, NVIDIA NIM, Mistral, Gemini) on pgvector rather than a
+                across 4 AI providers (Groq, NVIDIA NIM, Mistral LLMs + Gemini embeddings) on pgvector rather than a
                 managed vector database, with retrieval quality scored against a labelled golden
                 set on every CI run.
               </p>

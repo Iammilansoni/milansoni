@@ -2,7 +2,7 @@ export const SITE = {
   name: "Milan Soni",
   title: "Milan Soni — AI Engineer & Full Stack Developer",
   description:
-    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 90k★ open-source AI gateway (7 PRs merged, 21,000+ tests), rebuilt solo the Ministry of Coal document-intelligence platform a team of us won SIH 2023 National with (44,000+ teams), this time with retrieval quality gated in CI, and shipped it on pgvector with routing across four LLM providers. Scopus-indexed researcher. B.Tech CSE '26.",
+    "AI Engineer and Full Stack Developer building production RAG pipelines, multi-agent orchestration systems, and multi-provider LLM infrastructure. Shipped code to a 90k★ open-source AI gateway (7 PRs merged, 21,000+ tests), rebuilt solo the Ministry of Coal document-intelligence platform a team of us won SIH 2023 National with (44,000+ teams), this time with retrieval quality gated in CI, and shipped it on pgvector with routing across 3 LLM providers + Gemini embeddings. Scopus-indexed researcher. B.Tech CSE '26.",
   email: "milansoni96946@gmail.com",
   location: "Churu (Rajasthan)",
   socials: {
@@ -64,7 +64,7 @@ export const PROJECTS: Project[] = [
     blurb:
       "AI-Powered Document Intelligence for the Mining Industry — transforming thousands of fragmented PDFs into an instantly queryable, citation-backed source of truth.",
     description:
-      "A document-intelligence platform for coal mining: four AI agents analyse every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Two builds, four years apart — the SIH 2023 winner was a team prototype; this is an independent, ground-up rebuild, solo since June 2025, sharing none of that code.",
+      "A document-intelligence platform for coal mining: four AI agents analyse every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Two builds, two years apart — the SIH 2023 winner was a team prototype; this is an independent, ground-up rebuild, solo since June 2025, sharing none of that code.",
     metrics: [
       { value: "5", label: "Specialized AI Agents" },
       { value: "1.000", label: "Hit Rate@5 (CI-gated)" },
@@ -94,7 +94,7 @@ export const PROJECTS: Project[] = [
       "Fallback routed around free-tier quota limits: Groq caps around 8K tokens/minute and Mistral quotas can exhaust per-request, so Entity Extractor and Summarizer run primary on NVIDIA NIM (nemotron-3.5-super-vl-120b-a12b with thinking disabled for fast JSON) with Groq fallback, while Classifier, Safety Analyzer, and Compliance Auditor automatically fail over to NVIDIA NIM / Groq when quota-limited.",
     ],
     results:
-      "Two builds, four years apart. The Smart India Hackathon 2023 entry — a team prototype against the Ministry of Coal problem statement — won the National Finale and was recognised by Coal India Limited & CMPDI. This is not that codebase: it is an independent, ground-up rebuild started June 2025 and developed solo since, and none of the 2023 code carried over. Retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — the gate blocks the build. 321 unit tests (262 pytest unit + 59 pillar unittest) and 18 retrieval-metric checks pass offline out of 380 collected tests across unit, PostgreSQL integration, and LLM-eval suites, spanning 11 API routers and 37 endpoints — all on pgvector rather than a managed vector database.",
+      "Two builds, two years apart. The Smart India Hackathon 2023 entry — a team prototype against the Ministry of Coal problem statement — won the National Finale and was recognised by Coal India Limited & CMPDI. This is not that codebase: it is an independent, ground-up rebuild started June 2025 and developed solo since, and none of the 2023 code carried over. Retrieval is scored on every CI run against a labelled golden set of 12 queries over a 130-chunk mining corpus: Hit Rate@5 1.000 (floor 0.90), MRR 1.000 (floor 0.75), Recall@5 0.958 (floor 0.85), nDCG@5 0.968 (floor 0.75) — the gate blocks the build. 321 unit tests (262 pytest unit + 59 pillar unittest) and 18 retrieval-metric checks pass offline out of 380 collected tests across unit, PostgreSQL integration, and LLM-eval suites, spanning 11 API routers and 37 endpoints — all on pgvector rather than a managed vector database.",
     limits: [
       "Database access is synchronous inside async endpoints, so a query blocks the event loop and throughput per worker is bounded.",
       "The background queue is an in-process asyncio.Queue: queued work does not scale across replicas (startup Postgres advisory locks recover interrupted rows on restart).",
@@ -164,36 +164,35 @@ export const PROJECTS: Project[] = [
   {
     slug: "nlpforge-tester",
     name: "NLPForge",
-    tag: "Enterprise AI NLP Platform",
+    tag: "Natural-Language to Validated REST API Router · Solo v2 Rebuild (2025 → 2026)",
     blurb:
-      "AI-Powered NLP Dataset Generator & Semantic Search Platform — transforming natural language queries into executable API test cases.",
+      "Natural-Language to Validated API Request Router — routing plain-English requests into OpenAPI-validated endpoints across 20+ providers with PostgreSQL RLS.",
     description:
-      "An enterprise-grade platform that bridges the gap between natural language and API testing. Describe what you want to test in plain English, and NLPForge processes your request through a two-stage retrieval pipeline (KNN vector similarity + FlashRank neural re-ranking) to produce structured, executable API test cases with slot extraction via LLMs.",
+      "An independent solo v2 rebuild (NLPFT-2) of the NLPForge v1 prototype started during my nTheta Works internship (v1 used Redis HNSW and FlashRank across 8 providers). In v2, plain-English requests (e.g. 'refund order 8820') are matched and validated against API schemas using pgvector HNSW, rule-based extractors, and local Ollama fallback across 20+ LLM and embedding providers, isolated per workspace with PostgreSQL Row-Level Security.",
     metrics: [
-      { value: "Two-Stage", label: "Retrieval Pipeline" },
-      { value: "8", label: "LLM Providers" },
-      { value: "15+", label: "Embedding Models" },
+      { value: "80% / 97%", label: "Top-1 / Top-3 (180-Query CI)" },
+      { value: "98%", label: "Slot Precision (55 → 1 Errors)" },
+      { value: "229", label: "Pytest Tests (43 RLS Endpoints)" },
     ],
-    tech: ["Next.js 16", "FastAPI", "SQLAlchemy 2.0", "PostgreSQL 15", "Redis Stack 7.2", "FlashRank", "Ollama", "Docker", "TanStack Query", "Framer Motion"],
+    tech: ["FastAPI", "PostgreSQL + pgvector", "PostgreSQL RLS", "SQLAlchemy 2.0", "Pydantic v2", "Celery", "Redis", "Next.js", "Ollama", "Docker", "pytest"],
     problem:
-      "Writing manual API test cases is tedious and doesn't scale. QA teams struggle to cover edge cases, and mapping natural language requirements into structured API payloads is slow and error-prone. Existing tools require deep technical knowledge of API schemas.",
+      "Mapping free-form natural-language instructions into executable REST calls frequently breaks in production: embeddings return plausible wrong routes, LLMs invent ungrounded parameter values, and multi-tenant workspaces leak template state without database-level enforcement.",
     solution:
-      "Built a two-stage retrieval pipeline: Stage 1 uses Ollama embeddings (nomic-embed-text) stored in Redis Stack HNSW indexes for fast KNN vector similarity search (Top-5 candidates). Stage 2 applies FlashRank cross-encoder (ms-marco-MiniLM-L-12-v2) for precise neural re-ranking. LLM-powered slot extraction supports 8 providers (OpenAI, Gemini, Anthropic, Grok, DeepSeek, Ollama, HuggingFace, Custom) to generate structured JSON payloads.",
+      "Engineered a schema-validated NL-to-API router with pgvector HNSW retrieval over OpenAPI endpoint specs, rule + local Ollama slot extraction with Pydantic validation cutting invented parameter values from 55 to 1 per 100 requests (98% precision), and PostgreSQL Row-Level Security enforcing tenant boundaries across 43 tested endpoints.",
     architecture: [
-      "Frontend: Next.js 16 App Router SPA with TanStack Query v5, Framer Motion animations, and Radix UI components.",
-      "Backend: Async FastAPI 0.123+ with SQLAlchemy 2.0 (async), Pydantic v2 validation, and full asyncio architecture.",
-      "Stage 1 Retrieval: Ollama embedding models (15+ options) → Redis Stack 7.2 HNSW indexes for KNN similarity search.",
-      "Stage 2 Re-ranking: FlashRank (ms-marco-MiniLM-L-12-v2) cross-encoder for precise pairwise scoring.",
-      "Dataset Generation: AI-powered synthetic data across 8 LLM providers with 70% valid, 20% edge, 10% extreme distribution.",
-      "Infrastructure: Docker Compose orchestration with health checks on PostgreSQL, Redis, Ollama, Backend, and Frontend.",
+      "API & Schema Engine: Async FastAPI with SQLAlchemy 2.0, Pydantic v2 strict parameter validation, and Celery + Redis background processing.",
+      "Retrieval: pgvector HNSW cosine search across 20+ supported LLM and embedding providers with a 180-query CI evaluation gate.",
+      "Slot Extraction & Guardrails: Schema-driven rule extraction + local Ollama fallback ensuring ungrounded values drop from 55 to 1 per 100 requests (98% precision).",
+      "Multi-Tenant Security: PostgreSQL Row-Level Security (RLS) policies + owner-scoped queries verified by a 43-endpoint cross-user tenancy test suite.",
+      "Testing & Frontend: 229 pytest tests (197 unit + 32 PostgreSQL integration) paired with a Next.js workspace UI.",
     ],
     tradeoffs: [
-      "Two-Stage Retrieval vs Single-Stage: Added FlashRank re-ranking latency (~50ms) but improved NL-to-API mapping accuracy by 40% — critical for enterprise adoption.",
-      "Ollama Local Embeddings vs Cloud APIs: Chose local nomic-embed-text via Ollama to eliminate embedding API costs and preserve enterprise data privacy.",
-      "Redis HNSW vs Dedicated Vector DB: Hosted vector storage in Redis Stack alongside caching to reduce infrastructure complexity — single store for vectors, sessions, and queues.",
+      "Ablated the cross-encoder reranker from v1 → v2: FlashRank helped longer template matching in NLPForge v1 at nTheta Works, but benchmarking v2 proved the reranker degraded short-command API routing — removing it lifted top-1 accuracy from 59% to 80% (97% top-3) on the 180-query CI gate.",
+      "pgvector HNSW + PostgreSQL RLS over a separate Redis vector store: consolidating vectors and tenant policies in PostgreSQL eliminated dual-store synchronization bugs across 43 RLS-protected endpoints.",
+      "Rules + local Ollama fallback before cloud LLMs: deterministic schema rules handle structured fields reliably, leaving zero room for invented IDs or ungrounded defaults.",
     ],
     results:
-      "Empowered product teams to generate 1000s of synthetic test datasets (70% valid, 20% edge, 10% extreme) and evaluate LLM features in real-time. Reduced manual QA effort by ~60% and improved template matching accuracy by 40%.",
+      "Raised top-1 API routing accuracy from 59% to 80% (97% top-3) on a 180-query CI gate after ablating a degrading reranker; cut ungrounded parameter values from 55 to 1 per 100 requests (98% precision); verified multi-tenant isolation across 43 RLS endpoints and 229 pytest tests (197 unit, 32 PostgreSQL integration) across 20+ providers.",
     githubUrl: "https://github.com/Iammilansoni/NLPFT-2",
     heroImage: "/nlpforge-ui.png",
   },
@@ -263,14 +262,13 @@ export const EXPERIENCE = [
   {
     company: "OmniRoute",
     role: "Open Source Contributor",
-    period: "Jul 2026 – Present",
+    period: "Jul 2026 – Sep 2026",
     location: "Remote",
     highlights: [
-      "Diagnosed an HTTP 400 regression in the memory-injection pipeline affecting strict LLM providers (Xiaomi MiMo); proposed a declarative systemMessageMustBeFirst Zod schema flag adopted by the maintainer into the shipped fix — 25/25 Vitest + 30/30 Node test-runner coverage (PR #6225)",
-      "Built an accessible 'Configured Only' filter toggle for the provider-rankings dashboard, mapping live connection state to a filterable data grid — 168 additions across 4 files, 9/9 tests passing, shipped into v3.8.45 (PR #6245)",
-      "Integrated Claude 5 Sonnet into the claude_web provider registry with regression test coverage, shipping a verified signed commit within hours of the model's release (PR #6209, v3.8.45)",
-      "Audited and normalized 9 core docs + 20+ localized READMEs across 42 locales, removing untranslated Portuguese/Chinese prose and correcting stale architecture metrics (routing strategies 13→17, service modules 36→134) — passed docs-sync-strict CI gate with zero regressions (PR #6105, v3.8.44)",
-      "Proposed a schema extension (Issue #6241) to standardize effort and thinking parameters across the multi-provider routing platform for next-gen reasoning models",
+      "Authored 7 merged PRs in the 90k★ open-source universal AI gateway (375+ providers, 21,000+ tests): parsed Claude-format thinking blocks for accurate observed reasoning telemetry (PR #13969) and enforced Gemini-Web reasoning/tool constraints to block malformed upstream requests (PR #9397)",
+      "Fixed quota reset-window routing strategy prioritization under rate limits (PR #9353) and refactored MITM dynamic imports to eliminate Next.js Turbopack warnings (PR #6366)",
+      "Built an accessible 'Configured Only' filter toggle mapping live /api/providers state (168 additions, 9/9 Vitest, PR #6245, v3.8.45) and integrated Claude 5 Sonnet into claude_web with regression coverage (PR #6209, v3.8.45)",
+      "Audited and normalized 9 core docs + 20+ localized READMEs across 42 locales passing docs-sync-strict CI (PR #6105, v3.8.44), plus diagnosed the strict-provider system-message ordering regression (PR #6172) with a declarative systemMessageMustBeFirst Zod schema design later adopted by the maintainer into PR #6225",
     ],
   },
   {
@@ -279,8 +277,8 @@ export const EXPERIENCE = [
     period: "Oct – Dec 2025",
     location: "Remote",
     highlights: [
-      "Built a two-stage semantic retrieval pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for NLPForge, an enterprise LLM API testing platform — improved template matching accuracy by 40% and reduced manual QA effort by 60%",
-      "Shipped async FastAPI microservices + Next.js/TypeScript dashboards with Docker Compose orchestration and CI/CD on Linux servers",
+      "Built NLPForge v1 two-stage semantic template search (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform — improved template matching accuracy by 40% and reduced manual QA effort by 60%",
+      "Shipped async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, Docker Compose (6 services, 18 Alembic migrations), and CI/CD pipelines",
     ],
   },
   {
