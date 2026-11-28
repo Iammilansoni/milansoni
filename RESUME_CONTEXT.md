@@ -62,28 +62,25 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 
 ## 5. Professional Experience
 
-### OmniRoute — Open Source Contributor · Remote · Jul – Sep 2026
-*Open-source universal AI gateway — 90k★, 375+ LLM providers, single OpenAI-compatible endpoint, MCP server, A2A protocol, 21,000+ tests.*
-- Authored **7 merged PRs**: fixed Claude thinking-block telemetry parsing (**PR #13969**), enforced Gemini-Web reasoning/tool constraints (**PR #9397**), fixed quota reset-window routing strategy prioritization (**PR #9353**), and eliminated Turbopack over-bundling warnings on MITM dynamic imports (**PR #6366**).
-- Built an accessible "Configured Only" filter toggle for the live provider-rankings dashboard, mapping live connection state to a filterable data grid — 168 additions across 4 files, 9/9 tests passing, `role="switch"` + `aria-checked`; shipped into v3.8.45 (**PR #6245**).
-- Integrated Claude 5 Sonnet into the `claude_web` provider registry with regression coverage, shipping a verified signed commit within hours of release (**PR #6209**, v3.8.45).
-- Audited and normalized 9 core docs + 20+ localized READMEs across 42 locales passing `docs-sync-strict` CI with zero regressions (**PR #6105**, v3.8.44), and diagnosed the strict-provider system-message HTTP 400 regression (**PR #6172**) with a `systemMessageMustBeFirst` Zod schema flag design adopted by the maintainer into **PR #6225**.
-
 ### nTheta Works Pvt. Ltd. — Full Stack Developer Intern · Remote · Oct – Dec 2025
-- Built an internal two-stage semantic template search pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform — improved template matching accuracy by **40%** and reduced manual QA effort by **60%**.
+- Built an internal two-stage semantic API-template search pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform.
 - Shipped async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose stack, 18 Alembic migrations, and CI/CD on Linux servers.
 
 ### Freelance Client — AI & Full Stack Developer · Remote · Jul – Aug 2025
-- Built **SmartLearnX**, an AI-powered LMS, with a dropout-prediction model (Logistic Regression, **91.4% accuracy**) and academic-performance forecasting (Random Forest, **R² = 0.89**) deployed as a FastAPI microservice alongside a React/Node.js frontend.
-- Integrated NLP features (BERT quiz generation, spaCy chatbot) serving 24/7 student support with sub-2-second response times under load.
+- Built **SmartLearnX**, an AI-assisted LMS, with Logistic Regression dropout risk scoring and Random Forest performance forecasting deployed in a FastAPI microservice alongside a React/Node.js frontend.
+- Integrated NLP features (BERT quiz generation, spaCy chatbot) backed by MongoDB, Redis/BullMQ, and Docker/Nginx.
 
 ### OBG Outsourcing Pvt. Ltd. — Full Stack Developer Intern · Jaipur · May – Jul 2025
-- Led **FinSageAI360**, a multi-tenant financial-intelligence SaaS — cut monthly close reporting time by **45%** and reduced manual operational effort by **30%** via AI-driven anomaly detection and real-time KPI dashboards.
-- Designed a JWT-authenticated REST API (Node.js/Express/MongoDB) with granular RBAC for multi-tenant data isolation.
+- Built JWT-authenticated REST APIs (Node.js/Express/MongoDB) with granular RBAC for multi-tenant ledger isolation and automated financial anomaly-validation checks for **FinSageAI360**.
 
 ### Om Logistics Ltd. — Software Developer Intern · Delhi · Jun – Aug 2024
-- Optimized enterprise document search with LangChain + FAISS vector embeddings — reduced query latency by **70%** across **10,000+ documents** and improved retrieval accuracy by **40%**.
-- Built RESTful APIs (Node.js) to automate logistics workflows, eliminating **20%** of manual data-entry tasks.
+- Implemented semantic document search with Python, LangChain, and FAISS vector embeddings alongside Node.js RESTful APIs automating internal logistics lookup workflows.
+
+### OmniRoute — Open Source Contributor (Part-Time) · Remote · Jul – Sep 2026
+*Open-source universal AI gateway — 90k★, 375+ LLM providers, single OpenAI-compatible endpoint, MCP server, A2A protocol, 21,000+ tests.*
+- Authored **7 merged PRs**: fixed Claude thinking-block telemetry parsing (**PR #13969**), enforced Gemini-Web reasoning/tool constraints (**PR #9397**), fixed quota reset-window routing strategy prioritization (**PR #9353**), and eliminated Turbopack over-bundling warnings on MITM dynamic imports (**PR #6366**).
+- Built an accessible "Configured Only" filter toggle for the live provider-rankings dashboard, mapping live connection state to a filterable data grid — 168 additions across 4 files, 9/9 tests passing, `role="switch"` + `aria-checked`; shipped into v3.8.45 (**PR #6245**).
+- Integrated Claude 5 Sonnet into the `claude_web` provider registry with regression coverage (**PR #6209**, v3.8.45), normalized docs across 42 locales (**PR #6105**), and diagnosed a strict-provider system-message HTTP 400 regression (**PR #6172**) whose `systemMessageMustBeFirst` schema design the maintainer adopted into **PR #6225**.
 
 ---
 
@@ -115,14 +112,14 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 - **Links:** GitHub github.com/Iammilansoni/NLPFT-2
 
 ### FinSageAI360 — AI Financial Intelligence *(built at OBG Outsourcing)*
-- **What:** Multi-tenant SaaS ingesting accounting feeds and surfacing AI-generated cashflow, risk, and anomaly insights.
+- **What:** Multi-tenant SaaS ingesting accounting feeds with JWT/RBAC ledger isolation and automated financial anomaly-validation checks.
 - **Stack:** Next.js, Node.js, MongoDB, Prisma, JWT, RBAC, AI analytics.
-- **Results:** **+45%** faster report cycles; **+30%** operational efficiency; enterprise-grade RBAC.
+- **Scope:** Multi-tenant ledger isolation and automated close-validation workflows.
 
-### SmartLearnX — AI-Powered LMS *(freelance)*
-- **What:** Adaptive learning platform with personalized recommendations, dropout prediction, and AI assessments.
+### SmartLearnX — AI-Assisted LMS *(freelance)*
+- **What:** Adaptive learning platform integrating a FastAPI ML microservice, BERT quiz generation, and a spaCy chatbot assistant.
 - **Stack:** React, TypeScript, Node.js, FastAPI, MongoDB, Redis, BullMQ, Docker, Nginx, BERT, spaCy.
-- **Results:** **91.4%** dropout-prediction accuracy; **0.89 R²** forecasting score; 24/7 NLP chatbot; sub-2s responses under load.
+- **Scope:** Logistic Regression dropout risk scoring, Random Forest forecasting, and automated NLP student support.
 
 ---
 
@@ -160,18 +157,18 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 
 ## 10. Quantified Impact (for bullet-point reuse)
 
-| Metric | Context |
-|--------|---------|
+| Metric / Scope | Context |
+|----------------|---------|
 | Top 1% / 44,000+ teams | SIH 2023 National win |
-| Hit Rate@5 1.000 · nDCG@5 0.968 (CI-gated eval) | MiningNiti retrieval |
+| Deterministic 12-query / 130-chunk CI retrieval regression gate | MiningNiti retrieval |
 | 321 unit tests + 18 retrieval evals offline · 380 collected · 37 endpoints | MiningNiti |
 | $0/month infrastructure | MiningNiti / hybrid RAG |
-| +40% QA accuracy · −60% manual QA effort | nTheta Works (semantic API-template search) |
-| 80% top-1 · 97% top-3 · 98% precision · 229 pytest tests · 43 RLS endpoints | NLPForge (`Iammilansoni/NLPFT-2`) |
-| +45% faster reports · +30% efficiency | FinSageAI360 |
-| 91.4% accuracy · 0.89 R² | SmartLearnX ML models |
-| 70% latency reduction · 10,000+ docs · +40% retrieval | Om Logistics |
-| 7 PRs merged into 90k★ project (375+ providers) | OmniRoute |
+| 6-service Docker Compose · 18 Alembic migrations · 8 LLM providers | nTheta Works internship |
+| 80% top-1 · 97% top-3 · 98% precision (55 → 1) · 229 pytest · 43 RLS endpoints | NLPForge (`Iammilansoni/NLPFT-2`) |
+| Multi-tenant JWT/RBAC ledger isolation & anomaly validation | FinSageAI360 (OBG Outsourcing) |
+| FastAPI ML microservice + BERT quiz & spaCy chatbot | SmartLearnX (freelance) |
+| LangChain + FAISS document indexing & Node.js lookup APIs | Om Logistics internship |
+| Open-source logic/telemetry/UI PRs in 90k★ project (375+ providers) | OmniRoute (part-time OSS) |
 
 ---
 

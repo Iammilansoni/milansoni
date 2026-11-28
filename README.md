@@ -128,35 +128,35 @@ An async FastAPI platform that routes plain-English requests to OpenAPI-validate
 
 > Built at OBG Outsourcing
 
-A multi-tenant SaaS that ingests accounting feeds, normalises them, and surfaces AI-generated cashflow, risk, and anomaly insights.
+A multi-tenant SaaS that ingests accounting feeds, normalises them, and provides JWT/RBAC ledger isolation and automated financial anomaly-validation checks.
 
-**Tech:** Next.js, Node.js, MongoDB, Prisma, JWT, AI Analytics
+**Tech:** Next.js, Node.js, MongoDB, Prisma, JWT, RBAC
 
-**Results:** +45% faster report cycles, +30% operational efficiency, enterprise-grade RBAC.
+**Scope:** Multi-tenant RBAC ledger isolation and automated financial close validation checks.
 
 ---
 
-### SmartLearnX — AI-Powered LMS
+### SmartLearnX — AI-Assisted LMS
 
 > Freelance Project
 
-An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack web technologies to enhance learning outcomes through personalized course recommendations, dropout prediction, and AI-powered assessments.
+An adaptive educational web app integrating a FastAPI ML microservice with a React and Node.js LMS for Logistic Regression dropout risk scoring, Random Forest performance forecasting, BERT quiz generation, and a spaCy chatbot assistant.
 
 **Tech:** React, TypeScript, Node.js, FastAPI, MongoDB, Redis, Docker, Machine Learning
 
-**Results:** 91.4% dropout prediction accuracy, 0.89 R² forecasting score, 24/7 NLP chatbot support.
+**Scope:** ML/NLP microservice architecture across React, Node.js, FastAPI, MongoDB, and Redis/BullMQ.
 
 ---
 
-## Experience
+## Experience & Open Source
 
-| Role | Company | Period | Key Impact |
-|------|---------|--------|------------|
-| Open Source Contributor | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul – Sep 2026 | 7 PRs shipped across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209, #6105) + strict-provider schema design (#6172 -> #6225) |
-| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Internal semantic API-template search (Redis HNSW + FlashRank): 40% accuracy improvement, 60% QA reduction |
-| AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
-| Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
-| Software Developer Intern | Om Logistics | Jun – Aug 2024 | LangChain + FAISS: 70% latency reduction across 10K+ docs |
+| Role | Organization | Period | Key Impact |
+|------|--------------|--------|------------|
+| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Internal semantic API-template search (Redis HNSW + FlashRank), async FastAPI, 6-service Docker Compose, 18 Alembic migrations |
+| AI & Full Stack Developer | Freelance | Jul – Aug 2025 | Built SmartLearnX LMS with FastAPI ML microservice, BERT quiz generation, and spaCy chatbot |
+| Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Built JWT/RBAC APIs and automated financial anomaly-validation checks for FinSageAI360 |
+| Software Developer Intern | Om Logistics | Jun – Aug 2024 | Implemented LangChain + FAISS document search and Node.js logistics lookup APIs |
+| Open Source Contributor (Part-Time) | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul – Sep 2026 | Merged logic & UI PRs across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209) + strict-provider schema design (#6172 -> #6225) |
 
 ---
 

@@ -36,7 +36,7 @@ const STAGES: Stage[] = [
     blurb:
       "The cheapest place to stop a bad request is before it touches a model. Everything here runs ahead of retrieval.",
     points: [
-      "23 prompt-injection guard patterns — instruction override, role-play, and system-prompt extraction attempts are rejected up front.",
+      "Prompt-injection input filtering — instruction override, role-play, and system-prompt extraction attempts are rejected up front.",
       "A hard 1,500-character query cap. Anything longer returns a 422 before it reaches retrieval, rather than quietly costing tokens.",
       "Rate limiting at 120 requests/minute per IP via slowapi, applied as a default limit rather than per-route opt-in.",
     ],

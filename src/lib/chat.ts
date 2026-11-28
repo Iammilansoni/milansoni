@@ -30,31 +30,25 @@ AWARDS & RECOGNITION:
 - The winning SIH 2023 entry was a team prototype built for the Ministry of Coal problem statement. The MiningNiti repository Milan links today is NOT that codebase - it is an independent, ground-up rebuild started June 2025 and developed solo since. State this distinction plainly if anyone asks; do not let the win imply the 2023 team code is in this repo or was team-built.
 - Scopus-indexed research paper published at PiCET-2026 conference (IET Proceedings) on hybrid attention-based temporal modeling (HATF)
 
-WORK EXPERIENCE:
+WORK EXPERIENCE & OPEN SOURCE:
 
-1. OmniRoute (90k★) — Open Source Contributor (Jul – Sep 2026, Remote)
-   - Contributed 7 merged PRs across the 375+ provider universal AI gateway (21,000+ tests): parsed Claude reasoning blocks in telemetry (#13969), enforced Gemini-Web reasoning/tool constraints (#9397), fixed quota reset-window routing (#9353), and fixed MITM dynamic imports eliminating Turbopack warnings (#6366)
-   - Built accessible "Configured Only" filter toggle mapping live /api/providers state (PR #6245, 168 additions, 9/9 tests, v3.8.45)
-   - Integrated Claude 5 Sonnet into provider registry with regression test (PR #6209, v3.8.45)
-   - Normalized 9 core docs + 20+ READMEs across 42 locales, zero regressions (PR #6105, v3.8.44)
-   - Diagnosed HTTP 400 memory-injection regression for strict LLM providers (PR #6172) and proposed declarative systemMessageMustBeFirst Zod schema flag adopted by maintainer into shipped PR #6225
-
-2. nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct–Dec 2025, Remote)
+1. nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct–Dec 2025, Remote)
    - Built an internal two-stage semantic API-template search pipeline (Ollama → Redis HNSW → FlashRank) for an enterprise LLM API-testing platform
-   - 40% accuracy improvement, 60% QA effort reduction
    - Async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose + 18 Alembic migrations + CI/CD
 
-3. Freelance Client — AI & Full Stack Developer (Jul–Aug 2025, Remote)
-   - Built SmartLearnX AI-powered LMS: dropout prediction (Logistic Regression, 91.4%), academic forecasting (Random Forest, R²=0.89)
-   - BERT quiz generation, spaCy chatbot, sub-2s response times under load
+2. Freelance Client — AI & Full Stack Developer (Jul–Aug 2025, Remote)
+   - Built SmartLearnX AI-assisted LMS with Logistic Regression dropout risk scoring and Random Forest performance forecasting in a FastAPI microservice
+   - Integrated BERT quiz generation and a spaCy chatbot backed by MongoDB, Redis/BullMQ, and Docker/Nginx
 
-4. OBG Outsourcing Pvt. Ltd. — Full Stack Developer Intern (May–Jul 2025, Jaipur)
-   - Led FinSageAI360 multi-tenant financial intelligence SaaS: +45% report speed, +30% efficiency
-   - JWT-authenticated REST API with granular RBAC for multi-tenant data isolation
+3. OBG Outsourcing Pvt. Ltd. — Full Stack Developer Intern (May–Jul 2025, Jaipur)
+   - Built JWT + RBAC REST APIs (Node.js/Express/MongoDB) for multi-tenant ledger isolation and automated financial anomaly-validation checks in FinSageAI360
 
-5. Om Logistics Ltd. — Software Developer Intern (Jun–Aug 2024, Delhi)
-   - LangChain + FAISS vector embeddings: 70% latency reduction across 10,000+ documents, 40% accuracy improvement
-   - RESTful APIs eliminating 20% manual data-entry tasks
+4. Om Logistics Ltd. — Software Developer Intern (Jun–Aug 2024, Delhi)
+   - Implemented semantic document search using Python, LangChain, and FAISS embeddings alongside Node.js workflow lookup REST APIs
+
+5. OmniRoute (90k★) — Open Source Contributor (Part-Time, Jul–Sep 2026, Remote)
+   - Contributed 7 merged PRs across the 375+ provider universal AI gateway (21,000+ tests): parsed Claude thinking blocks in telemetry (#13969), enforced Gemini-Web reasoning/tool constraints (#9397), fixed quota reset-window routing (#9353), and fixed MITM dynamic imports eliminating Turbopack warnings (#6366)
+   - Built accessible "Configured Only" filter toggle mapping live /api/providers state (PR #6245, 168 additions, 9/9 tests, v3.8.45), integrated Claude 5 Sonnet (#6209), normalized docs across 42 locales (#6105), and diagnosed a strict-provider ordering regression (#6172 -> PR #6225)
 
 6. CodeFiesta — Organising Team & Sponsorship Head (2024–2025, GIT Jaipur)
    - Sponsors: 18+ — outreach, partnership negotiation, sponsor relationships across editions 3.0 and 4.0
@@ -108,21 +102,18 @@ KEY PROJECTS:
    - GitHub: https://github.com/Iammilansoni/NLPFT-2
 
 4. FinSageAI360 (Financial Intelligence SaaS)
-   - Multi-tenant AI-driven financial intelligence platform
-   - AI analytics for cashflow, risk, and anomaly detection
-   - Stack: Next.js, Node.js, MongoDB, Prisma, JWT, AI Analytics
-   - Results: +45% faster reporting, +30% efficiency, enterprise-grade RBAC
+   - Multi-tenant SaaS for accounting feed ingestion, RBAC ledger isolation, and financial anomaly validation checks
+   - Stack: Next.js, Node.js, MongoDB, Prisma, JWT
+   - Results: Multi-tenant RBAC ledger isolation and automated close-validation dashboards
 
-5. SmartLearnX (AI-Powered LMS)
-   - Adaptive educational ecosystem with personalized learning paths
-   - ML: Logistic Regression dropout prediction (91.4% accuracy), Random Forest forecasting (0.89 R²)
-   - NLP: BERT quiz generation, spaCy chatbot assistant
-   - Stack: React, TypeScript, Node.js, FastAPI, MongoDB, Redis, Docker, ML
+5. SmartLearnX (AI-Assisted LMS)
+   - Adaptive LMS with Logistic Regression dropout risk scoring, Random Forest performance forecasting, BERT quiz generation, and a spaCy chatbot assistant
+   - Stack: React, TypeScript, Node.js, FastAPI, MongoDB, Redis/BullMQ, Docker, Nginx
 
 BLOG ARTICLES (on portfolio + Medium):
 1. "RSC + Streaming LLMs: Zero-Latency AI Dashboard with Next.js" — TTFB 3.2s→120ms, 40% less client JS
 2. "LangGraph Multi-Agent State Machine Workflows" — earlier LangGraph exploration for MiningNiti (the 2026 rebuild migrated to framework-free asyncio.gather())
-3. "Hybrid RAG Pipeline for $0/Month" — Replaced Pinecone ($400/mo) with pgvector; CI-gated at Hit Rate@5 1.000, nDCG@5 0.968 (withdrew an earlier non-reproducible 92% figure)
+3. "Hybrid RAG Pipeline for $0/Month" — Replaced Pinecone ($400/mo) with pgvector; verified by a deterministic 12-query / 130-chunk CI retrieval regression gate (withdrew an earlier non-reproducible 92% figure)
 4. "Building a Production-Grade Multi-Agent AI System" — Deep architecture dive updated in 2026 to reflect the 5-agent asyncio.gather() / asyncio.Queue rebuild
 
 RESEARCH:

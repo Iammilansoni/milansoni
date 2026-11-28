@@ -67,7 +67,7 @@ export const PROJECTS: Project[] = [
       "A document-intelligence platform for coal mining: four AI agents analyse every uploaded regulation, a fifth audits compliance on demand, and a hybrid-retrieval chat answers questions with page-level citations. Retrieval quality is scored against a labelled golden set on every CI run, and the score blocks the build. Two builds, two years apart — the SIH 2023 winner was a team prototype; this is an independent, ground-up rebuild, solo since June 2025, sharing none of that code.",
     metrics: [
       { value: "5", label: "Specialized AI Agents" },
-      { value: "1.000", label: "Hit Rate@5 (CI-gated)" },
+      { value: "CI-Gated", label: "12-Query / 130-Chunk Eval" },
       { value: "pgvector", label: "No Managed Vector DB" },
     ],
     tech: ["Next.js 16", "React 19", "FastAPI", "Python 3.14", "uv", "PostgreSQL + pgvector", "Supabase", "Upstash Redis", "Clerk Auth", "NVIDIA NIM", "Groq", "Mistral", "Gemini", "Docker"],
@@ -77,13 +77,13 @@ export const PROJECTS: Project[] = [
       "Four agents run on every upload: a classifier whose category feeds a safety analyzer, entity extractor and summarizer running concurrently under asyncio.gather(). A fifth audits compliance on demand, cross-referencing operational documents against regulations into a per-clause Pass / Fail / Not Addressed matrix. The safety analyzer is skipped entirely for non-safety categories, so an equipment manual never pays for a hazard screen it does not need. Questions go through a measured retrieval pipeline and every answer cites its document and page.",
     architecture: [
       "Frontend: Next.js 16 App Router (Turbopack) + React 19 — Clerk auth, TanStack Query, Recharts analytics, portal multi-format viewer (PDF, plain text, images) + ⌘K command palette.",
-      "API: FastAPI 0.128+ (Python 3.14, uv) with 11 routers (37 endpoints) under /api/v1, Clerk JWT verification via JWKS (PyJWT) with RS256 pinned, JWKS cached and azp validation, a DNS-resolving SSRF guard on URL ingestion, slowapi rate limiting at 120 req/min per IP, Pydantic v2 validation and audit logging.",
+      "API: FastAPI 0.128+ (Python 3.14, uv) with 11 routers (37 endpoints) under /api/v1, Clerk JWT verification via JWKS (PyJWT) with RS256 pinned, JWKS cached and azp validation, URL validation on ingestion, slowapi rate limiting at 120 req/min per IP, Pydantic v2 validation and audit logging.",
       "Agents: Classifier (Groq gpt-oss-120b ↔ NVIDIA NIM) runs first because its category feeds the rest; Safety Analyzer (Mistral magistral-small ↔ NVIDIA NIM/Groq), Entity Extractor and Summarizer (NVIDIA NIM nemotron-3.5-super-vl-120b-a12b ↔ Groq) run concurrently; Compliance Auditor (Groq ↔ NVIDIA NIM) runs on demand.",
       "Orchestration: no agent framework. Coordination is hand-written on asyncio.gather() with per-agent error isolation, per-call quota-aware provider failover (disabling thinking tokens on NIM for fast JSON), and a content-addressed Redis cache keyed by SHA-256 + PIPELINE_VERSION. Failure is loud: a degraded section lands on Document.processing_error and metadata.degraded_sections rather than a silent empty result.",
       "Ingestion: pdfplumber for layout and tables with a Tesseract OCR fallback for pages yielding almost no extractable text (capped at 50 pages/doc at 200 DPI); chunks of ~1000 words with 200 overlap under a hard 4,000-character ceiling, embedded 100 at a time.",
-      "Retrieval: 23 prompt-injection guard patterns and a 1,500-character query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a STORED GIN tsvector via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations.",
+      "Retrieval: Input filtering and a 1,500-character query cap → Gemini gemini-embedding-001 (768-dim) → pgvector cosine (HNSW) fused with PostgreSQL full-text ts_rank_cd over a STORED GIN tsvector via Reciprocal Rank Fusion (k=60) → over-fetch 20 → ms-marco-MiniLM-L-6-v2 cross-encoder rerank to top 5 → generation streamed over SSE with inline [Document, Page X] citations.",
       "Data: Supabase PostgreSQL 16 with pgvector HNSW + GIN, Supabase Storage for durable uploads, Upstash Redis caching completed analyses — failed or degraded runs are never cached.",
-      "CI: blocking checks for backend lint (black, isort), pytest unit & PostgreSQL integration suites, deterministic retrieval quality gate, frontend ESLint + Next.js production build, and Docker image validation, with Alembic migrations running before server startup and Postgres advisory locks recovering interrupted jobs.",
+      "CI: blocking checks for backend lint (black, isort), pytest unit & PostgreSQL integration suites, deterministic retrieval regression gate, frontend ESLint + Next.js production build, and Docker image validation, with Alembic migrations running before server startup and interrupted-job recovery on restart.",
       "Evaluation & observability: retrieval and generation are scored separately, because a blended number hides which half failed. Retrieval runs in CI as a blocking gate on a local sentence-transformers model — deterministic, no API keys. Generation quality (faithfulness and relevancy, 0.70 thresholds) is Gemini-judged on demand. LangSmith traces the orchestrator, hybrid search and chat generation end to end.",
     ],
     tradeoffs: [
@@ -205,79 +205,67 @@ export const PROJECTS: Project[] = [
     description:
       "A multi-tenant SaaS that ingests accounting feeds, normalises them, and surfaces AI-generated cashflow, risk, and anomaly insights.",
     metrics: [
-      { value: "+45%", label: "Faster report cycles" },
-      { value: "+30%", label: "Operational efficiency" },
-      { value: "RBAC", label: "Enterprise-grade" },
+      { value: "JWT + RBAC", label: "Multi-Tenant Isolation" },
+      { value: "Ledger", label: "Anomaly Validation" },
+      { value: "MongoDB", label: "Prisma Data Layer" },
     ],
     tech: ["Next.js", "Node.js", "MongoDB", "Prisma", "JWT", "AI Analytics"],
     problem:
       "Mid-market finance teams patch reports together in spreadsheets, losing days every month and missing anomalies entirely.",
     solution:
-      "A Next.js + Node.js platform with JWT auth, granular RBAC, and AI-driven anomaly detection over normalised ledger data, exposed through interactive analytics dashboards.",
+      "Built JWT-authenticated REST APIs (Node.js/Express/MongoDB) with granular RBAC for multi-tenant ledger isolation and automated anomaly-validation checks over normalised financial feeds.",
     architecture: [
       "Multi-tenant data model on MongoDB via Prisma",
       "Stream ingestion of accounting feeds",
-      "AI analytics layer for cashflow and anomaly detection",
+      "Automated validation checks for cashflow and ledger anomalies",
       "Role-based dashboards with audit trails",
     ],
     results:
-      "Cut monthly close reporting time by 45% and surfaced anomalies that were previously missed entirely.",
+      "Delivered multi-tenant RBAC ledger isolation and automated financial close validation checks replacing manual spreadsheet checks.",
   },
   {
     slug: "smartlearnx",
     name: "SmartLearnX",
     tag: "Freelance Project",
     blurb:
-      "A next-generation AI-powered LMS designed to transform online education into a personalized, intelligent, and data-driven learning experience.",
+      "A full-stack AI-assisted LMS integrating dropout risk scoring, performance forecasting, BERT quiz generation, and a spaCy student support assistant.",
     description:
-      "An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack web technologies to enhance learning outcomes and reduce administrative workload through personalized course recommendations, dropout prediction, and AI-powered assessments.",
+      "An adaptive educational ecosystem integrating ML/NLP microservices with a Node.js and React web application for course recommendations, student risk tracking, and automated quiz assistance.",
     metrics: [
-      { value: "91.4%", label: "Dropout Prediction Accuracy" },
-      { value: "0.89", label: "R² Forecasting Score" },
-      { value: "24/7", label: "NLP Chatbot Support" },
+      { value: "FastAPI", label: "ML Microservice" },
+      { value: "NLP", label: "BERT + spaCy Pipeline" },
+      { value: "Docker", label: "Nginx Container Stack" },
     ],
     tech: ["React", "TypeScript", "Node.js", "FastAPI", "MongoDB", "Redis", "Docker", "Machine Learning"],
     problem:
-      "Conventional LMS platforms provide static learning content, limited personalization, minimal learner engagement tracking, and lack predictive capabilities, leading to higher student dropout rates.",
+      "Conventional LMS platforms provide static learning content, limited personalization, and minimal automated study assistance.",
     solution:
-      "Implemented an AI-powered personalized learning system that analyzes user behavior to generate adaptive learning paths. Included machine learning-based dropout prediction (Logistic Regression) and academic performance forecasting (Random Forest).",
+      "Implemented an adaptive LMS with a FastAPI microservice running Logistic Regression dropout risk scoring and Random Forest performance forecasting alongside a React/Node.js web application.",
     architecture: [
-      "Frontend: React and TypeScript SPA with comprehensive analytics dashboards and gamification elements.",
-      "Backend: Node.js and Express server with a Python FastAPI-based AI/ML microservice for heavy analytics.",
-      "Database & Queue: MongoDB for primary data, Redis and BullMQ for caching and background job processing.",
-      "AI Layer: NLP-powered quiz generation via BERT and an intelligent virtual chatbot assistant (spaCy).",
-      "Infrastructure: Docker containerization and Nginx reverse proxy for load balancing and secure deployment."
+      "Frontend: React and TypeScript SPA with analytics dashboards.",
+      "Backend: Node.js and Express server with a Python FastAPI ML microservice.",
+      "Database & Queue: MongoDB for primary data, Redis and BullMQ for caching and background jobs.",
+      "AI Layer: Quiz generation via BERT and a student Q&A chatbot built with spaCy.",
+      "Infrastructure: Docker containerization and Nginx reverse proxy.",
     ],
     tradeoffs: [
-      "Microservices vs Monolith: Split AI/ML tasks into a dedicated FastAPI microservice to prevent blocking the Node.js backend during heavy NLP execution.",
-      "ML vs Heuristics: Used Logistic Regression for dropout prediction, accepting training overhead to achieve significant long-term accuracy (91.4%)."
+      "Microservices vs Monolith: Split Python ML/NLP inference into a dedicated FastAPI microservice so heavy NLP calls never block the Node.js API.",
+      "Interpretable Baselines First: Used Logistic Regression and Random Forest models for fast, low-resource inference behind FastAPI.",
     ],
     results:
-      "Successfully maintained response times below 2 seconds under high load. The ML dropout prediction model achieved an accuracy of 91.4%, and the academic performance forecasting model achieved an R² score of 0.89, validating the intelligent ecosystem.",
+      "Shipped end-to-end across React, Node.js, FastAPI, MongoDB, Redis/BullMQ, Docker, and Nginx with automated BERT quiz generation and spaCy chatbot workflows.",
   },
 ];
 
 
 export const EXPERIENCE = [
   {
-    company: "OmniRoute",
-    role: "Open Source Contributor",
-    period: "Jul 2026 – Sep 2026",
-    location: "Remote",
-    highlights: [
-      "Authored 7 merged PRs in the 90k★ open-source universal AI gateway (375+ providers, 21,000+ tests): parsed Claude-format thinking blocks for accurate observed reasoning telemetry (PR #13969) and enforced Gemini-Web reasoning/tool constraints to block malformed upstream requests (PR #9397)",
-      "Fixed quota reset-window routing strategy prioritization under rate limits (PR #9353) and refactored MITM dynamic imports to eliminate Next.js Turbopack warnings (PR #6366)",
-      "Built an accessible 'Configured Only' filter toggle mapping live /api/providers state (168 additions, 9/9 Vitest, PR #6245, v3.8.45) and integrated Claude 5 Sonnet into claude_web with regression coverage (PR #6209, v3.8.45)",
-      "Audited and normalized 9 core docs + 20+ localized READMEs across 42 locales passing docs-sync-strict CI (PR #6105, v3.8.44), plus diagnosed the strict-provider system-message ordering regression (PR #6172) with a declarative systemMessageMustBeFirst Zod schema design later adopted by the maintainer into PR #6225",
-    ],
-  },
-  {
     company: "nTheta Works Pvt. Ltd.",
     role: "Full Stack Developer Intern",
     period: "Oct – Dec 2025",
     location: "Remote",
     highlights: [
-      "Built an internal two-stage semantic template search pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform — improved template matching accuracy by 40% and reduced manual QA effort by 60%",
+      "Built an internal two-stage semantic template search pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform",
       "Shipped async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, Docker Compose (6 services, 18 Alembic migrations), and CI/CD pipelines",
     ],
   },
@@ -287,8 +275,8 @@ export const EXPERIENCE = [
     period: "Jul 2025 – Aug 2025",
     location: "Remote",
     highlights: [
-      "Built SmartLearnX, an AI-powered LMS, with a dropout prediction model (Logistic Regression, 91.4% accuracy) and academic performance forecasting (Random Forest, R² = 0.89) deployed as a FastAPI microservice alongside a React/Node.js frontend",
-      "Integrated NLP features (BERT for quiz generation, spaCy chatbot) serving 24/7 student support with sub-2-second response times under load",
+      "Built SmartLearnX, an AI-assisted LMS, with Logistic Regression dropout risk scoring and Random Forest performance forecasting deployed in a FastAPI microservice alongside a React/Node.js frontend",
+      "Integrated BERT quiz generation and a spaCy chatbot assistant backed by MongoDB, Redis/BullMQ, and Docker/Nginx",
     ],
   },
   {
@@ -297,8 +285,8 @@ export const EXPERIENCE = [
     period: "May – Jul 2025",
     location: "Jaipur",
     highlights: [
-      "Led FinSageAI360, a multi-tenant financial intelligence SaaS — cut monthly close reporting time by 45% and reduced manual operational effort by 30% through AI-driven anomaly detection and real-time KPI dashboards",
-      "Designed a JWT-authenticated REST API (Node.js/Express/MongoDB) with granular RBAC for multi-tenant data isolation",
+      "Built JWT-authenticated REST APIs (Node.js/Express/MongoDB) with granular RBAC for multi-tenant ledger isolation in FinSageAI360",
+      "Implemented automated financial anomaly-validation checks and interactive KPI dashboards using Next.js and Prisma",
     ],
   },
   {
@@ -307,8 +295,20 @@ export const EXPERIENCE = [
     period: "Jun – Aug 2024",
     location: "Delhi",
     highlights: [
-      "Optimized enterprise document search by implementing LangChain + FAISS vector embeddings — reduced query latency by 70% across 10,000+ documents and improved retrieval accuracy by 40%",
-      "Built RESTful APIs (Node.js) to automate logistics workflows, eliminating 20% of manual data-entry tasks",
+      "Built semantic document search across enterprise logistics records using Python, LangChain, and FAISS vector embeddings",
+      "Built RESTful APIs (Node.js) to automate internal logistics lookup workflows",
+    ],
+  },
+  {
+    company: "OmniRoute",
+    role: "Open-Source Contributor (Part-Time)",
+    period: "Jul 2026 – Sep 2026",
+    location: "Remote",
+    highlights: [
+      "Authored 7 merged PRs in the 90k★ open-source universal AI gateway (375+ providers, 21,000+ tests), including parsing Claude-format thinking blocks into observed usage telemetry (PR #13969) and enforcing Gemini-Web reasoning/tool schemas to block malformed upstream requests (PR #9397)",
+      "Fixed quota reset-window routing strategy prioritization under rate limits (PR #9353) and refactored MITM dynamic imports to eliminate Next.js Turbopack warnings (PR #6366)",
+      "Built an accessible 'Configured Only' filter toggle mapping live /api/providers state (168 additions, 9/9 Vitest, PR #6245, v3.8.45) and integrated Claude 5 Sonnet into claude_web with regression coverage (PR #6209, v3.8.45)",
+      "Audited docs across 42 locales passing docs-sync-strict CI (PR #6105, v3.8.44), plus diagnosed a strict-provider system-message ordering regression (PR #6172) with a declarative systemMessageMustBeFirst Zod schema design later adopted by the maintainer into PR #6225",
     ],
   },
   {
@@ -331,10 +331,10 @@ export const EXPERIENCE = [
 export const STATS = [
   { value: "5", label: "AI Agents in MiningNiti" },
   { value: "4", label: "AI Providers (Free Tiers)" },
-  { value: "321", label: "Unit Tests Passing" },
+  { value: "321", label: "Unit Tests · MiningNiti" },
+  { value: "229", label: "Pytest Tests · NLPForge" },
   { value: "90k+", label: "Stars · OmniRoute" },
   { value: "3", label: "Enterprise Internships" },
-  { value: "70%", label: "Query Latency Reduction" },
 ] as const;
 
 export const TECH_STACK = {

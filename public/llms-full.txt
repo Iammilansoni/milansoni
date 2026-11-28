@@ -153,46 +153,70 @@ An async FastAPI platform that routes plain-English instructions (e.g., "refund 
 
 > Built at OBG Outsourcing
 
-A multi-tenant SaaS that ingests accounting feeds, normalises them, and surfaces AI-generated cashflow, risk, and anomaly insights.
+A multi-tenant SaaS that ingests accounting feeds, normalises them, and provides JWT/RBAC ledger isolation and automated anomaly-validation checks.
 
-**Problem**: Mid-market finance teams patch reports together in spreadsheets, losing days every month and missing anomalies entirely.
+**Problem**: Mid-market finance teams patch reports together in spreadsheets and manual reconciliation passes.
 
-**Solution**: A Next.js + Node.js platform with JWT auth, granular RBAC, and AI-driven anomaly detection over normalised ledger data, exposed through interactive analytics dashboards.
+**Solution**: A Next.js + Node.js platform with JWT auth, granular RBAC, and automated validation checks over normalised ledger data, exposed through interactive analytics dashboards.
 
 **Architecture**:
 - Multi-tenant data model on MongoDB via Prisma
 - Stream ingestion of accounting feeds
-- AI analytics layer for cashflow and anomaly detection
+- Automated validation layer for cashflow and ledger anomalies
 - Role-based dashboards with audit trails
 
-**Results**: +45% faster report cycles. +30% operational efficiency. Enterprise-grade RBAC.
+**Scope**: Multi-tenant RBAC ledger isolation and automated financial close validation checks.
 
 ---
 
-### SmartLearnX — AI-Powered LMS
+### SmartLearnX — AI-Assisted LMS
 
 > Freelance Project
 
-An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack web technologies to enhance learning outcomes through personalized course recommendations, dropout prediction, and AI-powered assessments.
-
-**Problem**: Conventional LMS platforms provide static learning content, limited personalization, minimal learner engagement tracking, and lack predictive capabilities, leading to higher student dropout rates.
-
-**Solution**: Implemented an AI-powered personalized learning system that analyzes user behavior to generate adaptive learning paths. Included machine learning-based dropout prediction (Logistic Regression) and academic performance forecasting (Random Forest).
+An adaptive educational web app integrating a FastAPI ML microservice with a React and Node.js LMS for course recommendations, student risk tracking, BERT quiz generation, and a spaCy chatbot assistant.
 
 **Architecture**:
-- Frontend: React and TypeScript SPA with comprehensive analytics dashboards and gamification elements
-- Backend: Node.js and Express server with a Python FastAPI-based AI/ML microservice for heavy analytics
+- Frontend: React and TypeScript SPA with analytics dashboards
+- Backend: Node.js and Express server with a Python FastAPI ML microservice for Logistic Regression dropout risk scoring and Random Forest performance forecasting
 - Database & Queue: MongoDB for primary data, Redis and BullMQ for caching and background job processing
-- AI Layer: NLP-powered quiz generation via BERT and an intelligent virtual chatbot assistant (spaCy)
-- Infrastructure: Docker containerization and Nginx reverse proxy for load balancing and secure deployment
-
-**Results**: 91.4% dropout prediction accuracy. 0.89 R² forecasting score. 24/7 NLP chatbot support. Response times below 2 seconds under high load.
+- AI Layer: Quiz generation via BERT and a virtual chatbot assistant built with spaCy
+- Infrastructure: Docker containerization and Nginx reverse proxy
 
 ---
 
-## Experience
+## Experience & Open Source
 
-### OmniRoute — Open Source Contributor (Jul – Sep 2026)
+### nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct – Dec 2025)
+
+- Architected FastAPI microservices + Next.js / TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose stack, and 18 Alembic migrations
+- Containerized via Docker with automated CI/CD pipelines on Linux servers
+- Built an internal two-stage semantic template search pipeline (Redis Vector DB HNSW + FlashRank neural re-ranking)
+
+---
+
+### Freelance Client — AI & Full Stack Developer (Jul – Aug 2025)
+
+- Built SmartLearnX, an AI-assisted LMS utilizing React, Node.js, and FastAPI microservices
+- Implemented Logistic Regression dropout risk scoring and Random Forest performance forecasting models
+- Integrated BERT quiz generation and a spaCy student chatbot assistant
+
+---
+
+### OBG Outsourcing Pvt. Ltd. — Full Stack Developer Intern (May – Jul 2025)
+
+- Built JWT-authenticated REST APIs (Node.js + Express.js + MongoDB) with granular RBAC for multi-tenant ledger isolation in FinSageAI360
+- Implemented automated anomaly-validation checks and interactive KPI dashboards (Next.js, Redux, Tailwind CSS, Prisma ORM)
+
+---
+
+### Om Logistics Ltd. — Software Developer Intern (Jun – Aug 2024)
+
+- Implemented enterprise document search via LangChain + FAISS vector embeddings
+- Designed and integrated Node.js RESTful APIs to automate internal logistics lookup workflows
+
+---
+
+### OmniRoute — Open Source Contributor (Part-Time, Jul – Sep 2026)
 
 > OmniRoute · 90k★ · 375+ LLM providers · Open-source universal AI gateway
 
@@ -212,38 +236,6 @@ Audited 9 core docs and ~20 localized READMEs across 42 locales, fixing untransl
 
 **Schema Design Proposal**:
 Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP 400 when a memory-injected system message lands at a non-zero array index (PR #6172). Proposed a declarative `systemMessageMustBeFirst` Zod schema flag design adopted by the maintainer into the shipped PR #6225 fix.
-
----
-
-### nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct – Dec 2025)
-
-- Architected FastAPI microservices + Next.js / TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose stack, and 18 Alembic migrations
-- Containerized via Docker with automated CI/CD pipelines on Linux servers
-- Built an internal two-stage semantic template search pipeline (Redis Vector DB HNSW + FlashRank neural re-ranking) — improved template matching by 40% and cut manual QA effort by ~60%
-
----
-
-### Freelance Client — AI & Full Stack Developer (Jul – Aug 2025)
-
-- Architected SmartLearnX, an AI-powered Learning Management System utilizing React, Node.js, and FastAPI microservices
-- Engineered a dropout prediction model (Logistic Regression, 91.4% accuracy) and academic forecasting system (Random Forest, 0.89 R²)
-- Integrated NLP features (BERT, spaCy) for automated quiz generation and a 24/7 intelligent virtual chatbot assistant
-
----
-
-### OBG Outsourcing Pvt. Ltd. — Full Stack Developer Intern (May – Jul 2025)
-
-- Led FinSageAI360, an AI-driven financial intelligence platform (Next.js, Redux, Tailwind CSS, Prisma ORM) with real-time KPI dashboards
-- Designed secure REST API backend (Node.js + Express.js + MongoDB) with JWT auth and RBAC
-- Reduced manual operational effort by 30% and accelerated financial report generation by 45%
-
----
-
-### Om Logistics Ltd. — Software Developer Intern (Jun – Aug 2024)
-
-- Optimized enterprise document search via LangChain + FAISS vector embeddings — reduced query latency by 70% across 10,000+ documents
-- Designed and integrated RESTful APIs (Node.js) to automate logistics workflows
-- Improved retrieval accuracy by 40% and eliminated 20% of manual data-entry tasks
 
 ### CodeFiesta — Organising Team & Sponsorship Head (2024 – 2025)
 
