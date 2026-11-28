@@ -70,7 +70,7 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 - Audited and normalized 9 core docs + 20+ localized READMEs across 42 locales passing `docs-sync-strict` CI with zero regressions (**PR #6105**, v3.8.44), and diagnosed the strict-provider system-message HTTP 400 regression (**PR #6172**) with a `systemMessageMustBeFirst` Zod schema flag design adopted by the maintainer into **PR #6225**.
 
 ### nTheta Works Pvt. Ltd. — Full Stack Developer Intern · Remote · Oct – Dec 2025
-- Built **NLPForge v1** two-stage semantic template search (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform — improved template matching accuracy by **40%** and reduced manual QA effort by **60%**.
+- Built an internal two-stage semantic template search pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform — improved template matching accuracy by **40%** and reduced manual QA effort by **60%**.
 - Shipped async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose stack, 18 Alembic migrations, and CI/CD on Linux servers.
 
 ### Freelance Client — AI & Full Stack Developer · Remote · Jul – Aug 2025
@@ -107,9 +107,9 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 - **Differentiator worth leading with:** there is **no agent framework** in this repo — no LangChain, no LangGraph. Orchestration is hand-written on `asyncio.gather()` with per-agent error isolation, quota-aware provider failover and a content-addressed Redis cache (failed runs are never cached). Failure is loud: a section that cannot be produced lands on `Document.processing_error` and `metadata.degraded_sections` and is surfaced in the UI rather than returned as a silently empty result. LangSmith traces the orchestrator, hybrid search and chat generation.
 - **Links:** GitHub github.com/Iammilansoni/MiningNiti · Demo miningniti.vercel.app *(free HuggingFace Space — a cold first request can take up to a minute)*
 
-### NLPForge (NLPFT-2) — Natural-Language to Validated REST API Router *(v2 Solo Rebuild; evolved from v1 at nTheta Works)*
-- **What:** Independent solo v2 rewrite mapping plain-English instructions (e.g., `"refund order 8820"`) to schema-validated OpenAPI endpoints across **20+ LLM and embedding providers** (evolved from the v1 Redis HNSW + FlashRank prototype at nTheta Works across 8 providers).
-- **Solution & Ablation:** `pgvector HNSW` retrieval + strict Pydantic v2 schema rules + local Ollama fallback; benchmark ablation proved cross-encoder reranking degraded short-command API routing, so removing it lifted **top-1 accuracy from 59% to 80%** (**97% top-3**) on a 180-query CI gate and cut ungrounded values from **55 to 1 per 100 requests (98% precision)**.
+### NLPForge — Natural-Language to Validated REST API Router *(Standalone Open-Source Project · `Iammilansoni/NLPFT-2`)*
+- **What:** Async FastAPI platform mapping plain-English instructions (e.g., `"refund order 8820"`) to schema-validated OpenAPI endpoints across **20+ LLM and embedding providers**.
+- **Solution & Ablation:** `pgvector HNSW` retrieval + strict Pydantic v2 schema rules + local Ollama fallback; benchmark ablation proved cross-encoder reranking degraded short-command API routing, so disabling it lifted **top-1 accuracy from 59% to 80%** (**97% top-3**) on a 180-query CI gate and cut ungrounded values from **55 to 1 per 100 requests (98% precision)**.
 - **Stack:** FastAPI, SQLAlchemy 2.0, Pydantic v2, PostgreSQL + `pgvector` (Row-Level Security), Celery, Redis, Next.js, Ollama, Docker, pytest.
 - **Results:** **80% top-1 / 97% top-3** routing accuracy, **98% precision**, **43** RLS-isolated tenancy endpoints, **229 pytest tests** (197 unit + 32 PostgreSQL integration).
 - **Links:** GitHub github.com/Iammilansoni/NLPFT-2
@@ -166,7 +166,8 @@ AI Engineer and Full Stack Developer who turns complex real-world bottlenecks in
 | Hit Rate@5 1.000 · nDCG@5 0.968 (CI-gated eval) | MiningNiti retrieval |
 | 321 unit tests + 18 retrieval evals offline · 380 collected · 37 endpoints | MiningNiti |
 | $0/month infrastructure | MiningNiti / hybrid RAG |
-| +40% accuracy · −60% QA effort (v1) / 80% top-1 · 98% precision · 229 tests (v2) | NLPForge (v1 / NLPFT-2 v2) |
+| +40% QA accuracy · −60% manual QA effort | nTheta Works (semantic API-template search) |
+| 80% top-1 · 97% top-3 · 98% precision · 229 pytest tests · 43 RLS endpoints | NLPForge (`Iammilansoni/NLPFT-2`) |
 | +45% faster reports · +30% efficiency | FinSageAI360 |
 | 91.4% accuracy · 0.89 R² | SmartLearnX ML models |
 | 70% latency reduction · 10,000+ docs · +40% retrieval | Om Logistics |

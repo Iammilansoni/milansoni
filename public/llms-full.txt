@@ -126,11 +126,11 @@ A document-intelligence platform for coal mining: four AI agents analyze every u
 
 ---
 
-### NLPForge (NLPFT-2) — Natural-Language to Validated REST API Router
+### NLPForge — Natural-Language to Validated REST API Router
 
-> Independent solo v2 rebuild (evolved from NLPForge v1 built at nTheta Works)
+> Standalone Open-Source Project (GitHub: Iammilansoni/NLPFT-2)
 
-An independent v2 rewrite of the NLPForge prototype originally built during my nTheta Works internship (v1 used Redis Stack HNSW + FlashRank across 8 providers). NLPFT-2 routes plain-English instructions (e.g., "refund order 8820") to OpenAPI-defined REST endpoints across 20+ LLM and embedding providers using pgvector HNSW, rule-based + local Ollama slot extraction, and PostgreSQL Row-Level Security (RLS).
+An async FastAPI platform that routes plain-English instructions (e.g., "refund order 8820") to OpenAPI-defined REST endpoints across 20+ LLM and embedding providers using pgvector HNSW, rule-based + local Ollama slot extraction, and PostgreSQL Row-Level Security (RLS).
 
 **Problem**: Mapping free-form natural-language instructions into executable REST calls breaks in production when retrieval picks plausible wrong endpoints, LLMs invent ungrounded parameter values, or shared workspaces lack tenant isolation.
 
@@ -219,7 +219,7 @@ Diagnosed why strict LLM providers (e.g., Xiaomi MiMo) reject requests with HTTP
 
 - Architected FastAPI microservices + Next.js / TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose stack, and 18 Alembic migrations
 - Containerized via Docker with automated CI/CD pipelines on Linux servers
-- Built NLPForge v1 two-stage semantic template search (Redis Vector DB HNSW + FlashRank neural re-ranking) — improved template matching by 40% and cut manual QA effort by ~60%
+- Built an internal two-stage semantic template search pipeline (Redis Vector DB HNSW + FlashRank neural re-ranking) — improved template matching by 40% and cut manual QA effort by ~60%
 
 ---
 

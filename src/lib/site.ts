@@ -164,11 +164,11 @@ export const PROJECTS: Project[] = [
   {
     slug: "nlpforge-tester",
     name: "NLPForge",
-    tag: "Natural-Language to Validated REST API Router · Solo v2 Rebuild (2025 → 2026)",
+    tag: "Natural-Language to Validated REST API Router",
     blurb:
       "Natural-Language to Validated API Request Router — routing plain-English requests into OpenAPI-validated endpoints across 20+ providers with PostgreSQL RLS.",
     description:
-      "An independent solo v2 rebuild (NLPFT-2) of the NLPForge v1 prototype started during my nTheta Works internship (v1 used Redis HNSW and FlashRank across 8 providers). In v2, plain-English requests (e.g. 'refund order 8820') are matched and validated against API schemas using pgvector HNSW, rule-based extractors, and local Ollama fallback across 20+ LLM and embedding providers, isolated per workspace with PostgreSQL Row-Level Security.",
+      "An async FastAPI platform that turns plain-English requests (e.g. 'refund order 8820') into schema-validated REST API calls across 20+ LLM and embedding providers using pgvector HNSW retrieval, deterministic extraction rules + local Ollama fallback, and PostgreSQL Row-Level Security.",
     metrics: [
       { value: "80% / 97%", label: "Top-1 / Top-3 (180-Query CI)" },
       { value: "98%", label: "Slot Precision (55 → 1 Errors)" },
@@ -187,7 +187,7 @@ export const PROJECTS: Project[] = [
       "Testing & Frontend: 229 pytest tests (197 unit + 32 PostgreSQL integration) paired with a Next.js workspace UI.",
     ],
     tradeoffs: [
-      "Ablated the cross-encoder reranker from v1 → v2: FlashRank helped longer template matching in NLPForge v1 at nTheta Works, but benchmarking v2 proved the reranker degraded short-command API routing — removing it lifted top-1 accuracy from 59% to 80% (97% top-3) on the 180-query CI gate.",
+      "Ablated off cross-encoder reranking after benchmarking: adding a cross-encoder degraded short-command API routing compared to dense pgvector max-pooling, so disabling it lifted top-1 accuracy from 59% to 80% (97% top-3) on the 180-query CI gate.",
       "pgvector HNSW + PostgreSQL RLS over a separate Redis vector store: consolidating vectors and tenant policies in PostgreSQL eliminated dual-store synchronization bugs across 43 RLS-protected endpoints.",
       "Rules + local Ollama fallback before cloud LLMs: deterministic schema rules handle structured fields reliably, leaving zero room for invented IDs or ungrounded defaults.",
     ],
@@ -277,7 +277,7 @@ export const EXPERIENCE = [
     period: "Oct – Dec 2025",
     location: "Remote",
     highlights: [
-      "Built NLPForge v1 two-stage semantic template search (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform — improved template matching accuracy by 40% and reduced manual QA effort by 60%",
+      "Built an internal two-stage semantic template search pipeline (Ollama embeddings → Redis HNSW → FlashRank cross-encoder reranking) for an enterprise LLM API-testing platform — improved template matching accuracy by 40% and reduced manual QA effort by 60%",
       "Shipped async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, Docker Compose (6 services, 18 Alembic migrations), and CI/CD pipelines",
     ],
   },

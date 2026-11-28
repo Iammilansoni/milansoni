@@ -40,7 +40,7 @@ WORK EXPERIENCE:
    - Diagnosed HTTP 400 memory-injection regression for strict LLM providers (PR #6172) and proposed declarative systemMessageMustBeFirst Zod schema flag adopted by maintainer into shipped PR #6225
 
 2. nTheta Works Pvt. Ltd. — Full Stack Developer Intern (Oct–Dec 2025, Remote)
-   - Built NLPForge v1 two-stage semantic template search (Ollama → Redis HNSW → FlashRank) for an enterprise LLM API-testing platform
+   - Built an internal two-stage semantic API-template search pipeline (Ollama → Redis HNSW → FlashRank) for an enterprise LLM API-testing platform
    - 40% accuracy improvement, 60% QA effort reduction
    - Async FastAPI microservices + Next.js/TypeScript dashboards integrating 8 LLM providers, 6-service Docker Compose + 18 Alembic migrations + CI/CD
 
@@ -100,9 +100,8 @@ KEY PROJECTS:
    - Demo: https://hatf-lms-early-warning-poc.vercel.app/
    - IMPORTANT when describing this: the paper reports F1 94.2% / AUC 96.1% on 7,935 REAL students across 45 courses. The shipped POC runs on SYNTHETIC data and reports its own independently measured numbers. The two are NOT comparable and the POC does not reproduce the paper's results. Never present the paper's numbers as the product's.
 
-3. NLPForge / NLPFT-2 (Natural-Language to Validated REST API Router — solo v2 rebuild)
-   - Evolved from NLPForge v1 built at nTheta Works (Ollama → Redis Stack HNSW → FlashRank across 8 providers)
-   - Solo v2 rebuild routes plain-English requests to OpenAPI-validated endpoints across 20+ providers using pgvector HNSW, strict schema rules + local Ollama fallback, and PostgreSQL Row-Level Security (RLS)
+3. NLPForge (Natural-Language to Validated REST API Router — GitHub: Iammilansoni/NLPFT-2)
+   - Routes plain-English requests to OpenAPI-validated endpoints across 20+ providers using pgvector HNSW, strict schema rules + local Ollama fallback, and PostgreSQL Row-Level Security (RLS)
    - Ablating away the cross-encoder reranker raised top-1 routing accuracy from 59% to 80% (97% top-3) on a 180-query CI gate; cut ungrounded values from 55 to 1 per 100 requests (98% precision)
    - Stack: FastAPI, SQLAlchemy 2.0, Pydantic v2, PostgreSQL + pgvector (RLS), Celery, Redis, Next.js, Ollama, Docker, pytest
    - Results: 229 pytest tests (197 unit + 32 PostgreSQL integration), 43 RLS tenancy endpoints

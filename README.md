@@ -94,11 +94,11 @@ An Orchestrator coordinates these five; it is a coordinator, not a sixth agent.
 
 ---
 
-### NLPForge (NLPFT-2) — Natural-Language to Validated REST API Router
+### NLPForge — Natural-Language to Validated REST API Router
 
-> Independent solo v2 rebuild (evolved from NLPForge v1 built at nTheta Works)
+> Open-Source AI Infrastructure Project (`Iammilansoni/NLPFT-2`)
 
-An independent v2 rewrite of the NLPForge prototype built during my nTheta Works internship (v1 used Redis HNSW + FlashRank across 8 providers). Here in NLPFT-2, plain-English requests are routed to OpenAPI-validated endpoints across 20+ providers on `pgvector HNSW` + PostgreSQL Row-Level Security (RLS).
+An async FastAPI platform that routes plain-English requests to OpenAPI-validated endpoints across 20+ providers on `pgvector HNSW` + PostgreSQL Row-Level Security (RLS).
 
 ```
   Input: "refund order 8820"
@@ -153,7 +153,7 @@ An adaptive educational ecosystem integrating AI, ML, NLP, and modern full-stack
 | Role | Company | Period | Key Impact |
 |------|---------|--------|------------|
 | Open Source Contributor | [OmniRoute](https://github.com/cheaper-inference/OmniRoute) (90k★) | Jul – Sep 2026 | 7 PRs shipped across 375+ providers (#13969, #9397, #9353, #6366, #6245, #6209, #6105) + strict-provider schema design (#6172 -> #6225) |
-| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | NLPForge v1 semantic template search: 40% accuracy improvement, 60% QA reduction |
+| Full Stack Developer Intern | nTheta Works | Oct – Dec 2025 | Internal semantic API-template search (Redis HNSW + FlashRank): 40% accuracy improvement, 60% QA reduction |
 | AI & Full Stack Developer | Freelance | Jul – Aug 2025 | ML dropout prediction (91.4%), performance forecasting (R²=0.89), 24/7 NLP chatbot |
 | Full Stack Developer Intern | OBG Outsourcing | May – Jul 2025 | Led FinSageAI360: +45% report speed, +30% operational efficiency |
 | Software Developer Intern | Om Logistics | Jun – Aug 2024 | LangChain + FAISS: 70% latency reduction across 10K+ docs |
